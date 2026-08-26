@@ -10,6 +10,7 @@ const updateCourseSchema = z.object({
   level: z.enum(["BEGINNER", "INTERMEDIATE", "ADVANCED"]).nullable().optional(),
   price: z.number().min(0).optional(),
   thumbnail: z.string().nullable().optional(),
+  imageUrl: z.string().nullable().optional(),
   isPublished: z.boolean().optional(),
 });
 
@@ -111,6 +112,11 @@ export async function PUT(
     }
 
     const data: any = { ...parsed.data };
+
+    if (data.imageUrl !== undefined) {
+      data.thumbnail = data.imageUrl;
+      delete data.imageUrl;
+    }
 
     // Update slug if title is updated
     if (data.title && data.title !== course.title) {

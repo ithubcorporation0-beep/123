@@ -9,7 +9,7 @@ import { TitleForm } from "@/components/teacher/courses/edit/TitleForm";
 import { DescriptionForm } from "@/components/teacher/courses/edit/DescriptionForm";
 import { CategoryForm } from "@/components/teacher/courses/edit/CategoryForm";
 import { LevelForm } from "@/components/teacher/courses/edit/LevelForm";
-import { ImagePlaceholderForm } from "@/components/teacher/courses/edit/ImagePlaceholderForm";
+import { ImageUpload } from "@/components/teacher/courses/ImageUpload";
 import { ChaptersPlaceholderForm } from "@/components/teacher/courses/edit/ChaptersPlaceholderForm";
 import { CourseActions } from "@/components/teacher/courses/edit/CourseActions";
 
@@ -148,8 +148,9 @@ export default async function CourseIdPage({ params }: CourseIdPageProps) {
             courseId={course.id}
           />
 
-          <ImagePlaceholderForm
+          <ImageUpload
             initialData={{ thumbnail: course.thumbnail }}
+            courseId={course.id}
           />
 
           <CategoryForm
