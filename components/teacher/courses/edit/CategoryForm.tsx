@@ -1,0 +1,145 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Pencil, Loader2, X } from "lucide-react";
+
+interface CategoryFormProps {
+  initialData: {
+    categoryId: string | null;
+  };
+  courseId: string;
+  options: { label: string; value: string }[];
+}
+
+const formSchema = z.object({
+  categoryId: z.string().min(1, "Category is required"),
+});
+
+export function CategoryForm({ initialData, courseId, options }: CategoryFormProps) {
+  const [isEditing, setIsEditing] = useState(false);
+  const router = useRouter();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      categoryId: initialData.categoryId || "",
+    },
+  });
+
+  const { isSubmitting, isValid } = form.formState;
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const res = await fetch(`/api/courses/${courseId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to update category");
+      }
+
+      toast.success("Course category updated!");
+      setIsEditing(false);
+      router.refresh();
+    } catch (error: any) {
+      toast.error(error.message || "Something went wrong");
+    }
+  };
+
+  const selectedOption = options.find((opt) => opt.value === initialData.categoryId);
+
+  return (
+    <Card className="rounded-2xl border bg-card/60 shadow-sm">
+      <CardContent className="p-5">
+        <div className="flex items-center justify-between font-semibold text-sm mb-3">
+          <span>Course Category</span>
+          <Button
+            onClick={() => setIsEditing((prev) => !prev)}
+            variant="ghost"
+            size="sm"
+            className="rounded-xl text-xs gap-1.5 h-8 px-2.5 text-muted-foreground hover:text-foreground"
+          >
+            {isEditing ? (
+              <>
+                <X className="h-3.5 w-3.5" />
+                Cancel
+              </>
+            ) : (
+              <>
+                <Pencil className="h-3.5 w-3.5" />
+                Edit category
+              </>
+            )}
+          </Button>
+        </div>
+
+        {!isEditing ? (
+          <p className={`text-sm ${!selectedOption ? "text-muted-foreground italic" : "font-medium text-foreground"}`}>
+            {selectedOption?.label || "No category selected"}
+          </p>
+        ) : (
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="categoryId"
+                render={({ field }) => (
+                  <FormItem>
+                    <Select
+                      disabled={isSubmitting}
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="rounded-xl">
+                          <SelectValue placeholder="Select a category" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent className="rounded-xl">
+                        {options.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex items-center gap-2">
+                <Button
+                  disabled={!isValid || isSubmitting}
+                  type="submit"
+                  size="sm"
+                  className="rounded-xl gap-1.5 font-medium"
+                >
+                  {isSubmitting && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
+                  Save
+                </Button>
+              </div>
+            </form>
+          </Form>
+        )}
+      </CardContent>
+    </Card>
+  );
+}

@@ -56,6 +56,7 @@ model Course {
   instructor  Profile        @relation("InstructorCourses", fields: [instructorId], references: [id], onDelete: Cascade)
   categoryId  String?
   category    CourseCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  level       String?        @default("BEGINNER")
 
   modules      CourseModule[]
   enrollments  Enrollment[]
