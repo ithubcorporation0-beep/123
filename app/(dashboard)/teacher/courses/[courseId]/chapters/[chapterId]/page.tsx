@@ -47,16 +47,15 @@ export default async function ChapterIdPage({ params }: ChapterIdPageProps) {
     redirect("/teacher/courses");
   }
 
-  const requiredFields = [
-    Boolean(chapter.title),
-    Boolean(chapter.description),
-    Boolean(chapter.videoUrl || chapter.muxData),
-  ];
+  const missingFields: string[] = [];
+  if (!chapter.title) missingFields.push("Title");
+  if (!chapter.description) missingFields.push("Description");
+  if (!chapter.videoUrl && !chapter.muxData?.playbackId) missingFields.push("Video Lecture");
 
-  const totalFields = requiredFields.length;
-  const completedFields = requiredFields.filter(Boolean).length;
+  const totalFields = 3;
+  const completedFields = totalFields - missingFields.length;
   const completionText = `(${completedFields}/${totalFields})`;
-  const isComplete = requiredFields.every(Boolean);
+  const isComplete = missingFields.length === 0;
 
   return (
     <div className="space-y-8 max-w-5xl mx-auto pb-16">
@@ -65,7 +64,7 @@ export default async function ChapterIdPage({ params }: ChapterIdPageProps) {
         <div className="flex items-center gap-x-3 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-900 dark:text-amber-300 text-xs sm:text-sm font-medium">
           <AlertCircle className="h-5 w-5 shrink-0 text-amber-600 dark:text-amber-400" />
           <span>
-            This chapter is currently in <strong>Draft</strong>. Complete all required fields to publish.
+            This chapter is not visible in the course. Complete all required fields to publish.
           </span>
         </div>
       )}
@@ -101,6 +100,7 @@ export default async function ChapterIdPage({ params }: ChapterIdPageProps) {
           courseId={courseId}
           chapterId={chapterId}
           isPublished={chapter.isPublished}
+          missingFields={missingFields}
         />
       </div>
 

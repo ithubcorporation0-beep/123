@@ -61,21 +61,18 @@ export default async function CourseIdPage({ params }: CourseIdPageProps) {
   // 4. Category (categoryId)
   // 5. Level
   // 6. At least one published chapter
-  const hasPublishedChapter = course.chapters.some((c) => c.isPublished);
+  const missingFields: string[] = [];
+  if (!course.title) missingFields.push("Title");
+  if (!course.description) missingFields.push("Description");
+  if (!course.thumbnail) missingFields.push("Course Image");
+  if (!course.categoryId) missingFields.push("Category");
+  if (!course.level) missingFields.push("Level");
+  if (!hasPublishedChapter) missingFields.push("At least one published chapter");
 
-  const requiredFields = [
-    Boolean(course.title),
-    Boolean(course.description),
-    Boolean(course.thumbnail),
-    Boolean(course.categoryId),
-    Boolean(course.level),
-    hasPublishedChapter,
-  ];
-
-  const totalFields = requiredFields.length;
-  const completedFields = requiredFields.filter(Boolean).length;
+  const totalFields = 6;
+  const completedFields = totalFields - missingFields.length;
   const completionText = `(${completedFields}/${totalFields})`;
-  const isComplete = requiredFields.every(Boolean);
+  const isComplete = missingFields.length === 0;
 
   return (
     <div className="space-y-8 max-w-5xl mx-auto pb-16">
@@ -84,7 +81,7 @@ export default async function CourseIdPage({ params }: CourseIdPageProps) {
         <div className="flex items-center gap-x-3 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-900 dark:text-amber-300 text-xs sm:text-sm font-medium">
           <AlertCircle className="h-5 w-5 shrink-0 text-amber-600 dark:text-amber-400" />
           <span>
-            This course is currently in <strong>Draft</strong>. Complete all required fields to publish.
+            This course is not visible to students. Complete all required fields to publish.
           </span>
         </div>
       )}
@@ -119,6 +116,7 @@ export default async function CourseIdPage({ params }: CourseIdPageProps) {
           disabled={!isComplete}
           courseId={course.id}
           isPublished={course.isPublished}
+          missingFields={missingFields}
         />
       </div>
 
