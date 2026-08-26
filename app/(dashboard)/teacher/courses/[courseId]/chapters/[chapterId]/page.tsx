@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { ChapterTitleForm } from "@/components/teacher/chapters/ChapterTitleForm";
 import { ChapterDescriptionForm } from "@/components/teacher/chapters/ChapterDescriptionForm";
 import { ChapterAccessForm } from "@/components/teacher/chapters/ChapterAccessForm";
-import { ChapterVideoPlaceholder } from "@/components/teacher/chapters/ChapterVideoPlaceholder";
+import { VideoUpload } from "@/components/teacher/courses/VideoUpload";
 import { ChapterActions } from "@/components/teacher/chapters/ChapterActions";
 
 interface ChapterIdPageProps {
@@ -145,19 +145,24 @@ export default async function ChapterIdPage({ params }: ChapterIdPageProps) {
           />
         </div>
 
-        {/* Right Column: Video Stream Placeholder */}
+        {/* Right Column: Video Upload & Stream Player */}
         <div className="space-y-6">
           <div className="flex items-center gap-x-2">
             <div className="p-2 rounded-xl bg-primary/10 text-primary">
               <Video className="h-5 w-5" />
             </div>
             <h2 className="text-lg font-bold text-foreground">
-              Add a video
+              Chapter Video
             </h2>
           </div>
 
-          <ChapterVideoPlaceholder
-            initialData={{ videoUrl: chapter.videoUrl }}
+          <VideoUpload
+            initialData={{
+              videoUrl: chapter.videoUrl,
+              muxData: chapter.muxData,
+            }}
+            courseId={courseId}
+            chapterId={chapterId}
           />
         </div>
       </div>
