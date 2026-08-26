@@ -11,10 +11,10 @@ EduFlow is a modern, full-stack Learning Management System (LMS) built with Next
 
 ```bash
 # Clone the repository
-git clone https://github.com/[YOUR_GITHUB_USERNAME]/eduflow-lms.git
+git clone https://github.com/ithubcorporation0-beep/123.git
 
 # Navigate into the project
-cd eduflow-lms
+cd 123
 
 # Install dependencies
 npm install
