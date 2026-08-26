@@ -32,6 +32,7 @@ model Profile {
   assignmentSubmissions AssignmentSubmission[]
   certificates         Certificate[]
   reviews              Review[]
+  userProgress         UserProgress[]
 }
 
 model CourseCategory {
@@ -59,6 +60,7 @@ model Course {
   level       String?        @default("BEGINNER")
 
   modules      CourseModule[]
+  chapters     Chapter[]
   enrollments  Enrollment[]
   certificates Certificate[]
   reviews      Review[]
@@ -250,4 +252,48 @@ model Order {
   paymentIntent String?  @unique
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+}
+
+model Chapter {
+  id          String   @id @default(uuid())
+  title       String
+  description String?  // Markdown or HTML
+  videoUrl    String?
+  position    Int
+  isPublished Boolean  @default(false)
+  isFree      Boolean  @default(false)
+
+  muxData     MuxData?
+
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  userProgress UserProgress[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([courseId])
+}
+
+model MuxData {
+  id         String   @id @default(uuid())
+  assetId    String
+  playbackId String?
+  chapterId  String   @unique
+  chapter    Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+}
+
+model UserProgress {
+  id          String   @id @default(uuid())
+  profileId   String
+  profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  chapterId   String
+  chapter     Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  isCompleted Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([profileId, chapterId])
+  @@index([chapterId])
 }

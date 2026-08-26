@@ -2,7 +2,7 @@ import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { ArrowLeft, LayoutDashboard, Sparkles, AlertCircle, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, LayoutDashboard, Sparkles, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { TitleForm } from "@/components/teacher/courses/edit/TitleForm";
@@ -10,7 +10,7 @@ import { DescriptionForm } from "@/components/teacher/courses/edit/DescriptionFo
 import { CategoryForm } from "@/components/teacher/courses/edit/CategoryForm";
 import { LevelForm } from "@/components/teacher/courses/edit/LevelForm";
 import { ImageUpload } from "@/components/teacher/courses/ImageUpload";
-import { ChaptersPlaceholderForm } from "@/components/teacher/courses/edit/ChaptersPlaceholderForm";
+import { ChapterForm } from "@/components/teacher/courses/ChapterForm";
 import { CourseActions } from "@/components/teacher/courses/edit/CourseActions";
 
 interface CourseIdPageProps {
@@ -33,10 +33,7 @@ export default async function CourseIdPage({ params }: CourseIdPageProps) {
       where: { id: courseId },
       include: {
         category: true,
-        modules: {
-          include: {
-            lessons: true,
-          },
+        chapters: {
           orderBy: {
             position: "asc",
           },
@@ -63,8 +60,8 @@ export default async function CourseIdPage({ params }: CourseIdPageProps) {
   // 3. Image (thumbnail)
   // 4. Category (categoryId)
   // 5. Level
-  // 6. At least one module with lessons (published chapter)
-  const hasPublishedChapter = course.modules.some((m) => m.lessons.length > 0) || course.modules.length > 0;
+  // 6. At least one published chapter
+  const hasPublishedChapter = course.chapters.some((c) => c.isPublished);
 
   const requiredFields = [
     Boolean(course.title),
@@ -175,12 +172,13 @@ export default async function CourseIdPage({ params }: CourseIdPageProps) {
               <Sparkles className="h-5 w-5" />
             </div>
             <h2 className="text-lg font-bold text-foreground">
-              Curriculum & Media
+              Course Chapters
             </h2>
           </div>
 
-          <ChaptersPlaceholderForm
-            initialData={{ modules: course.modules }}
+          <ChapterForm
+            initialData={{ chapters: course.chapters }}
+            courseId={course.id}
           />
         </div>
       </div>
