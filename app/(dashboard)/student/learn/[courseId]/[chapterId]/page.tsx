@@ -165,10 +165,12 @@ export default async function StudentLearnPage({ params }: StudentLearnPageProps
             {isEnrolled && (
               <MarkCompleteButton
                 courseId={course.id}
+                courseTitle={course.title}
                 chapterId={currentChapter.id}
                 isCompleted={isCompleted}
                 nextChapterId={nextChapter?.id}
                 prevChapterId={prevChapter?.id}
+                isFinalChapter={!nextChapter}
               />
             )}
 
