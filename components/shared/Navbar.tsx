@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { useAuth, UserButton } from "@clerk/nextjs";
 import { Logo } from "@/components/shared/Logo";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -18,6 +18,7 @@ const navLinks = [
 export function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const { isSignedIn, isLoaded } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md transition-all">
@@ -45,35 +46,39 @@ export function Navbar() {
 
         {/* Auth CTA & User Controls */}
         <div className="hidden md:flex items-center gap-3">
-          <SignedOut>
-            <Link href="/login">
-              <Button variant="ghost" size="sm" className="font-medium">
-                Sign in
-              </Button>
-            </Link>
-            <Link href="/register">
-              <Button size="sm" className="font-medium shadow-sm">
-                Get Started
-              </Button>
-            </Link>
-          </SignedOut>
-
-          <SignedIn>
-            <Link href="/dashboard">
-              <Button variant="outline" size="sm" className="gap-2 font-medium">
-                <LayoutDashboard className="h-4 w-4 text-primary" />
-                Dashboard
-              </Button>
-            </Link>
-            <UserButton />
-          </SignedIn>
+          {isLoaded && (
+            <>
+              {isSignedIn ? (
+                <>
+                  <Link href="/dashboard">
+                    <Button variant="outline" size="sm" className="gap-2 font-medium">
+                      <LayoutDashboard className="h-4 w-4 text-primary" />
+                      Dashboard
+                    </Button>
+                  </Link>
+                  <UserButton />
+                </>
+              ) : (
+                <>
+                  <Link href="/login">
+                    <Button variant="ghost" size="sm" className="font-medium">
+                      Sign in
+                    </Button>
+                  </Link>
+                  <Link href="/register">
+                    <Button size="sm" className="font-medium shadow-sm">
+                      Get Started
+                    </Button>
+                  </Link>
+                </>
+              )}
+            </>
+          )}
         </div>
 
         {/* Mobile Hamburger Menu */}
         <div className="flex md:hidden items-center gap-3">
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
+          {isLoaded && isSignedIn && <UserButton />}
 
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
@@ -109,27 +114,31 @@ export function Navbar() {
               </div>
 
               <div className="space-y-3 pt-6 border-t">
-                <SignedOut>
-                  <Link href="/login" onClick={() => setIsOpen(false)} className="w-full block">
-                    <Button variant="outline" className="w-full">
-                      Sign in
-                    </Button>
-                  </Link>
-                  <Link href="/register" onClick={() => setIsOpen(false)} className="w-full block">
-                    <Button className="w-full">
-                      Get Started
-                    </Button>
-                  </Link>
-                </SignedOut>
-
-                <SignedIn>
-                  <Link href="/dashboard" onClick={() => setIsOpen(false)} className="w-full block">
-                    <Button className="w-full gap-2">
-                      <LayoutDashboard className="h-4 w-4" />
-                      Go to Dashboard
-                    </Button>
-                  </Link>
-                </SignedIn>
+                {isLoaded && (
+                  <>
+                    {isSignedIn ? (
+                      <Link href="/dashboard" onClick={() => setIsOpen(false)} className="w-full block">
+                        <Button className="w-full gap-2">
+                          <LayoutDashboard className="h-4 w-4" />
+                          Go to Dashboard
+                        </Button>
+                      </Link>
+                    ) : (
+                      <>
+                        <Link href="/login" onClick={() => setIsOpen(false)} className="w-full block">
+                          <Button variant="outline" className="w-full">
+                            Sign in
+                          </Button>
+                        </Link>
+                        <Link href="/register" onClick={() => setIsOpen(false)} className="w-full block">
+                          <Button className="w-full">
+                            Get Started
+                          </Button>
+                        </Link>
+                      </>
+                    )}
+                  </>
+                )}
               </div>
             </SheetContent>
           </Sheet>
