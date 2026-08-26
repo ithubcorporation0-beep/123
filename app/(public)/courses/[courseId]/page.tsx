@@ -4,8 +4,8 @@ import Link from "next/link";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { EnrollButton } from "@/components/website/EnrollButton";
 import {
   BookOpen,
   CheckCircle2,
@@ -13,10 +13,6 @@ import {
   PlayCircle,
   Users,
   BarChart,
-  Clock,
-  Sparkles,
-  ArrowRight,
-  ShieldCheck,
   User,
 } from "lucide-react";
 
@@ -45,6 +41,15 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
         orderBy: {
           position: "asc",
         },
+        include: {
+          userProgress: user
+            ? {
+                where: {
+                  profileId: user.id,
+                },
+              }
+            : false,
+        },
       },
       enrollments: true,
     },
@@ -57,10 +62,12 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
   // Check enrollment status if user is signed in
   const isEnrolled = user
     ? Boolean(
-        await db.enrollment.findFirst({
+        await db.enrollment.findUnique({
           where: {
-            profileId: user.id,
-            courseId: course.id,
+            profileId_courseId: {
+              profileId: user.id,
+              courseId: course.id,
+            },
           },
         })
       )
@@ -68,6 +75,15 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
 
   const totalChapters = course.chapters.length;
   const enrollmentsCount = course.enrollments.length;
+  const firstChapterId = course.chapters[0]?.id || null;
+
+  // Find first incomplete chapter for "Continue learning"
+  const firstIncompleteChapter = course.chapters.find((ch) => {
+    const isCompleted = (ch as any).userProgress?.[0]?.isCompleted;
+    return !isCompleted;
+  }) || course.chapters[0];
+
+  const nextChapterId = firstIncompleteChapter?.id || firstChapterId;
 
   return (
     <div className="py-10 md:py-16">
@@ -187,29 +203,14 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
                   </div>
                 </div>
 
-                {/* Enrollment Button */}
-                {!user ? (
-                  <Link href={`/sign-in?redirect_url=/courses/${course.id}`} className="block">
-                    <Button size="lg" className="w-full rounded-2xl font-bold shadow-md text-sm gap-2">
-                      Enroll in Course (Free)
-                      <ArrowRight className="h-4 w-4" />
-                    </Button>
-                  </Link>
-                ) : isEnrolled ? (
-                  <Link href={`/student/courses/${course.id}`} className="block">
-                    <Button size="lg" variant="default" className="w-full rounded-2xl font-bold shadow-md text-sm gap-2">
-                      Continue Learning
-                      <ArrowRight className="h-4 w-4" />
-                    </Button>
-                  </Link>
-                ) : (
-                  <Link href={`/sign-in?redirect_url=/courses/${course.id}`} className="block">
-                    <Button size="lg" className="w-full rounded-2xl font-bold shadow-md text-sm gap-2">
-                      Enroll for Free
-                      <ArrowRight className="h-4 w-4" />
-                    </Button>
-                  </Link>
-                )}
+                {/* Interactive Enrollment Button */}
+                <EnrollButton
+                  courseId={course.id}
+                  isEnrolled={isEnrolled}
+                  firstChapterId={firstChapterId}
+                  nextChapterId={nextChapterId}
+                  isSignedIn={Boolean(user)}
+                />
 
                 {/* Features List */}
                 <div className="space-y-3 pt-2 text-xs text-muted-foreground border-t">
@@ -269,10 +270,19 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
 
                   <div className="flex items-center gap-2 shrink-0">
                     {chapter.isFree ? (
-                      <Badge variant="secondary" className="gap-1 text-[11px] font-semibold text-primary">
-                        <PlayCircle className="h-3 w-3" />
-                        Free preview
-                      </Badge>
+                      <Link href={`/student/learn/${course.id}/${chapter.id}`}>
+                        <Badge variant="secondary" className="gap-1 text-[11px] font-semibold text-primary cursor-pointer hover:bg-primary/20">
+                          <PlayCircle className="h-3 w-3" />
+                          Free preview
+                        </Badge>
+                      </Link>
+                    ) : isEnrolled ? (
+                      <Link href={`/student/learn/${course.id}/${chapter.id}`}>
+                        <Badge variant="outline" className="gap-1 text-[11px] font-semibold text-foreground cursor-pointer hover:bg-muted">
+                          <PlayCircle className="h-3 w-3 text-primary" />
+                          Start
+                        </Badge>
+                      </Link>
                     ) : (
                       <div className="p-2 rounded-xl text-muted-foreground/60">
                         <Lock className="h-4 w-4" />
