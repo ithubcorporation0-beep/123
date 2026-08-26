@@ -167,8 +167,8 @@ export default async function AdminOverviewPage() {
                 <div key={user.id} className="py-3.5 flex items-center justify-between gap-4 first:pt-0 last:pb-0">
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="relative w-10 h-10 rounded-full overflow-hidden border bg-muted flex items-center justify-center shrink-0">
-                      {user.avatar ? (
-                        <Image src={user.avatar} alt={user.name || "User"} fill className="object-cover" />
+                      {user.imageUrl ? (
+                        <Image src={user.imageUrl} alt={user.name || "User"} fill className="object-cover" />
                       ) : (
                         <User className="h-5 w-5 text-primary" />
                       )}

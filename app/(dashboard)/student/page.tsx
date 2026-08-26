@@ -138,7 +138,7 @@ export default async function StudentDashboardPage() {
               <p className="text-2xl font-extrabold text-foreground mt-0.5">{completedCoursesCount}</p>
             </div>
           </CardContent>
-        </div>
+        </Card>
 
         <Card className="rounded-3xl border bg-card shadow-xs">
           <CardContent className="p-6 flex items-center gap-4">

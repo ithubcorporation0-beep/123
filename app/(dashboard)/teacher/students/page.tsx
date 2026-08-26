@@ -56,7 +56,7 @@ export default async function TeacherStudentsPage() {
         studentId: enrollment.profile.id,
         studentName: enrollment.profile.name || "Student",
         studentEmail: enrollment.profile.email,
-        studentAvatar: enrollment.profile.avatar,
+        studentAvatar: enrollment.profile.imageUrl,
         courseId: course.id,
         courseTitle: course.title,
         enrolledAt: enrollment.createdAt,

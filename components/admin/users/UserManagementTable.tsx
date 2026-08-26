@@ -252,7 +252,9 @@ export function UserManagementTable({
                       <Select
                         defaultValue={user.role}
                         value={user.role}
-                        onValueChange={(val) => onInitiateRoleChange(user, val)}
+                        onValueChange={(val) => {
+                          if (val) onInitiateRoleChange(user, val);
+                        }}
                       >
                         <SelectTrigger className="h-8 rounded-xl text-xs bg-muted/30">
                           <SelectValue placeholder="Select role" />

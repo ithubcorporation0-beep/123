@@ -89,11 +89,11 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
                 category={course.category?.name || "General"}
                 level={course.level || "Beginner"}
                 instructorName={course.instructor?.name || "EduFlow Instructor"}
-                instructorAvatar={course.instructor?.avatar}
+                instructorAvatar={course.instructor?.imageUrl}
                 chaptersCount={course.chapters.length}
                 enrollmentsCount={course.enrollments.length}
                 price={course.price || 0}
-                isFree={course.isFree ?? true}
+                isFree={course.price === 0}
               />
             ))}
           </div>

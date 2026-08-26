@@ -61,6 +61,8 @@ export default async function CourseIdPage({ params }: CourseIdPageProps) {
   // 4. Category (categoryId)
   // 5. Level
   // 6. At least one published chapter
+  const hasPublishedChapter = course.chapters.some((ch) => ch.isPublished);
+
   const missingFields: string[] = [];
   if (!course.title) missingFields.push("Title");
   if (!course.description) missingFields.push("Description");

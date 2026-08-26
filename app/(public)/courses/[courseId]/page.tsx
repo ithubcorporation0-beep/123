@@ -104,7 +104,7 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
                 </Badge>
               )}
               <Badge variant="default" className="px-3 py-1 text-xs font-semibold">
-                {course.price === 0 || course.isFree ? "100% Free" : `$${course.price}`}
+                {course.price === 0 ? "100% Free" : `$${course.price}`}
               </Badge>
             </div>
 
@@ -121,9 +121,9 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
             {/* Teacher Row */}
             <div className="flex items-center gap-3 pt-2">
               <div className="relative w-10 h-10 rounded-full overflow-hidden border bg-muted flex items-center justify-center">
-                {course.instructor?.avatar ? (
+                {course.instructor?.imageUrl ? (
                   <Image
-                    src={course.instructor.avatar}
+                    src={course.instructor.imageUrl}
                     alt={course.instructor.name || "Instructor"}
                     fill
                     className="object-cover"
@@ -195,7 +195,7 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
                 <div className="flex items-baseline justify-between">
                   <div>
                     <span className="text-3xl font-extrabold text-foreground">
-                      {course.price === 0 || course.isFree ? "Free" : `$${course.price}`}
+                      {course.price === 0 ? "Free" : `$${course.price}`}
                     </span>
                     <span className="text-xs text-muted-foreground ml-1.5 font-medium">
                       Lifetime Access
@@ -307,9 +307,9 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
           <Card className="rounded-2xl border bg-card/50 p-6">
             <div className="flex items-start gap-4">
               <div className="relative w-14 h-14 rounded-2xl overflow-hidden border bg-muted shrink-0 flex items-center justify-center">
-                {course.instructor?.avatar ? (
+                {course.instructor?.imageUrl ? (
                   <Image
-                    src={course.instructor.avatar}
+                    src={course.instructor.imageUrl}
                     alt={course.instructor.name || "Instructor"}
                     fill
                     className="object-cover"

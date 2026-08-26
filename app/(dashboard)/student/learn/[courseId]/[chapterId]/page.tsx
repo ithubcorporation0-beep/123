@@ -40,6 +40,7 @@ export default async function StudentLearnPage({ params }: StudentLearnPageProps
           position: "asc",
         },
         include: {
+          muxData: true,
           userProgress: {
             where: {
               profileId: user.id,

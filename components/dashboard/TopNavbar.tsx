@@ -23,11 +23,14 @@ export function TopNavbar({ userRole, userName, userEmail }: TopNavbarProps) {
       <div className="flex items-center gap-3">
         {/* Mobile Hamburger Trigger */}
         <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
-          <SheetTrigger asChild className="lg:hidden">
-            <Button variant="ghost" size="icon" aria-label="Open sidebar menu">
-              <Menu className="h-5 w-5" />
-            </Button>
-          </SheetTrigger>
+          <SheetTrigger
+            className="lg:hidden"
+            render={
+              <Button variant="ghost" size="icon" aria-label="Open sidebar menu">
+                <Menu className="h-5 w-5" />
+              </Button>
+            }
+          />
           <SheetContent side="left" className="p-0 w-64">
             <Sidebar
               userRole={userRole}

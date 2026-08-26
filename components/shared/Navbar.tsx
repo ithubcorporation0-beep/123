@@ -81,11 +81,13 @@ export function Navbar() {
           {isLoaded && isSignedIn && <UserButton />}
 
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" aria-label="Open navigation menu">
-                <Menu className="h-5 w-5" />
-              </Button>
-            </SheetTrigger>
+            <SheetTrigger
+              render={
+                <Button variant="ghost" size="icon" aria-label="Open navigation menu">
+                  <Menu className="h-5 w-5" />
+                </Button>
+              }
+            />
             <SheetContent side="right" className="w-[300px] sm:w-[360px] p-6 flex flex-col justify-between">
               <div className="space-y-6">
                 <SheetHeader className="text-left">

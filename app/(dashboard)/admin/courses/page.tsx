@@ -30,7 +30,7 @@ export default async function AdminCoursesPage() {
     thumbnail: c.thumbnail,
     categoryName: c.category?.name || "Uncategorized",
     instructorName: c.instructor?.name || "Instructor",
-    instructorAvatar: c.instructor?.avatar,
+    instructorAvatar: c.instructor?.imageUrl,
     isPublished: c.isPublished,
     isFeatured: Boolean(c.isFeatured),
     enrolledStudentsCount: c.enrollments.length,

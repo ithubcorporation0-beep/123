@@ -21,7 +21,7 @@ export default async function AdminUsersPage() {
     userId: u.userId,
     name: u.name,
     email: u.email,
-    avatar: u.avatar,
+    avatar: u.imageUrl,
     role: u.role,
     createdAt: u.createdAt,
   }));
