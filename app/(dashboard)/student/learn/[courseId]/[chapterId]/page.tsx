@@ -2,11 +2,12 @@ import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
-import MuxPlayer from "@mux/mux-player-react";
-import { ArrowLeft, CheckCircle2, Circle, Lock, PlayCircle, Video } from "lucide-react";
+import { ChapterSidebar } from "@/components/student/learn/ChapterSidebar";
+import { VideoPlayer } from "@/components/student/learn/VideoPlayer";
+import { MarkCompleteButton } from "@/components/student/learn/MarkCompleteButton";
+import { ArrowLeft, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
 
 interface StudentLearnPageProps {
   params: Promise<{
@@ -63,37 +64,28 @@ export default async function StudentLearnPage({ params }: StudentLearnPageProps
     },
   });
 
-  const currentChapter = await db.chapter.findUnique({
-    where: {
-      id: chapterId,
-      courseId: course.id,
-      isPublished: true,
-    },
-    include: {
-      muxData: true,
-      userProgress: {
-        where: {
-          profileId: user.id,
-        },
-      },
-    },
-  });
+  const currentChapterIndex = course.chapters.findIndex((c) => c.id === chapterId);
+  const currentChapter = course.chapters[currentChapterIndex];
 
   if (!currentChapter) {
     notFound();
   }
 
-  // Allow free preview even if not enrolled, but redirect if locked
-  if (!enrollment && !currentChapter.isFree) {
+  // Access rule: user must be enrolled OR chapter isFree (preview)
+  const isEnrolled = Boolean(enrollment);
+  if (!isEnrolled && !currentChapter.isFree) {
     redirect(`/courses/${course.id}`);
   }
 
+  const prevChapter = course.chapters[currentChapterIndex - 1];
+  const nextChapter = course.chapters[currentChapterIndex + 1];
+
   const playbackId = currentChapter.muxData?.playbackId;
-  const isCompleted = Boolean(currentChapter.userProgress[0]?.isCompleted);
+  const isCompleted = Boolean(currentChapter.userProgress?.[0]?.isCompleted);
 
   return (
     <div className="max-w-7xl mx-auto space-y-6 pb-16">
-      {/* Top Header */}
+      {/* Top Header & Breadcrumb */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-4">
         <div className="flex items-center gap-3">
           <Link href="/student/my-courses">
@@ -102,135 +94,96 @@ export default async function StudentLearnPage({ params }: StudentLearnPageProps
             </Button>
           </Link>
           <div>
-            <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-foreground">
-              {course.title}
-            </h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-foreground">
+                {course.title}
+              </h1>
+              {currentChapter.isFree && !isEnrolled && (
+                <Badge variant="secondary" className="text-xs font-semibold text-primary">
+                  Free Preview
+                </Badge>
+              )}
+            </div>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Chapter: <strong className="text-foreground">{currentChapter.title}</strong>
+              Chapter {currentChapterIndex + 1} of {course.chapters.length}:{" "}
+              <strong className="text-foreground font-semibold">{currentChapter.title}</strong>
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
-          {enrollment ? (
-            <Badge variant="secondary" className="font-semibold text-xs">
-              Enrolled Student
-            </Badge>
+          {!isEnrolled ? (
+            <Link href={`/courses/${course.id}`}>
+              <Button size="sm" className="rounded-xl text-xs gap-1.5 font-bold shadow-xs">
+                <Sparkles className="h-3.5 w-3.5" />
+                Enroll in Full Course
+              </Button>
+            </Link>
           ) : (
-            <Badge variant="outline" className="font-semibold text-xs text-primary">
-              Free Preview Mode
+            <Badge variant="outline" className="text-xs font-semibold">
+              Enrolled Student
             </Badge>
           )}
         </div>
       </div>
 
-      {/* Main Grid: Video Player on Left, Chapters on Right */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* Left Video Player & Chapter Details */}
-        <div className="lg:col-span-8 space-y-6">
-          <div className="aspect-video w-full rounded-2xl overflow-hidden bg-black border shadow-sm relative flex items-center justify-center">
-            {playbackId ? (
-              <MuxPlayer
-                playbackId={playbackId}
-                metadata={{
-                  video_title: currentChapter.title,
-                }}
-                className="w-full h-full"
-                autoPlay={false}
-              />
-            ) : currentChapter.videoUrl ? (
-              <video
-                src={currentChapter.videoUrl}
-                controls
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="flex flex-col items-center justify-center text-center p-6 text-muted-foreground">
-                <Video className="h-10 w-10 mb-2 opacity-50" />
-                <p className="text-sm font-semibold">No video stream available for this chapter</p>
-              </div>
-            )}
-          </div>
+      {/* Main Learning Layout: Sidebar on Left, Main Viewer on Right */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Left: Curriculum & Progress Sidebar */}
+        <div className="lg:col-span-4 order-2 lg:order-1">
+          <ChapterSidebar
+            courseId={course.id}
+            courseTitle={course.title}
+            currentChapterId={currentChapter.id}
+            isEnrolled={isEnrolled}
+            chapters={course.chapters}
+          />
+        </div>
 
+        {/* Right: Main Video Player & Lesson Notes */}
+        <div className="lg:col-span-8 order-1 lg:order-2 space-y-6">
+          {/* Video Player */}
+          <VideoPlayer
+            playbackId={playbackId}
+            videoUrl={currentChapter.videoUrl}
+            title={currentChapter.title}
+            courseId={course.id}
+            chapterId={currentChapter.id}
+            nextChapterId={nextChapter?.id}
+            isCompleted={isCompleted}
+          />
+
+          {/* Title & Mark Complete Controls */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-foreground">
+              <h2 className="text-2xl font-extrabold text-foreground">
                 {currentChapter.title}
               </h2>
             </div>
 
+            {/* Navigation & Mark Complete Controls */}
+            {isEnrolled && (
+              <MarkCompleteButton
+                courseId={course.id}
+                chapterId={currentChapter.id}
+                isCompleted={isCompleted}
+                nextChapterId={nextChapter?.id}
+                prevChapterId={prevChapter?.id}
+              />
+            )}
+
+            {/* Chapter Lesson Notes */}
             {currentChapter.description && (
-              <div className="p-5 rounded-2xl border bg-card/60 text-sm text-muted-foreground leading-relaxed">
-                <p className="font-semibold text-xs uppercase tracking-wider text-foreground mb-2">
-                  Lesson Notes
-                </p>
-                {currentChapter.description}
+              <div className="p-6 rounded-3xl border bg-card/60 space-y-2">
+                <h3 className="font-bold text-xs uppercase tracking-wider text-muted-foreground">
+                  Lesson Notes & Instructions
+                </h3>
+                <div className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                  {currentChapter.description}
+                </div>
               </div>
             )}
           </div>
-        </div>
-
-        {/* Right Chapters Sidebar */}
-        <div className="lg:col-span-4 space-y-4">
-          <Card className="rounded-2xl border shadow-sm overflow-hidden bg-card">
-            <div className="p-4 border-b bg-muted/20">
-              <h3 className="font-bold text-sm text-foreground">Course Curriculum</h3>
-              <p className="text-[11px] text-muted-foreground mt-0.5">
-                {course.chapters.length} published chapters
-              </p>
-            </div>
-
-            <CardContent className="p-2 space-y-1 max-h-[500px] overflow-y-auto">
-              {course.chapters.map((ch, index) => {
-                const isActive = ch.id === currentChapter.id;
-                const isChapterCompleted = Boolean(ch.userProgress[0]?.isCompleted);
-                const isLocked = !enrollment && !ch.isFree;
-
-                return isLocked ? (
-                  <div
-                    key={ch.id}
-                    className="flex items-center justify-between p-3 rounded-xl opacity-60 text-xs text-muted-foreground cursor-not-allowed"
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <Lock className="h-4 w-4 shrink-0" />
-                      <span className="truncate">
-                        {index + 1}. {ch.title}
-                      </span>
-                    </div>
-                  </div>
-                ) : (
-                  <Link
-                    key={ch.id}
-                    href={`/student/learn/${course.id}/${ch.id}`}
-                    className={`flex items-center justify-between p-3 rounded-xl transition-colors text-xs font-medium ${
-                      isActive
-                        ? "bg-primary/10 text-primary font-bold border border-primary/20"
-                        : "hover:bg-accent text-foreground"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2.5 truncate">
-                      {isChapterCompleted ? (
-                        <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
-                      ) : isActive ? (
-                        <PlayCircle className="h-4 w-4 text-primary shrink-0" />
-                      ) : (
-                        <Circle className="h-4 w-4 text-muted-foreground shrink-0" />
-                      )}
-                      <span className="truncate">
-                        {index + 1}. {ch.title}
-                      </span>
-                    </div>
-
-                    {ch.isFree && !enrollment && (
-                      <Badge variant="secondary" className="text-[10px] shrink-0 ml-2">
-                        Preview
-                      </Badge>
-                    )}
-                  </Link>
-                );
-              })}
-            </CardContent>
-          </Card>
         </div>
       </div>
     </div>
