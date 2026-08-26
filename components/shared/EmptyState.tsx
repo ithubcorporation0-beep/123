@@ -1,9 +1,9 @@
-import { LucideIcon } from "lucide-react";
+import { LucideIcon, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 interface EmptyStateProps {
-  icon: LucideIcon;
+  icon?: LucideIcon;
   title: string;
   description: string;
   actionLabel?: string;
@@ -12,7 +12,7 @@ interface EmptyStateProps {
 }
 
 export function EmptyState({
-  icon: Icon,
+  icon: Icon = BookOpen,
   title,
   description,
   actionLabel,

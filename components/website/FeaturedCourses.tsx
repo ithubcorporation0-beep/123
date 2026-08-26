@@ -1,96 +1,30 @@
 import Link from "next/link";
-import { CourseCard, CourseCardProps } from "@/components/website/CourseCard";
+import { db } from "@/lib/db";
+import { CourseCard } from "@/components/website/CourseCard";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 
-const placeholderCourses: CourseCardProps[] = [
-  {
-    id: "1",
-    title: "Full-Stack Web Development with Next.js & TypeScript",
-    slug: "full-stack-web-development-nextjs-typescript",
-    description: "Learn App Router, Server Actions, PostgreSQL database schema modeling, authentication, and deployment.",
-    category: "Development",
-    instructorName: "Alex Rivera",
-    lessonsCount: 24,
-    duration: "12 hours",
-    rating: 4.9,
-    reviewsCount: 184,
-    price: 0,
-    isFree: true,
-  },
-  {
-    id: "2",
-    title: "UI/UX Design Systems with Figma & Tailwind CSS",
-    slug: "ui-ux-design-systems-figma-tailwind",
-    description: "Master modern typography, color harmony, responsive layouts, interactive prototypes, and accessible components.",
-    category: "Design",
-    instructorName: "Sarah Chen",
-    lessonsCount: 18,
-    duration: "8.5 hours",
-    rating: 4.8,
-    reviewsCount: 142,
-    price: 0,
-    isFree: true,
-  },
-  {
-    id: "3",
-    title: "Cloud Architecture & PostgreSQL Database Optimization",
-    slug: "cloud-architecture-postgresql-optimization",
-    description: "Scale relational databases with connection pooling, indexes, schema migrations, and high-availability setups.",
-    category: "Development",
-    instructorName: "Marcus Vance",
-    lessonsCount: 20,
-    duration: "10 hours",
-    rating: 4.9,
-    reviewsCount: 96,
-    price: 0,
-    isFree: true,
-  },
-  {
-    id: "4",
-    title: "Digital Marketing Analytics & SEO Strategy",
-    slug: "digital-marketing-analytics-seo-strategy",
-    description: "Data-driven marketing fundamentals, audience acquisition funnels, conversion optimization, and analytics tools.",
-    category: "Marketing",
-    instructorName: "Elena Rostova",
-    lessonsCount: 15,
-    duration: "7 hours",
-    rating: 4.7,
-    reviewsCount: 88,
-    price: 0,
-    isFree: true,
-  },
-  {
-    id: "5",
-    title: "Tech Startup Fundamentals & Product Management",
-    slug: "tech-startup-fundamentals-product-management",
-    description: "Take product ideas from validation to MVP, sprint planning, customer feedback loops, and market launch.",
-    category: "Business",
-    instructorName: "David Kim",
-    lessonsCount: 16,
-    duration: "9 hours",
-    rating: 4.8,
-    reviewsCount: 115,
-    price: 0,
-    isFree: true,
-  },
-  {
-    id: "6",
-    title: "Commercial Product & Portrait Photography",
-    slug: "commercial-product-portrait-photography",
-    description: "Master studio lighting, lens selection, composition, RAW color grading, and commercial image delivery.",
-    category: "Photography",
-    instructorName: "Liam O'Connor",
-    lessonsCount: 14,
-    duration: "6.5 hours",
-    rating: 4.9,
-    reviewsCount: 73,
-    price: 0,
-    isFree: true,
-  },
-];
+export async function FeaturedCourses() {
+  const courses = await db.course.findMany({
+    where: {
+      isPublished: true,
+    },
+    include: {
+      category: true,
+      instructor: true,
+      chapters: {
+        where: {
+          isPublished: true,
+        },
+      },
+      enrollments: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 6,
+  });
 
-export function FeaturedCourses() {
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
@@ -115,11 +49,39 @@ export function FeaturedCourses() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {placeholderCourses.map((course) => (
-          <CourseCard key={course.id} {...course} />
-        ))}
-      </div>
+      {courses.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {courses.map((course) => (
+            <CourseCard
+              key={course.id}
+              id={course.id}
+              title={course.title}
+              slug={course.slug}
+              description={course.description}
+              thumbnail={course.thumbnail}
+              category={course.category?.name || "Development"}
+              level={course.level || "Beginner"}
+              instructorName={course.instructor?.name || "EduFlow Instructor"}
+              instructorAvatar={course.instructor?.avatar}
+              chaptersCount={course.chapters.length}
+              enrollmentsCount={course.enrollments.length}
+              price={course.price || 0}
+              isFree={course.isFree ?? true}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-16 px-4 rounded-3xl border bg-muted/20">
+          <p className="text-sm text-muted-foreground">
+            New courses are being prepared. Check back soon or browse the full catalog.
+          </p>
+          <Link href="/courses" className="mt-4 inline-block">
+            <Button variant="default" size="sm" className="rounded-xl">
+              Browse Catalog
+            </Button>
+          </Link>
+        </div>
+      )}
     </section>
   );
 }
