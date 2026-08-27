@@ -6,6 +6,8 @@ import { HowItWorks } from "@/components/website/HowItWorks";
 import { Testimonials } from "@/components/website/Testimonials";
 import { TeacherCTABanner } from "@/components/website/TeacherCTABanner";
 
+export const dynamic = "force-dynamic";
+
 export default function HomePage() {
   return (
     <div className="flex flex-col w-full">

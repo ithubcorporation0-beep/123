@@ -14,47 +14,60 @@ interface CoursesPageProps {
   }>;
 }
 
+export const dynamic = "force-dynamic";
+
 export default async function CoursesPage({ searchParams }: CoursesPageProps) {
   const { categoryId, category, title, search } = await searchParams;
 
   const targetCategory = categoryId || category;
   const targetTitle = title || search;
 
-  const [categories, courses] = await Promise.all([
-    db.courseCategory.findMany({
-      orderBy: { name: "asc" },
-    }),
-    db.course.findMany({
-      where: {
-        isPublished: true,
-        ...(targetTitle && {
-          title: {
-            contains: targetTitle,
-            mode: "insensitive",
-          },
-        }),
-        ...(targetCategory && {
-          OR: [
-            { categoryId: targetCategory },
-            { category: { slug: targetCategory } },
-          ],
-        }),
-      },
-      include: {
-        category: true,
-        instructor: true,
-        chapters: {
-          where: {
-            isPublished: true,
-          },
+  let categories: any[] = [];
+  let courses: any[] = [];
+
+  try {
+    const [fetchedCategories, fetchedCourses] = await Promise.all([
+      db.courseCategory.findMany({
+        orderBy: { name: "asc" },
+      }),
+      db.course.findMany({
+        where: {
+          isPublished: true,
+          ...(targetTitle && {
+            title: {
+              contains: targetTitle,
+              mode: "insensitive",
+            },
+          }),
+          ...(targetCategory && {
+            OR: [
+              { categoryId: targetCategory },
+              { category: { slug: targetCategory } },
+            ],
+          }),
         },
-        enrollments: true,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    }),
-  ]);
+        include: {
+          category: true,
+          instructor: true,
+          chapters: {
+            where: {
+              isPublished: true,
+            },
+          },
+          enrollments: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      }),
+    ]);
+    categories = fetchedCategories;
+    courses = fetchedCourses;
+  } catch (error) {
+    console.warn("[COURSES_PAGE] Database query failed:", error);
+    categories = [];
+    courses = [];
+  }
 
   return (
     <div className="py-12 md:py-16">

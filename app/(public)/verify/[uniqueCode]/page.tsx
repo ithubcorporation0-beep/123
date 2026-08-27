@@ -15,6 +15,8 @@ import {
   User,
 } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 interface CertificateVerifyPageProps {
   params: Promise<{
     uniqueCode: string;
@@ -25,21 +27,27 @@ export default async function CertificateVerifyPage({
   params,
 }: CertificateVerifyPageProps) {
   const { uniqueCode } = await params;
+  let certificate: any = null;
 
-  const certificate = await db.certificate.findUnique({
-    where: {
-      certificateCode: uniqueCode,
-    },
-    include: {
-      course: {
-        include: {
-          instructor: true,
-          category: true,
-        },
+  try {
+    certificate = await db.certificate.findUnique({
+      where: {
+        certificateCode: uniqueCode,
       },
-      profile: true,
-    },
-  });
+      include: {
+        course: {
+          include: {
+            instructor: true,
+            category: true,
+          },
+        },
+        profile: true,
+      },
+    });
+  } catch (error) {
+    console.warn("[CERTIFICATE_VERIFY_PAGE] Database query failed:", error);
+    certificate = null;
+  }
 
   const formattedDate = certificate
     ? new Date(certificate.issuedAt).toLocaleDateString("en-US", {

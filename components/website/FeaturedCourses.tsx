@@ -5,25 +5,31 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 export async function FeaturedCourses() {
-  const courses = await db.course.findMany({
-    where: {
-      isPublished: true,
-    },
-    include: {
-      category: true,
-      instructor: true,
-      chapters: {
-        where: {
-          isPublished: true,
-        },
+  let courses: any[] = [];
+  try {
+    courses = await db.course.findMany({
+      where: {
+        isPublished: true,
       },
-      enrollments: true,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-    take: 6,
-  });
+      include: {
+        category: true,
+        instructor: true,
+        chapters: {
+          where: {
+            isPublished: true,
+          },
+        },
+        enrollments: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 6,
+    });
+  } catch (error) {
+    console.warn("[FEATURED_COURSES] Could not fetch courses from database:", error);
+    courses = [];
+  }
 
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">

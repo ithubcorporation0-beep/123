@@ -22,15 +22,21 @@ interface CourseDetailPageProps {
   }>;
 }
 
+export const dynamic = "force-dynamic";
+
 export default async function CourseDetailPage({ params }: CourseDetailPageProps) {
   const { courseId } = await params;
-  const user = await getCurrentUser();
+  let user: any = null;
+  let course: any = null;
+  let isEnrolled = false;
 
-  const course = await db.course.findFirst({
-    where: {
-      OR: [{ id: courseId }, { slug: courseId }],
-      isPublished: true,
-    },
+  try {
+    user = await getCurrentUser();
+    course = await db.course.findFirst({
+      where: {
+        OR: [{ id: courseId }, { slug: courseId }],
+        isPublished: true,
+      },
     include: {
       category: true,
       instructor: true,
@@ -60,7 +66,7 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
   }
 
   // Check enrollment status if user is signed in
-  const isEnrolled = user
+  isEnrolled = user
     ? Boolean(
         await db.enrollment.findUnique({
           where: {
@@ -72,13 +78,17 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
         })
       )
     : false;
+  } catch (error) {
+    console.warn("[COURSE_DETAIL_PAGE] Error fetching course:", error);
+    notFound();
+  }
 
   const totalChapters = course.chapters.length;
   const enrollmentsCount = course.enrollments.length;
   const firstChapterId = course.chapters[0]?.id || null;
 
   // Find first incomplete chapter for "Continue learning"
-  const firstIncompleteChapter = course.chapters.find((ch) => {
+  const firstIncompleteChapter = course.chapters.find((ch: any) => {
     const isCompleted = (ch as any).userProgress?.[0]?.isCompleted;
     return !isCompleted;
   }) || course.chapters[0];
@@ -247,7 +257,7 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
 
           <div className="space-y-3">
             {course.chapters.length > 0 ? (
-              course.chapters.map((chapter, index) => (
+              course.chapters.map((chapter: any, index: number) => (
                 <div
                   key={chapter.id}
                   className="flex items-center justify-between p-4 rounded-2xl border bg-card/60 transition-all hover:bg-accent/40"
