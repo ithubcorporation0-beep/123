@@ -3,6 +3,8 @@ import crypto from "crypto";
 import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: NextRequest) {
   try {
     const user = await getCurrentUser();

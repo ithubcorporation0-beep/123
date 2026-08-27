@@ -3,6 +3,8 @@ import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { z } from "zod";
 
+export const dynamic = "force-dynamic";
+
 const createCourseSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters").max(120, "Title is too long"),
 });
