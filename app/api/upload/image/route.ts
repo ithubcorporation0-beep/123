@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { cloudinary } from "@/lib/cloudinary";
 
+export const dynamic = "force-dynamic";
+
 const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
 
 export async function POST(req: NextRequest) {

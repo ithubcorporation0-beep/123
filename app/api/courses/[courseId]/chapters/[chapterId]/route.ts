@@ -3,6 +3,8 @@ import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { z } from "zod";
 
+export const dynamic = "force-dynamic";
+
 const updateChapterSchema = z.object({
   title: z.string().min(1).max(150).optional(),
   description: z.string().nullable().optional(),
