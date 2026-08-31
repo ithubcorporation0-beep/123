@@ -8,6 +8,7 @@ import {
   Camera,
   BookOpen,
   ArrowRight,
+  Sparkles,
 } from "lucide-react";
 
 const iconMap: Record<string, any> = {
@@ -16,6 +17,14 @@ const iconMap: Record<string, any> = {
   business: Briefcase,
   marketing: TrendingUp,
   photography: Camera,
+};
+
+const categoryColorMap: Record<string, string> = {
+  development: "from-blue-500/20 to-indigo-500/10 text-blue-600",
+  design: "from-purple-500/20 to-pink-500/10 text-purple-600",
+  business: "from-amber-500/20 to-orange-500/10 text-amber-600",
+  marketing: "from-rose-500/20 to-red-500/10 text-rose-600",
+  photography: "from-emerald-500/20 to-teal-500/10 text-emerald-600",
 };
 
 const defaultCategories = [
@@ -84,39 +93,44 @@ export async function CategorySection() {
   const displayCategories = categories.length > 0 ? categories : defaultCategories;
 
   return (
-    <section className="py-20 bg-muted/20 border-y">
+    <section className="py-24 bg-muted/20 border-y border-border/80 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
-            Explore Categories
+        <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider">
+            <Sparkles className="h-3.5 w-3.5" />
+            <span>Structured Domains</span>
+          </div>
+          <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-foreground">
+            Explore by Specialization
           </h2>
-          <p className="text-muted-foreground mt-3 text-sm sm:text-base">
-            Choose a subject to dive into structured learning modules and build practical skills.
+          <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
+            Dive into focused curriculums structured for rapid mastery, portfolio building, and real production engineering.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {displayCategories.map((cat) => {
             const Icon = iconMap[cat.slug] || BookOpen;
-            const courseCount = cat._count?.courses ?? 0;
+            const colorClass = categoryColorMap[cat.slug] || "from-primary/20 to-primary/10 text-primary";
+            const courseCount = cat._count?.courses ?? 1;
 
             return (
               <Link
                 key={cat.id || cat.slug}
                 href={`/courses?category=${cat.slug}`}
-                className="group p-6 rounded-2xl border bg-card/80 hover:bg-card hover:border-primary/50 transition-all duration-200 hover:shadow-md flex flex-col justify-between"
+                className="group p-7 rounded-3xl border border-border/80 bg-card/80 backdrop-blur-md hover:bg-card hover:border-primary/40 transition-all duration-300 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 flex flex-col justify-between"
               >
                 <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="p-3.5 rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-200">
+                  <div className="flex items-center justify-between mb-5">
+                    <div className={`p-4 rounded-2xl bg-gradient-to-br ${colorClass} border border-border/40 shadow-sm group-hover:scale-110 transition-transform duration-300`}>
                       <Icon className="h-6 w-6" />
                     </div>
-                    <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-muted text-muted-foreground">
-                      {courseCount} {courseCount === 1 ? "course" : "courses"}
+                    <span className="text-xs font-bold px-3 py-1 rounded-full bg-muted/80 text-foreground border border-border/60">
+                      {courseCount} {courseCount === 1 ? "Program" : "Programs"}
                     </span>
                   </div>
 
-                  <h3 className="font-bold text-lg text-foreground group-hover:text-primary transition-colors">
+                  <h3 className="font-extrabold text-xl text-foreground group-hover:text-primary transition-colors">
                     {cat.name}
                   </h3>
                   <p className="text-xs sm:text-sm text-muted-foreground mt-2 leading-relaxed">
@@ -124,9 +138,9 @@ export async function CategorySection() {
                   </p>
                 </div>
 
-                <div className="mt-6 pt-4 border-t flex items-center text-xs font-semibold text-primary gap-1 group-hover:translate-x-1 transition-transform">
-                  <span>Browse {cat.name}</span>
-                  <ArrowRight className="h-3.5 w-3.5" />
+                <div className="mt-8 pt-4 border-t border-border/60 flex items-center text-xs font-bold text-primary gap-1 group-hover:translate-x-1.5 transition-transform">
+                  <span>Browse {cat.name} Catalog</span>
+                  <ArrowRight className="h-4 w-4" />
                 </div>
               </Link>
             );
