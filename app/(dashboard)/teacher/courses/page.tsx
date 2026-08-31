@@ -13,13 +13,18 @@ export default async function TeacherCoursesPage() {
     redirect("/login");
   }
 
-  // Fetch only this instructor's courses
+  // Fetch only this instructor's courses (or all courses if admin)
   const courses = await db.course.findMany({
-    where: {
+    where: user.role === "admin" ? {} : {
       instructorId: user.id,
     },
     include: {
       category: true,
+      chapters: {
+        orderBy: {
+          position: "asc",
+        },
+      },
       modules: {
         include: {
           lessons: true,

@@ -17,7 +17,10 @@ interface CourseWithRelations {
   category: {
     name: string;
   } | null;
-  modules: {
+  chapters?: {
+    id: string;
+  }[];
+  modules?: {
     id: string;
     lessons: {
       id: string;
@@ -40,7 +43,7 @@ export function CourseList({ courses }: CourseListProps) {
       <EmptyState
         icon={Presentation}
         title="No courses created yet"
-        description="You haven't created any courses. Start by creating a course, adding modules, video lectures, and quizzes."
+        description="You haven't created any courses. Start by creating a course, adding curriculum chapters, video lectures, and quizzes."
         actionLabel="Create Your First Course"
         actionHref="/teacher/courses/create"
       />
@@ -62,8 +65,15 @@ export function CourseList({ courses }: CourseListProps) {
         </TableHeader>
         <TableBody>
           {courses.map((course) => {
-            const moduleCount = course.modules.length;
-            const lessonCount = course.modules.reduce((acc, m) => acc + m.lessons.length, 0);
+            const chapterCount = course.chapters?.length || 0;
+            const moduleCount = course.modules?.length || 0;
+            const lessonCount = course.modules?.reduce((acc, m) => acc + m.lessons.length, 0) || 0;
+
+            const curriculumDisplay = chapterCount > 0
+              ? `${chapterCount} ${chapterCount === 1 ? "chapter" : "chapters"}`
+              : moduleCount > 0
+              ? `${moduleCount} ${moduleCount === 1 ? "module" : "modules"} • ${lessonCount} ${lessonCount === 1 ? "lesson" : "lessons"}`
+              : "0 chapters";
 
             return (
               <TableRow
@@ -96,10 +106,8 @@ export function CourseList({ courses }: CourseListProps) {
                 </TableCell>
 
                 <TableCell>
-                  <div className="text-xs text-muted-foreground">
-                    <span className="font-semibold text-foreground">{moduleCount}</span> {moduleCount === 1 ? "module" : "modules"}
-                    <span className="mx-1.5">•</span>
-                    <span className="font-semibold text-foreground">{lessonCount}</span> {lessonCount === 1 ? "lesson" : "lessons"}
+                  <div className="text-xs text-muted-foreground font-medium">
+                    {curriculumDisplay}
                   </div>
                 </TableCell>
 

@@ -1,45 +1,48 @@
 import Link from "next/link";
-import { Code, Palette, Briefcase, TrendingUp, Camera, ArrowRight } from "lucide-react";
+import { db } from "@/lib/db";
+import {
+  Code,
+  Palette,
+  Briefcase,
+  TrendingUp,
+  Camera,
+  BookOpen,
+  ArrowRight,
+} from "lucide-react";
 
-const categories = [
-  {
-    name: "Development",
-    slug: "development",
-    icon: Code,
-    description: "Next.js, TypeScript, PostgreSQL, APIs & cloud services",
-    coursesCount: "18 courses",
-  },
-  {
-    name: "Design",
-    slug: "design",
-    icon: Palette,
-    description: "UI/UX design, Figma workflows, design tokens & typography",
-    coursesCount: "12 courses",
-  },
-  {
-    name: "Business",
-    slug: "business",
-    icon: Briefcase,
-    description: "Product management, startup scaling, agile sprints & leadership",
-    coursesCount: "9 courses",
-  },
-  {
-    name: "Marketing",
-    slug: "marketing",
-    icon: TrendingUp,
-    description: "Growth loops, SEO strategy, content funnels & user acquisition",
-    coursesCount: "11 courses",
-  },
-  {
-    name: "Photography",
-    slug: "photography",
-    icon: Camera,
-    description: "Studio lighting, product captures, camera settings & RAW editing",
-    coursesCount: "8 courses",
-  },
-];
+const iconMap: Record<string, any> = {
+  development: Code,
+  design: Palette,
+  business: Briefcase,
+  marketing: TrendingUp,
+  photography: Camera,
+};
 
-export function CategorySection() {
+export async function CategorySection() {
+  let categories: any[] = [];
+
+  try {
+    categories = await db.courseCategory.findMany({
+      include: {
+        _count: {
+          select: {
+            courses: {
+              where: {
+                isPublished: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: {
+        name: "asc",
+      },
+    });
+  } catch (error) {
+    console.warn("[CATEGORY_SECTION] Failed to fetch categories:", error);
+    categories = [];
+  }
+
   return (
     <section className="py-20 bg-muted/20 border-y">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -54,10 +57,12 @@ export function CategorySection() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {categories.map((cat) => {
-            const Icon = cat.icon;
+            const Icon = iconMap[cat.slug] || BookOpen;
+            const courseCount = cat._count?.courses ?? 0;
+
             return (
               <Link
-                key={cat.slug}
+                key={cat.id}
                 href={`/courses?category=${cat.slug}`}
                 className="group p-6 rounded-2xl border bg-card/80 hover:bg-card hover:border-primary/50 transition-all duration-200 hover:shadow-md flex flex-col justify-between"
               >
@@ -67,7 +72,7 @@ export function CategorySection() {
                       <Icon className="h-6 w-6" />
                     </div>
                     <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-muted text-muted-foreground">
-                      {cat.coursesCount}
+                      {courseCount} {courseCount === 1 ? "course" : "courses"}
                     </span>
                   </div>
 
@@ -75,7 +80,7 @@ export function CategorySection() {
                     {cat.name}
                   </h3>
                   <p className="text-xs sm:text-sm text-muted-foreground mt-2 leading-relaxed">
-                    {cat.description}
+                    {cat.description || `Comprehensive courses and practical training in ${cat.name}.`}
                   </p>
                 </div>
 

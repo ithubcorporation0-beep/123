@@ -1,33 +1,55 @@
+import { db } from "@/lib/db";
 import { BookOpen, Users, Award, ShieldCheck } from "lucide-react";
 
-const stats = [
-  {
-    icon: BookOpen,
-    value: "50+",
-    label: "Interactive Courses",
-    description: "Structured into beginner, intermediate & advanced paths",
-  },
-  {
-    icon: Users,
-    value: "10,000+",
-    label: "Active Learners",
-    description: "Students building real portfolios worldwide",
-  },
-  {
-    icon: Award,
-    value: "4,500+",
-    label: "Certificates Awarded",
-    description: "Issued upon completing 100% of curriculum and quizzes",
-  },
-  {
-    icon: ShieldCheck,
-    value: "100%",
-    label: "Verified Content",
-    description: "Created and maintained by expert instructors",
-  },
-];
+export async function StatsSection() {
+  let totalCourses = 0;
+  let totalLearners = 0;
+  let totalCertificates = 0;
+  let totalChapters = 0;
 
-export function StatsSection() {
+  try {
+    const [coursesCount, learnersCount, certsCount, chaptersCount] = await Promise.all([
+      db.course.count({ where: { isPublished: true } }),
+      db.profile.count({ where: { role: "student" } }),
+      db.certificate.count(),
+      db.chapter.count({ where: { isPublished: true } }),
+    ]);
+
+    totalCourses = coursesCount;
+    totalLearners = learnersCount;
+    totalCertificates = certsCount;
+    totalChapters = chaptersCount;
+  } catch (error) {
+    console.warn("[STATS_SECTION] Database query failed:", error);
+  }
+
+  const stats = [
+    {
+      icon: BookOpen,
+      value: `${totalCourses > 0 ? totalCourses : 5}+`,
+      label: "Active Courses",
+      description: "Structured into beginner, intermediate & advanced paths",
+    },
+    {
+      icon: Users,
+      value: `${totalLearners > 0 ? totalLearners : 12}+`,
+      label: "Enrolled Learners",
+      description: "Real students learning with verified progress tracking",
+    },
+    {
+      icon: Award,
+      value: `${totalChapters > 0 ? totalChapters : 20}+`,
+      label: "Interactive Lessons",
+      description: "Step-by-step video tutorials and practical exercises",
+    },
+    {
+      icon: ShieldCheck,
+      value: "100%",
+      label: "Verified Curriculums",
+      description: "Created and maintained by expert practitioners",
+    },
+  ];
+
   return (
     <section className="py-12 border-y bg-muted/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

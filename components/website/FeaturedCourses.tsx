@@ -21,9 +21,10 @@ export async function FeaturedCourses() {
         },
         enrollments: true,
       },
-      orderBy: {
-        createdAt: "desc",
-      },
+      orderBy: [
+        { isFeatured: "desc" },
+        { createdAt: "desc" },
+      ],
       take: 6,
     });
   } catch (error) {
