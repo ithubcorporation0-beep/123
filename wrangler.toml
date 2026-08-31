@@ -1,0 +1,10 @@
+name = "1235"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+NEXT_PUBLIC_APP_URL = "https://1235.ithub-corporation0.workers.dev"
+NEXT_PUBLIC_CLERK_SIGN_IN_URL = "/login"
+NEXT_PUBLIC_CLERK_SIGN_UP_URL = "/register"
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL = "/dashboard"
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL = "/dashboard"
