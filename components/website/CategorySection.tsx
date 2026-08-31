@@ -18,6 +18,44 @@ const iconMap: Record<string, any> = {
   photography: Camera,
 };
 
+const defaultCategories = [
+  {
+    id: "cat_dev",
+    name: "Development",
+    slug: "development",
+    description: "Next.js, TypeScript, PostgreSQL, and modern cloud architectures.",
+    _count: { courses: 2 },
+  },
+  {
+    id: "cat_design",
+    name: "Design",
+    slug: "design",
+    description: "Design systems, Figma workflows, and accessible UI engineering.",
+    _count: { courses: 1 },
+  },
+  {
+    id: "cat_biz",
+    name: "Business",
+    slug: "business",
+    description: "Product discovery, KPI metrics, and growth loop strategies.",
+    _count: { courses: 1 },
+  },
+  {
+    id: "cat_mktg",
+    name: "Marketing",
+    slug: "marketing",
+    description: "Growth loops, SEO optimization, and developer acquisition.",
+    _count: { courses: 1 },
+  },
+  {
+    id: "cat_photo",
+    name: "Photography",
+    slug: "photography",
+    description: "Studio lighting setups and professional RAW post-processing.",
+    _count: { courses: 1 },
+  },
+];
+
 export async function CategorySection() {
   let categories: any[] = [];
 
@@ -43,6 +81,8 @@ export async function CategorySection() {
     categories = [];
   }
 
+  const displayCategories = categories.length > 0 ? categories : defaultCategories;
+
   return (
     <section className="py-20 bg-muted/20 border-y">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -56,13 +96,13 @@ export async function CategorySection() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {categories.map((cat) => {
+          {displayCategories.map((cat) => {
             const Icon = iconMap[cat.slug] || BookOpen;
             const courseCount = cat._count?.courses ?? 0;
 
             return (
               <Link
-                key={cat.id}
+                key={cat.id || cat.slug}
                 href={`/courses?category=${cat.slug}`}
                 className="group p-6 rounded-2xl border bg-card/80 hover:bg-card hover:border-primary/50 transition-all duration-200 hover:shadow-md flex flex-col justify-between"
               >
