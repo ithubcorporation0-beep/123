@@ -1,4 +1,5 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const isPublicRoute = createRouteMatcher([
   "/",
@@ -20,14 +21,28 @@ const isPublicRoute = createRouteMatcher([
   "/api/webhooks(.*)",
 ]);
 
-export default clerkMiddleware(async (auth, req) => {
-  if (!isPublicRoute(req)) {
-    const { userId, redirectToSignIn } = await auth();
-    if (!userId) {
-      return redirectToSignIn({ returnBackUrl: req.url });
-    }
+const hasClerkKeys = Boolean(
+  (process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || process.env.CLERK_PUBLISHABLE_KEY) &&
+  process.env.CLERK_SECRET_KEY
+);
+
+export default async function middleware(req: NextRequest, event: any) {
+  if (!hasClerkKeys) {
+    console.warn(
+      "[CLERK_MIDDLEWARE] Missing NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY or CLERK_SECRET_KEY. Please configure them in your production environment variables."
+    );
+    return NextResponse.next();
   }
-});
+
+  return clerkMiddleware(async (auth, request) => {
+    if (!isPublicRoute(request)) {
+      const { userId, redirectToSignIn } = await auth();
+      if (!userId) {
+        return redirectToSignIn({ returnBackUrl: request.url });
+      }
+    }
+  })(req, event);
+}
 
 export const config = {
   matcher: [
