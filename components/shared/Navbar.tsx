@@ -21,21 +21,23 @@ export function Navbar() {
   const { isSignedIn, isLoaded } = useAuth();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/80 bg-background/85 backdrop-blur-xl transition-all shadow-xs">
-      <div className="max-w-7xl mx-auto flex h-17 items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/70 backdrop-blur-2xl transition-all duration-300">
+      <div className="max-w-7xl mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand Logo */}
         <Logo />
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-8 text-sm font-semibold">
+        <nav className="hidden md:flex items-center gap-1 bg-muted/50 p-1.5 rounded-full border border-border/40 backdrop-blur-md">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`transition-colors hover:text-primary ${
-                  isActive ? "text-primary font-bold" : "text-muted-foreground"
+                className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? "text-primary-foreground font-semibold bg-primary shadow-sm"
+                    : "text-muted-foreground hover:text-foreground hover:bg-background/50"
                 }`}
               >
                 {link.label}
@@ -49,7 +51,7 @@ export function Navbar() {
           {isLoaded && isSignedIn ? (
             <>
               <Link href="/dashboard">
-                <Button variant="outline" size="sm" className="gap-2 font-bold rounded-xl border-primary/30 hover:bg-primary/10">
+                <Button variant="outline" size="sm" className="gap-2 font-semibold rounded-full border-primary/20 hover:border-primary/50 hover:bg-primary/5 transition-all">
                   <LayoutDashboard className="h-4 w-4 text-primary" />
                   Dashboard
                 </Button>
@@ -59,12 +61,12 @@ export function Navbar() {
           ) : (
             <>
               <Link href="/login">
-                <Button variant="ghost" size="sm" className="font-semibold text-muted-foreground hover:text-foreground">
+                <Button variant="ghost" size="sm" className="font-semibold text-muted-foreground hover:text-foreground rounded-full px-5">
                   Sign in
                 </Button>
               </Link>
               <Link href="/register">
-                <Button size="sm" className="font-bold rounded-xl shadow-md shadow-primary/20 gap-1.5">
+                <Button size="sm" className="font-bold rounded-full bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-lg shadow-indigo-500/25 transition-all hover:scale-[1.02] active:scale-[0.98] gap-1.5 px-5">
                   <span>Get Started Free</span>
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Button>
@@ -80,12 +82,12 @@ export function Navbar() {
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger
               render={
-                <Button variant="ghost" size="icon" aria-label="Open navigation menu" className="rounded-xl">
+                <Button variant="ghost" size="icon" aria-label="Open navigation menu" className="rounded-full">
                   <Menu className="h-5 w-5" />
                 </Button>
               }
             />
-            <SheetContent side="right" className="w-[300px] sm:w-[360px] p-6 flex flex-col justify-between">
+            <SheetContent side="right" className="w-[300px] sm:w-[360px] p-6 flex flex-col justify-between border-l border-border/50">
               <div className="space-y-6">
                 <SheetHeader className="text-left">
                   <SheetTitle>
@@ -93,7 +95,7 @@ export function Navbar() {
                   </SheetTitle>
                 </SheetHeader>
 
-                <div className="flex flex-col space-y-4 pt-4">
+                <div className="flex flex-col space-y-2 pt-4">
                   {navLinks.map((link) => {
                     const isActive = pathname === link.href;
                     return (
@@ -101,8 +103,10 @@ export function Navbar() {
                         key={link.href}
                         href={link.href}
                         onClick={() => setIsOpen(false)}
-                        className={`text-base font-semibold transition-colors hover:text-primary ${
-                          isActive ? "text-primary font-bold" : "text-foreground/80"
+                        className={`text-base font-semibold px-4 py-3 rounded-xl transition-all ${
+                          isActive
+                            ? "text-primary bg-primary/10 font-bold"
+                            : "text-foreground/80 hover:bg-muted"
                         }`}
                       >
                         {link.label}
@@ -115,7 +119,7 @@ export function Navbar() {
               <div className="space-y-3 pt-6 border-t border-border/80">
                 {isLoaded && isSignedIn ? (
                   <Link href="/dashboard" onClick={() => setIsOpen(false)} className="w-full block">
-                    <Button className="w-full gap-2 rounded-xl font-bold">
+                    <Button className="w-full gap-2 rounded-full font-bold">
                       <LayoutDashboard className="h-4 w-4" />
                       Go to Dashboard
                     </Button>
@@ -123,12 +127,12 @@ export function Navbar() {
                 ) : (
                   <>
                     <Link href="/login" onClick={() => setIsOpen(false)} className="w-full block">
-                      <Button variant="outline" className="w-full rounded-xl font-semibold">
+                      <Button variant="outline" className="w-full rounded-full font-semibold">
                         Sign in
                       </Button>
                     </Link>
                     <Link href="/register" onClick={() => setIsOpen(false)} className="w-full block">
-                      <Button className="w-full rounded-xl font-bold">
+                      <Button className="w-full rounded-full font-bold bg-linear-to-r from-indigo-600 to-purple-600 text-white">
                         Get Started Free
                       </Button>
                     </Link>
