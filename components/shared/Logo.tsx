@@ -15,11 +15,11 @@ export function Logo({ className = "", isWhite = false }: LogoProps) {
         <GraduationCap className="h-5 w-5" />
       </div>
       <div className="flex flex-col">
-        <span className={`font-extrabold text-xl tracking-tight leading-none ${isWhite ? "text-white" : "text-foreground"}`}>
-          EduFlow
+        <span className={`font-black text-xl tracking-tight leading-none ${isWhite ? "text-white" : "text-foreground"}`}>
+          IZBA
         </span>
-        <span className="text-[10px] uppercase font-semibold tracking-wider text-muted-foreground">
-          Learning
+        <span className="text-[10px] uppercase font-bold tracking-widest text-indigo-600 dark:text-indigo-400">
+          Learning HUB
         </span>
       </div>
     </Link>

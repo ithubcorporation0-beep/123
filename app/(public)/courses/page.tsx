@@ -146,7 +146,7 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
                 thumbnail={course.thumbnail}
                 category={course.category?.name || "General"}
                 level={course.level || "Beginner"}
-                instructorName={course.instructor?.name || "EduFlow Instructor"}
+                instructorName={course.instructor?.name || "IZBA Instructor"}
                 instructorAvatar={course.instructor?.imageUrl}
                 chaptersCount={course.chapters.length}
                 enrollmentsCount={course.enrollments.length}

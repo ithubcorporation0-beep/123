@@ -43,7 +43,7 @@ export function TopNavbar({ userRole, userName, userEmail }: TopNavbarProps) {
         {/* Workspace Title for Mobile */}
         <div className="flex items-center gap-2 lg:hidden">
           <GraduationCap className="h-5 w-5 text-primary" />
-          <span className="font-bold text-sm tracking-tight">EduFlow LMS</span>
+          <span className="font-bold text-sm tracking-tight">IZBA Learning HUB</span>
         </div>
 
         {/* Role Badge Indicator */}

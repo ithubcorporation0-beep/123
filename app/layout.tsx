@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "EduFlow LMS — Production Learning Management System",
+  title: "IZBA Learning HUB — Production Learning Management System",
   description: "Production-ready Learning Management System with role-based panels for Admins, Instructors, and Students.",
 };
 

@@ -62,7 +62,7 @@ export default async function StudentCertificatesPage() {
                 issuedAt: cert.issuedAt,
                 studentName: cert.profile.name || "Student",
                 courseTitle: cert.course.title,
-                instructorName: cert.course.instructor?.name || "EduFlow Instructor",
+                instructorName: cert.course.instructor?.name || "IZBA Instructor",
               }}
             />
           ))}

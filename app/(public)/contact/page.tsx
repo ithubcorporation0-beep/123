@@ -7,8 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Mail, MessageSquare, MapPin, Sparkles, Send } from "lucide-react";
 
 export const metadata = {
-  title: "Contact Support & Feedback — EduFlow",
-  description: "Get in touch with the EduFlow team for support, instructor inquiries, or platform feedback.",
+  title: "Contact Support & Feedback — IZBA Learning HUB",
+  description: "Get in touch with the IZBA Learning HUB team for support, instructor inquiries, or platform feedback.",
 };
 
 export default function ContactPage() {
@@ -20,7 +20,7 @@ export default function ContactPage() {
           <Sparkles className="h-3.5 w-3.5 text-primary mr-1.5 inline" /> We're Here to Help
         </Badge>
         <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-foreground">
-          Get in Touch with EduFlow
+          Get in Touch with IZBA Learning HUB
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
           Have a question about our courses, need technical assistance, or want to contribute as an instructor? Send us a message and our team will get back to you promptly.
@@ -40,7 +40,7 @@ export default function ContactPage() {
               <CardDescription>Direct support for students and creators.</CardDescription>
             </CardHeader>
             <CardContent className="p-0 text-sm">
-              <p className="font-semibold text-foreground">support@eduflow.dev</p>
+              <p className="font-semibold text-foreground">support@izba.app</p>
               <p className="text-xs text-muted-foreground mt-1">Average response time: within 24 hours</p>
             </CardContent>
           </Card>
@@ -54,7 +54,7 @@ export default function ContactPage() {
               <CardDescription>Join live study groups and ask questions.</CardDescription>
             </CardHeader>
             <CardContent className="p-0 text-sm">
-              <p className="font-semibold text-foreground">discord.gg/eduflow</p>
+              <p className="font-semibold text-foreground">discord.gg/izba</p>
               <p className="text-xs text-muted-foreground mt-1">Connect with mentors and fellow learners</p>
             </CardContent>
           </Card>

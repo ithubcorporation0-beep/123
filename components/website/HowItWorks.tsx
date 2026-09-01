@@ -42,7 +42,7 @@ export function HowItWorks() {
           <span>The Learning Journey</span>
         </div>
         <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-foreground">
-          How EduFlow Works
+          How IZBA Works
         </h2>
         <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
           From selecting your first lesson to generating a verified certificate, here is how you build real-world mastery.

@@ -39,7 +39,7 @@ export async function GET(
       certificateCode: certificate.certificateCode,
       studentName: certificate.profile.name || "Student",
       courseTitle: certificate.course.title,
-      instructorName: certificate.course.instructor?.name || "EduFlow Instructor",
+      instructorName: certificate.course.instructor?.name || "IZBA Instructor",
       issueDate: certificate.issuedAt,
     });
   } catch (error: any) {

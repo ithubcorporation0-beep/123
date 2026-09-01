@@ -90,7 +90,7 @@ export function CertificateCard({ certificate }: CertificateCardProps) {
               E
             </div>
             <span className="font-extrabold text-xl tracking-tight text-slate-900">
-              EduFlow
+              IZBA Learning HUB
             </span>
           </div>
 
@@ -146,7 +146,7 @@ export function CertificateCard({ certificate }: CertificateCardProps) {
         <div className="text-center pt-3 text-[10px] text-slate-400 flex items-center justify-center gap-2">
           <span>Credential ID: <strong className="font-mono text-slate-600">{certificate.certificateCode}</strong></span>
           <span>•</span>
-          <span className="truncate">Verify at eduflow.com{verifyUrl}</span>
+          <span className="truncate">Verify at izba.app{verifyUrl}</span>
         </div>
       </div>
     </div>

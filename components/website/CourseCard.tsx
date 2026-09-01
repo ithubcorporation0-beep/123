@@ -29,7 +29,7 @@ export function CourseCard({
   thumbnail,
   category = "Development",
   level = "Beginner",
-  instructorName = "EduFlow Instructor",
+  instructorName = "IZBA Instructor",
   instructorAvatar,
   chaptersCount = 0,
   lessonsCount = 0,

@@ -44,7 +44,7 @@ export function Testimonials() {
             Trusted by Engineers & Designers
           </h2>
           <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
-            See how developers and technical leaders use EduFlow to master modern technologies and advance their careers.
+            See how developers and technical leaders use IZBA Learning HUB to master modern technologies and advance their careers.
           </p>
         </div>
 

@@ -5,8 +5,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export const metadata = {
-  title: "About EduFlow — Modern Education Platform",
-  description: "Learn more about EduFlow's mission to make world-class technical education free, structured, and verifiable.",
+  title: "About IZBA Learning HUB — Modern Education Platform",
+  description: "Learn more about IZBA Learning HUB's mission to make world-class technical education free, structured, and verifiable.",
 };
 
 export default function AboutPage() {
@@ -21,7 +21,7 @@ export default function AboutPage() {
           Empowering learners through real, structured knowledge.
         </h1>
         <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed">
-          EduFlow was founded on the belief that high-quality technical education should be accessible to everyone, with real curriculum progression and authentic certificates of achievement.
+          IZBA Learning HUB was founded on the belief that high-quality technical education should be accessible to everyone, with real curriculum progression and authentic certificates of achievement.
         </p>
       </section>
 
@@ -83,7 +83,7 @@ export default function AboutPage() {
       <section className="rounded-3xl border bg-muted/20 p-8 sm:p-12 space-y-8">
         <div className="max-w-3xl">
           <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-            What Sets EduFlow Apart
+            What Sets IZBA Learning HUB Apart
           </h2>
           <p className="text-muted-foreground mt-2 text-sm sm:text-base">
             Engineered with modern full-stack technologies for an uncompromising learner experience.

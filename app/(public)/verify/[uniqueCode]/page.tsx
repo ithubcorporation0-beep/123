@@ -74,7 +74,7 @@ export default async function CertificateVerifyPage({
                 Certificate Verified
               </h1>
               <p className="text-xs text-muted-foreground">
-                Issued by EduFlow Platform Verification System
+                Issued by IZBA Learning HUB Platform Verification System
               </p>
             </div>
 
@@ -107,7 +107,7 @@ export default async function CertificateVerifyPage({
                   <div>
                     <span className="text-muted-foreground">Lead Instructor:</span>
                     <p className="font-semibold text-foreground mt-0.5">
-                      {certificate.course.instructor?.name || "EduFlow Instructor"}
+                      {certificate.course.instructor?.name || "IZBA Instructor"}
                     </p>
                   </div>
                 </div>

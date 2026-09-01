@@ -11,7 +11,7 @@ export function Footer() {
           <div className="space-y-4 md:col-span-1">
             <Logo />
             <p className="text-sm text-muted-foreground leading-relaxed">
-              EduFlow is an open, high-quality learning platform dedicated to empowering students and educators worldwide with accessible technology education.
+              IZBA Learning HUB is an open, high-quality learning platform dedicated to empowering students and educators worldwide with accessible technology education.
             </p>
           </div>
 
@@ -28,7 +28,7 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/about" className="hover:text-primary transition-colors">
-                  About EduFlow
+                  About IZBA Learning HUB
                 </Link>
               </li>
               <li>
@@ -74,7 +74,7 @@ export function Footer() {
               Our Mission
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Every course on EduFlow features real progression tracking, validated quizzes, and certificate verification.
+              Every course on IZBA Learning HUB features real progression tracking, validated quizzes, and certificate verification.
             </p>
             <div className="mt-4 flex items-center gap-1.5 text-xs text-muted-foreground">
               <span>Crafted with</span>
@@ -86,7 +86,7 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="pt-8 border-t flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} EduFlow Learning Platform. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} IZBA Learning HUB. All rights reserved.</p>
           <div className="flex items-center gap-6">
             <Link href="/about" className="hover:text-foreground transition-colors">
               Privacy Policy

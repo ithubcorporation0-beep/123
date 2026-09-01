@@ -85,7 +85,7 @@ export async function FeaturedCourses() {
             thumbnail={course.thumbnail}
             category={course.category?.name || "Development"}
             level={course.level || "Beginner"}
-            instructorName={course.instructor?.name || "EduFlow Instructor"}
+            instructorName={course.instructor?.name || "IZBA Instructor"}
             instructorAvatar={course.instructor?.imageUrl}
             chaptersCount={course.chapters?.length || 5}
             enrollmentsCount={course.enrollments?.length || 120}

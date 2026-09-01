@@ -1,11 +1,11 @@
-# EduFlow LMS — Production-Ready Learning Management System
+# IZBA Learning HUB — Production-Ready Learning Management System
 
 [![Next.js 16](https://img.shields.io/badge/Next.js-16.3-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
 [![Prisma](https://img.shields.io/badge/Prisma-6.4-teal)](https://www.prisma.io/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-38bdf8)](https://tailwindcss.com/)
 
-EduFlow is a modern, full-stack Learning Management System (LMS) built with Next.js 16 App Router, TypeScript, Tailwind CSS v4, Prisma ORM, Supabase PostgreSQL, Clerk Authentication, Cloudinary image hosting, and Mux video streaming.
+IZBA Learning HUB is a modern, full-stack Learning Management System (LMS) built with Next.js 16 App Router, TypeScript, Tailwind CSS v4, Prisma ORM, Supabase PostgreSQL, Clerk Authentication, Cloudinary image hosting, and Mux video streaming.
 
 ## 🚀 Quick Start
 

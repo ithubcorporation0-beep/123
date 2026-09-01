@@ -86,7 +86,7 @@ export function CourseGrid({ courses }: CourseGridProps) {
                 </Link>
 
                 <p className="text-xs text-muted-foreground">
-                  Instructor: <strong className="text-foreground font-medium">{course.instructor?.name || "EduFlow Instructor"}</strong>
+                  Instructor: <strong className="text-foreground font-medium">{course.instructor?.name || "IZBA Instructor"}</strong>
                 </p>
 
                 {/* Progress Bar */}

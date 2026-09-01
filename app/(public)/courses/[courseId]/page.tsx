@@ -202,7 +202,7 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
                 <div>
                   <p className="text-[11px] text-muted-foreground uppercase font-semibold">Lead Instructor</p>
                   <p className="font-bold text-foreground">
-                    {course.instructor?.name || "EduFlow Instructor"}
+                    {course.instructor?.name || "IZBA Instructor"}
                   </p>
                 </div>
               </div>
@@ -414,7 +414,7 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
               <div className="space-y-2">
                 <div>
                   <h3 className="text-lg font-bold text-foreground">
-                    {course.instructor?.name || "EduFlow Instructor"}
+                    {course.instructor?.name || "IZBA Instructor"}
                   </h3>
                   <p className="text-xs text-primary font-semibold">
                     Principal Course Author & Technical Specialist

@@ -28,7 +28,7 @@ export function HeroSection() {
         {/* Animated Feature Badge */}
         <div className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 text-xs sm:text-sm font-semibold backdrop-blur-xl mb-8 shadow-sm hover:border-indigo-500/50 transition-all cursor-default">
           <Sparkles className="h-4 w-4 text-indigo-500 animate-spin-slow" />
-          <span>EduFlow 2.0 • Next-Gen Interactive LMS</span>
+          <span>IZBA Learning HUB • Next-Gen Interactive LMS</span>
           <span className="hidden sm:inline px-2 py-0.5 rounded-full bg-indigo-500/20 text-[11px] font-bold text-indigo-600 dark:text-indigo-200">
             PRO PLATFORM
           </span>
@@ -66,7 +66,7 @@ export function HeroSection() {
               className="h-14 px-8 text-base font-semibold rounded-full w-full sm:w-auto gap-2.5 bg-background/80 backdrop-blur-md hover:bg-muted/80 border-border/80 shadow-xs transition-all hover:scale-[1.02]"
             >
               <Play className="h-4.5 w-4.5 text-indigo-600 dark:text-indigo-400 fill-indigo-600 dark:fill-indigo-400" />
-              <span>How EduFlow Works</span>
+              <span>How IZBA Works</span>
             </Button>
           </Link>
         </div>
@@ -134,7 +134,7 @@ export function HeroSection() {
               <div className="h-3 w-3 rounded-full bg-rose-500" />
               <div className="h-3 w-3 rounded-full bg-amber-500" />
               <div className="h-3 w-3 rounded-full bg-emerald-500" />
-              <span className="ml-2 font-mono text-xs font-semibold text-foreground/80">eduflow.app/learning-hub</span>
+              <span className="ml-2 font-mono text-xs font-semibold text-foreground/80">izba.app/learning-hub</span>
             </div>
             <span className="hidden sm:inline-flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold bg-emerald-500/10 px-3 py-1 rounded-full text-xs">
               <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
