@@ -18,10 +18,11 @@ interface CoursesPageProps {
 export const dynamic = "force-dynamic";
 
 const defaultCategoryList = [
-  { id: "cat_dev", name: "Development", slug: "development" },
-  { id: "cat_design", name: "Design", slug: "design" },
-  { id: "cat_biz", name: "Business", slug: "business" },
-  { id: "cat_photo", name: "Photography", slug: "photography" },
+  { id: "cat_software", name: "Software Solutions", slug: "software-solutions" },
+  { id: "cat_website", name: "Website Solutions", slug: "website-solutions" },
+  { id: "cat_mktg", name: "Digital Marketing", slug: "digital-marketing" },
+  { id: "cat_design", name: "Graphic Design", slug: "graphic-design" },
+  { id: "cat_ecommerce", name: "E-Commerce Solutions", slug: "ecommerce-solutions" },
 ];
 
 export default async function CoursesPage({ searchParams }: CoursesPageProps) {

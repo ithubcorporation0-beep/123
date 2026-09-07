@@ -3,9 +3,9 @@ import { PrismaClient, Role } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("Seeding exact user requested 5 courses & categories...");
+  console.log("Seeding exact 5 core IT services & programs...");
 
-  // Clear previous data to ensure ONLY the 5 requested courses exist
+  // Clear previous data to ensure ONLY the 5 requested services/courses exist
   await prisma.userProgress.deleteMany({});
   await prisma.enrollment.deleteMany({});
   await prisma.certificate.deleteMany({});
@@ -13,32 +13,32 @@ async function main() {
   await prisma.course.deleteMany({});
   await prisma.courseCategory.deleteMany({});
 
-  // 1. Seed Categories for the 5 requested courses
+  // 1. Seed Categories for the 5 requested IT Services
   const categoriesData = [
+    {
+      name: "Software Solutions",
+      slug: "software-solutions",
+      description: "Enterprise software architecture, scalable SaaS products, APIs, and cloud microservices.",
+    },
+    {
+      name: "Website Solutions",
+      slug: "website-solutions",
+      description: "Modern web engineering, Next.js applications, responsive portals, and headless CMS.",
+    },
     {
       name: "Digital Marketing",
       slug: "digital-marketing",
-      description: "SEO optimization, social media funnels, performance marketing, and ad analytics.",
+      description: "SEO optimization, Google & Meta ad campaigns, growth funnels, and performance marketing.",
     },
     {
       name: "Graphic Design",
       slug: "graphic-design",
-      description: "Visual design hierarchy, brand identity, Photoshop, Illustrator, and typography.",
+      description: "Brand identity systems, UI/UX prototyping in Figma, vector art, and creative media.",
     },
     {
-      name: "AI Agentic Course",
-      slug: "ai-agentic",
-      description: "Autonomous AI agents, LLM tool-calling, multi-agent frameworks, and prompt engineering.",
-    },
-    {
-      name: "Computer Course",
-      slug: "computer-course",
-      description: "Computer fundamentals, operating systems, hardware architecture, and software logic.",
-    },
-    {
-      name: "IT Course",
-      slug: "it-course",
-      description: "IT administration, cloud networking, system security, and server management.",
+      name: "E-Commerce Solutions",
+      slug: "ecommerce-solutions",
+      description: "High-converting online storefronts, Shopify & headless engines, and payment integrations.",
     },
   ];
 
@@ -60,15 +60,15 @@ async function main() {
   const instructorsData = [
     {
       userId: "inst_sarah_chen",
-      email: "sarah.chen@eduflow.io",
+      email: "sarah.chen@izba.app",
       name: "Dr. Sarah Chen",
       role: Role.instructor,
       imageUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&auto=format&fit=crop&q=80",
-      bio: "AI Systems Specialist and Senior Instructor. Specializing in autonomous agent architectures and intelligent automation.",
+      bio: "Full-Stack Web Architect and Technical Lead specializing in Next.js, modern frontends, and performance.",
     },
     {
       userId: "inst_alex_rivera",
-      email: "alex.rivera@eduflow.io",
+      email: "alex.rivera@izba.app",
       name: "Alex Rivera",
       role: Role.instructor,
       imageUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80",
@@ -76,11 +76,11 @@ async function main() {
     },
     {
       userId: "inst_david_kim",
-      email: "david.kim@eduflow.io",
+      email: "david.kim@izba.app",
       name: "David Kim",
       role: Role.instructor,
       imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80",
-      bio: "IT Infrastructure & Computer Systems Lead. Decades of enterprise network administration and hardware architecture experience.",
+      bio: "Chief Technology Officer & Enterprise Architect with 15+ years delivering scalable SaaS, e-commerce, and cloud systems.",
     },
   ];
 
@@ -111,12 +111,20 @@ async function main() {
   // 3. Seed Students
   const studentsData = [
     {
-      userId: "stud_emily_watson",
-      email: "emily.watson@student.eduflow.io",
-      name: "Emily Watson",
+      userId: "student_emily_clark",
+      email: "emily.clark@student.izba.app",
+      name: "Emily Clark",
       role: Role.student,
       imageUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&auto=format&fit=crop&q=80",
-      bio: "Ambitious learner mastering AI agents and digital marketing growth strategies.",
+      bio: "Aspiring software engineer.",
+    },
+    {
+      userId: "student_marcus_vance",
+      email: "marcus.vance@student.izba.app",
+      name: "Marcus Vance",
+      role: Role.student,
+      imageUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80",
+      bio: "Digital entrepreneur and UI designer.",
     },
   ];
 
@@ -144,12 +152,88 @@ async function main() {
     console.log(`✓ Student: ${profile.name}`);
   }
 
-  // 4. Seed EXACTLY 5 Requested Courses
+  // 4. Seed EXACTLY 5 IT Services Programs
   const sampleVideoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
 
   const coursesData = [
     {
-      title: "Digital Marketing Masterclass",
+      title: "Software Solutions & Enterprise Architecture",
+      slug: "software-solutions-enterprise-architecture",
+      description: "Master enterprise software engineering, scalable multi-tenant SaaS architecture, cloud microservices, REST & GraphQL APIs, and high-performance databases.",
+      thumbnail: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop&q=80",
+      price: 0,
+      isPublished: true,
+      isFeatured: true,
+      level: "INTERMEDIATE",
+      categorySlug: "software-solutions",
+      instructorEmail: "david.kim@izba.app",
+      chapters: [
+        {
+          title: "Enterprise Software Architecture & Design Patterns",
+          description: "Understand domain-driven design, clean architecture, and decoupled service layers.",
+          videoUrl: sampleVideoUrl,
+          position: 1,
+          isPublished: true,
+          isFree: true,
+        },
+        {
+          title: "Scalable APIs, Microservices & Database Sharding",
+          description: "Build fault-tolerant APIs with PostgreSQL indexing, Redis caching, and rate limiting.",
+          videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+          position: 2,
+          isPublished: true,
+          isFree: false,
+        },
+        {
+          title: "Cloud Deployment, CI/CD & Security Hardening",
+          description: "Automate containerized deployments with automated testing and zero-downtime rollouts.",
+          videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+          position: 3,
+          isPublished: true,
+          isFree: false,
+        },
+      ],
+    },
+    {
+      title: "Website Solutions & Modern Web Development",
+      slug: "website-solutions-modern-web-development",
+      description: "Build blazing-fast, responsive web applications using Next.js 15+, React 19, TypeScript, Tailwind CSS, headless CMS integrations, and Web Core Vitals tuning.",
+      thumbnail: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&auto=format&fit=crop&q=80",
+      price: 0,
+      isPublished: true,
+      isFeatured: true,
+      level: "BEGINNER",
+      categorySlug: "website-solutions",
+      instructorEmail: "sarah.chen@izba.app",
+      chapters: [
+        {
+          title: "Next.js 15 App Router & Modern Web Architecture",
+          description: "Master React Server Components, server actions, dynamic routing, and streaming UI.",
+          videoUrl: sampleVideoUrl,
+          position: 1,
+          isPublished: true,
+          isFree: true,
+        },
+        {
+          title: "Responsive UI Engineering with Tailwind & Glassmorphism",
+          description: "Craft modern aesthetic layouts, dark-mode styling, micro-animations, and accessible dialogs.",
+          videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+          position: 2,
+          isPublished: true,
+          isFree: false,
+        },
+        {
+          title: "SEO, Web Core Vitals & Production Deployment",
+          description: "Optimize metadata, sitemaps, OpenGraph tags, Edge CDN caching, and custom domain setup.",
+          videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+          position: 3,
+          isPublished: true,
+          isFree: false,
+        },
+      ],
+    },
+    {
+      title: "Digital Marketing Masterclass & Growth Strategy",
       slug: "digital-marketing-masterclass",
       description: "Master modern digital marketing strategies, SEO optimization, social media ad funnels, content marketing, and conversion rate analytics.",
       thumbnail: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80",
@@ -158,7 +242,7 @@ async function main() {
       isFeatured: true,
       level: "BEGINNER",
       categorySlug: "digital-marketing",
-      instructorEmail: "alex.rivera@eduflow.io",
+      instructorEmail: "alex.rivera@izba.app",
       chapters: [
         {
           title: "Introduction to Digital Marketing & Growth Funnels",
@@ -187,7 +271,7 @@ async function main() {
       ],
     },
     {
-      title: "Graphic Design & Visual Identity",
+      title: "Graphic Design & Visual Identity Systems",
       slug: "graphic-design-visual-identity",
       description: "Comprehensive guide to graphic design principles, color theory, typography, branding assets, Photoshop retouching, and Illustrator vector graphics.",
       thumbnail: "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=800&auto=format&fit=crop&q=80",
@@ -196,7 +280,7 @@ async function main() {
       isFeatured: true,
       level: "BEGINNER",
       categorySlug: "graphic-design",
-      instructorEmail: "alex.rivera@eduflow.io",
+      instructorEmail: "alex.rivera@izba.app",
       chapters: [
         {
           title: "Fundamentals of Graphic Design & Composition",
@@ -215,8 +299,8 @@ async function main() {
           isFree: false,
         },
         {
-          title: "Adobe Illustrator & Photoshop Essentials",
-          description: "Hands-on vector illustration, photo manipulation, vector shapes, and poster layouts.",
+          title: "Figma UI/UX Design & Digital Media Creative",
+          description: "Hands-on vector design, responsive wireframes, design systems, and ad collateral.",
           videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
           position: 3,
           isPublished: true,
@@ -225,112 +309,36 @@ async function main() {
       ],
     },
     {
-      title: "AI Agentic Course: Building Autonomous Systems",
-      slug: "ai-agentic-course-building-autonomous-systems",
-      description: "Build cutting-edge AI agents using LLMs, tool orchestration, multi-agent frameworks, autonomous goal execution, and memory management.",
-      thumbnail: "https://images.unsplash.com/photo-1677442136019-21780efad99a?w=800&auto=format&fit=crop&q=80",
+      title: "E-Commerce Solutions & High-Converting Storefronts",
+      slug: "ecommerce-solutions-high-converting-storefronts",
+      description: "Engineer and launch full-scale online storefronts, headless commerce integrations, multi-currency payment checkouts, and inventory sync systems.",
+      thumbnail: "https://images.unsplash.com/photo-1556742049-0a67c5574f73?w=800&auto=format&fit=crop&q=80",
       price: 0,
       isPublished: true,
       isFeatured: true,
       level: "INTERMEDIATE",
-      categorySlug: "ai-agentic",
-      instructorEmail: "sarah.chen@eduflow.io",
+      categorySlug: "ecommerce-solutions",
+      instructorEmail: "david.kim@izba.app",
       chapters: [
         {
-          title: "Introduction to Agentic AI & Tool-Calling LLMs",
-          description: "Understand the transition from passive chat models to autonomous, goal-driven AI agents.",
+          title: "E-Commerce Architecture & Headless Storefronts",
+          description: "Understand modern commerce stacks, catalog modeling, product variants, and carts.",
           videoUrl: sampleVideoUrl,
           position: 1,
           isPublished: true,
           isFree: true,
         },
         {
-          title: "Multi-Agent Systems & Tool Orchestration",
-          description: "Implement multi-agent team roles, stateful graph execution, and web tool integrations.",
+          title: "Payment Gateways, Stripe Webhooks & Security",
+          description: "Secure payment transactions, PCI compliance, webhook verification, and automated order receipting.",
           videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
           position: 2,
           isPublished: true,
           isFree: false,
         },
         {
-          title: "Deploying Autonomous Agents to Production",
-          description: "Build secure memory stores, task loops, safety guardrails, and cloud deployment pipelines.",
-          videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-          position: 3,
-          isPublished: true,
-          isFree: false,
-        },
-      ],
-    },
-    {
-      title: "Computer Course: Essentials & Operating Systems",
-      slug: "computer-course-essentials-operating-systems",
-      description: "Master computer fundamentals, hardware architecture, operating system management, file systems, binary logic, and software utilities.",
-      thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&auto=format&fit=crop&q=80",
-      price: 0,
-      isPublished: true,
-      isFeatured: true,
-      level: "BEGINNER",
-      categorySlug: "computer-course",
-      instructorEmail: "david.kim@eduflow.io",
-      chapters: [
-        {
-          title: "Computer Basics, CPU, RAM & Hardware Architecture",
-          description: "Learn how computers process information, memory hierarchies, storage drives, and peripherals.",
-          videoUrl: sampleVideoUrl,
-          position: 1,
-          isPublished: true,
-          isFree: true,
-        },
-        {
-          title: "Operating Systems (Windows & Linux) & File Management",
-          description: "Navigate OS shells, file permission hierarchies, process managers, and system utilities.",
-          videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-          position: 2,
-          isPublished: true,
-          isFree: false,
-        },
-        {
-          title: "Software Productivity Tools & Basic Troubleshooting",
-          description: "Essential desktop applications, office suites, diagnostic commands, and system maintenance.",
-          videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
-          position: 3,
-          isPublished: true,
-          isFree: false,
-        },
-      ],
-    },
-    {
-      title: "IT Course: Networking & Cloud Systems Administration",
-      slug: "it-course-networking-cloud-systems-administration",
-      description: "Comprehensive IT course covering computer networking, TCP/IP, router configuration, cloud administration, cybersecurity basics, and server management.",
-      thumbnail: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=800&auto=format&fit=crop&q=80",
-      price: 0,
-      isPublished: true,
-      isFeatured: true,
-      level: "INTERMEDIATE",
-      categorySlug: "it-course",
-      instructorEmail: "david.kim@eduflow.io",
-      chapters: [
-        {
-          title: "IT Fundamentals & Computer Networking Essentials",
-          description: "Understand TCP/IP, IP addressing, DNS, subnets, routers, switches, and network topologies.",
-          videoUrl: sampleVideoUrl,
-          position: 1,
-          isPublished: true,
-          isFree: true,
-        },
-        {
-          title: "Server Administration & Active Directory Security",
-          description: "Manage domain controllers, user credentials, server roles, and network security policies.",
-          videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-          position: 2,
-          isPublished: true,
-          isFree: false,
-        },
-        {
-          title: "Cloud Infrastructure & Cybersecurity Best Practices",
-          description: "Configure cloud virtual networks, firewalls, data backup routines, and incident response protocols.",
+          title: "Inventory Management, Fulfillment & Conversion Optimization",
+          description: "Real-time stock alerts, third-party logistics (3PL) webhooks, and conversion rate engineering.",
           videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
           position: 3,
           isPublished: true,
@@ -354,57 +362,54 @@ async function main() {
         isPublished: courseData.isPublished,
         isFeatured: courseData.isFeatured,
         level: courseData.level,
-        categoryId: categoryId,
         instructorId: instructorId,
+        categoryId: categoryId,
+        chapters: {
+          create: courseData.chapters.map((ch) => ({
+            title: ch.title,
+            description: ch.description,
+            videoUrl: ch.videoUrl,
+            position: ch.position,
+            isPublished: ch.isPublished,
+            isFree: ch.isFree,
+          })),
+        },
       },
     });
 
-    console.log(`✓ Course Created: ${course.title}`);
+    console.log(`✓ Course: ${course.title} (${course.slug})`);
 
-    for (const chap of courseData.chapters) {
-      await prisma.chapter.create({
+    // Enroll students into published courses with initial progress
+    for (const [studentEmail, studentId] of Object.entries(studentMap)) {
+      await prisma.enrollment.create({
         data: {
-          title: chap.title,
-          description: chap.description,
-          videoUrl: chap.videoUrl,
-          position: chap.position,
-          isPublished: chap.isPublished,
-          isFree: chap.isFree,
+          profileId: studentId,
           courseId: course.id,
         },
       });
-      console.log(`  - Chapter ${chap.position}: ${chap.title}`);
-    }
-  }
 
-  // Enroll student profile
-  const student = await prisma.profile.findFirst({ where: { role: Role.student } });
-  const firstCourse = await prisma.course.findFirst({ include: { chapters: true } });
-
-  if (student && firstCourse) {
-    await prisma.enrollment.create({
-      data: {
-        profileId: student.id,
-        courseId: firstCourse.id,
-      },
-    });
-    if (firstCourse.chapters.length > 0) {
-      await prisma.userProgress.create({
-        data: {
-          profileId: student.id,
-          chapterId: firstCourse.chapters[0].id,
-          isCompleted: true,
-        },
+      const firstChapter = await prisma.chapter.findFirst({
+        where: { courseId: course.id, position: 1 },
       });
+
+      if (firstChapter) {
+        await prisma.userProgress.create({
+          data: {
+            profileId: studentId,
+            chapterId: firstChapter.id,
+            isCompleted: true,
+          },
+        });
+      }
     }
   }
 
-  console.log("\nSuccessfully seeded ONLY the 5 requested courses!");
+  console.log("Seeding finished successfully with 5 core IT services!");
 }
 
 main()
   .catch((e) => {
-    console.error("Error during seeding:", e);
+    console.error("Seeding error:", e);
     process.exit(1);
   })
   .finally(async () => {
