@@ -6,12 +6,12 @@ export function Footer() {
   return (
     <footer className="border-t bg-muted/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
           {/* Col 1: Brand Info */}
-          <div className="space-y-4 md:col-span-1">
+          <div className="space-y-4 sm:col-span-2 lg:col-span-1">
             <Logo />
             <p className="text-sm text-muted-foreground leading-relaxed">
-              IZBA Learning HUB is an open, high-quality learning platform dedicated to empowering students and educators worldwide with accessible technology education.
+              IZBA Learning HUB is an open, high-quality learning and enterprise technology platform dedicated to empowering students, creators, and scaling businesses worldwide.
             </p>
           </div>
 
@@ -27,8 +27,13 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/services" className="hover:text-primary transition-colors font-medium text-foreground/90">
+                  IT Services & Solutions
+                </Link>
+              </li>
+              <li>
                 <Link href="/about" className="hover:text-primary transition-colors">
-                  About IZBA Learning HUB
+                  About IZBA HUB
                 </Link>
               </li>
               <li>
@@ -44,7 +49,46 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Col 3: Role Panels */}
+          {/* Col 3: IT Services & Solutions */}
+          <div>
+            <h3 className="text-sm font-semibold tracking-wider text-foreground mb-4 uppercase">
+              IT Services
+            </h3>
+            <ul className="space-y-2.5 text-sm text-muted-foreground">
+              <li>
+                <Link href="/services#software-solutions" className="hover:text-primary transition-colors">
+                  Software Solutions
+                </Link>
+              </li>
+              <li>
+                <Link href="/services#website-solutions" className="hover:text-primary transition-colors">
+                  Website Solutions
+                </Link>
+              </li>
+              <li>
+                <Link href="/services#digital-marketing" className="hover:text-primary transition-colors">
+                  Digital Marketing
+                </Link>
+              </li>
+              <li>
+                <Link href="/services#graphic-design" className="hover:text-primary transition-colors">
+                  Graphic Design
+                </Link>
+              </li>
+              <li>
+                <Link href="/services#ecommerce-solutions" className="hover:text-primary transition-colors">
+                  E-Commerce Solutions
+                </Link>
+              </li>
+              <li>
+                <Link href="/services#inquiry-form" className="hover:text-primary transition-colors text-primary font-semibold">
+                  Request a Quote &rarr;
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Col 4: Role Panels */}
           <div>
             <h3 className="text-sm font-semibold tracking-wider text-foreground mb-4 uppercase">
               Learning Portals
@@ -68,13 +112,13 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Col 4: Community & Mission */}
+          {/* Col 5: Community & Mission */}
           <div>
             <h3 className="text-sm font-semibold tracking-wider text-foreground mb-4 uppercase">
               Our Mission
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Every course on IZBA Learning HUB features real progression tracking, validated quizzes, and certificate verification.
+              Every course on IZBA features real progression tracking, validated quizzes, and certificate verification.
             </p>
             <div className="mt-4 flex items-center gap-1.5 text-xs text-muted-foreground">
               <span>Crafted with</span>
