@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -34,9 +34,17 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-export function CourseForm() {
+interface CourseFormProps {
+  basePath?: string;
+}
+
+export function CourseForm({ basePath }: CourseFormProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(false);
+
+  const resolvedBasePath =
+    basePath || (pathname.startsWith("/admin") ? "/admin/courses" : "/teacher/courses");
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -63,7 +71,7 @@ export function CourseForm() {
 
       const course = await res.json();
       toast.success("Course created successfully!");
-      router.push(`/teacher/courses/${course.id}`);
+      router.push(`${resolvedBasePath}/${course.id}`);
     } catch (error: any) {
       console.error(error);
       toast.error(error.message || "Something went wrong. Please try again.");
@@ -100,7 +108,7 @@ export function CourseForm() {
             />
 
             <div className="flex items-center justify-end gap-3 pt-2">
-              <Link href="/teacher/courses">
+              <Link href={resolvedBasePath}>
                 <Button
                   type="button"
                   variant="ghost"

@@ -1,0 +1,200 @@
+import { notFound, redirect } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
+import { getCurrentUser } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { ArrowLeft, LayoutDashboard, Sparkles, AlertCircle, Shield, User, ExternalLink } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { TitleForm } from "@/components/teacher/courses/edit/TitleForm";
+import { DescriptionForm } from "@/components/teacher/courses/edit/DescriptionForm";
+import { CategoryForm } from "@/components/teacher/courses/edit/CategoryForm";
+import { LevelForm } from "@/components/teacher/courses/edit/LevelForm";
+import { ImageUpload } from "@/components/teacher/courses/ImageUpload";
+import { ChapterForm } from "@/components/teacher/courses/ChapterForm";
+import { CourseActions } from "@/components/teacher/courses/edit/CourseActions";
+
+interface AdminCourseIdPageProps {
+  params: Promise<{
+    courseId: string;
+  }>;
+}
+
+export default async function AdminCourseIdPage({ params }: AdminCourseIdPageProps) {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  if (user.role !== "admin") {
+    if (user.role === "instructor") {
+      redirect("/teacher");
+    }
+    redirect("/student");
+  }
+
+  const { courseId } = await params;
+
+  const [course, categories] = await Promise.all([
+    db.course.findUnique({
+      where: { id: courseId },
+      include: {
+        category: true,
+        instructor: true,
+        chapters: {
+          orderBy: {
+            position: "asc",
+          },
+        },
+      },
+    }),
+    db.courseCategory.findMany({
+      orderBy: { name: "asc" },
+    }),
+  ]);
+
+  if (!course) {
+    notFound();
+  }
+
+  const hasPublishedChapter = course.chapters.some((ch) => ch.isPublished);
+
+  const missingFields: string[] = [];
+  if (!course.title) missingFields.push("Title");
+  if (!course.description) missingFields.push("Description");
+  if (!course.thumbnail) missingFields.push("Course Image");
+  if (!course.categoryId) missingFields.push("Category");
+  if (!course.level) missingFields.push("Level");
+  if (!hasPublishedChapter) missingFields.push("At least one published chapter");
+
+  const totalFields = 6;
+  const completedFields = totalFields - missingFields.length;
+  const completionText = `(${completedFields}/${totalFields})`;
+  const isComplete = missingFields.length === 0;
+
+  return (
+    <div className="space-y-8 max-w-5xl mx-auto pb-16">
+      {/* Top Banner if Unpublished */}
+      {!course.isPublished && (
+        <div className="flex items-center gap-x-3 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-900 dark:text-amber-300 text-xs sm:text-sm font-medium">
+          <AlertCircle className="h-5 w-5 shrink-0 text-amber-600 dark:text-amber-400" />
+          <span>
+            This course is currently in draft mode and not visible to students. Complete required fields to publish.
+          </span>
+        </div>
+      )}
+
+      {/* Top Navigation & Action Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <Link href="/admin/courses">
+            <Button variant="ghost" size="icon" className="rounded-xl">
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+          </Link>
+          <div>
+            <div className="flex flex-wrap items-center gap-2">
+              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+                Edit Course
+              </h1>
+              <Badge className="bg-primary/10 text-primary border-primary/20 text-[10px] uppercase font-bold">
+                <Shield className="h-3 w-3 mr-1" /> Admin Control
+              </Badge>
+              <Badge
+                variant={course.isPublished ? "default" : "secondary"}
+                className="uppercase text-[10px] font-bold"
+              >
+                {course.isPublished ? "Published" : "Draft"}
+              </Badge>
+            </div>
+            <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
+              <span>Required fields: {completionText}</span>
+              <span>•</span>
+              <span className="flex items-center gap-1">
+                <User className="h-3 w-3 text-primary" />
+                Instructor: <strong>{course.instructor?.name || "Admin"}</strong>
+              </span>
+              <span>•</span>
+              <Link
+                href={`/courses/${course.id}`}
+                target="_blank"
+                className="text-primary hover:underline inline-flex items-center gap-0.5"
+              >
+                Live Preview <ExternalLink className="h-3 w-3" />
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        <CourseActions
+          disabled={!isComplete}
+          courseId={course.id}
+          isPublished={course.isPublished}
+          missingFields={missingFields}
+        />
+      </div>
+
+      {/* Grid of Course Setup Forms */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Left Column: Basic Information & Course Image */}
+        <div className="space-y-6">
+          <div className="flex items-center gap-x-2">
+            <div className="p-2 rounded-xl bg-primary/10 text-primary">
+              <LayoutDashboard className="h-5 w-5" />
+            </div>
+            <h2 className="text-lg font-bold text-foreground">
+              Course Details & Picture
+            </h2>
+          </div>
+
+          <TitleForm
+            initialData={{ title: course.title }}
+            courseId={course.id}
+          />
+
+          <DescriptionForm
+            initialData={{ description: course.description }}
+            courseId={course.id}
+          />
+
+          <ImageUpload
+            initialData={{ thumbnail: course.thumbnail }}
+            courseId={course.id}
+          />
+
+          <CategoryForm
+            initialData={{ categoryId: course.categoryId }}
+            courseId={course.id}
+            options={categories.map((c) => ({
+              label: c.name,
+              value: c.id,
+            }))}
+          />
+
+          <LevelForm
+            initialData={{ level: course.level }}
+            courseId={course.id}
+          />
+        </div>
+
+        {/* Right Column: Chapters & Curriculum */}
+        <div className="space-y-6">
+          <div className="flex items-center gap-x-2">
+            <div className="p-2 rounded-xl bg-primary/10 text-primary">
+              <Sparkles className="h-5 w-5" />
+            </div>
+            <h2 className="text-lg font-bold text-foreground">
+              Curriculum & Chapters
+            </h2>
+          </div>
+
+          <ChapterForm
+            initialData={{ chapters: course.chapters }}
+            courseId={course.id}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}

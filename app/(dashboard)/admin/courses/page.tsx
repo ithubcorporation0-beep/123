@@ -1,7 +1,10 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { AdminCourseTable, AdminCourseRecord } from "@/components/admin/courses/AdminCourseTable";
+import { Button } from "@/components/ui/button";
+import { PlusCircle } from "lucide-react";
 
 export default async function AdminCoursesPage() {
   const currentUser = await getCurrentUser();
@@ -47,13 +50,21 @@ export default async function AdminCoursesPage() {
 
   return (
     <div className="space-y-8 max-w-6xl mx-auto pb-16">
-      <div>
-        <h1 className="text-3xl font-extrabold tracking-tight text-foreground">
-          Course Catalog Moderation
-        </h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Review, publish/unpublish, feature, and moderate all courses created across the platform.
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-extrabold tracking-tight text-foreground">
+            Course Management & Moderation
+          </h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Create courses, upload course images, edit curriculum, and manage publication.
+          </p>
+        </div>
+        <Link href="/admin/courses/create">
+          <Button className="rounded-2xl gap-2 font-semibold shadow-sm">
+            <PlusCircle className="h-4 w-4" />
+            New Course
+          </Button>
+        </Link>
       </div>
 
       <AdminCourseTable courses={formattedCourses} />

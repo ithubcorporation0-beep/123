@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -28,6 +28,7 @@ export function ChapterForm({ initialData, courseId }: ChapterFormProps) {
   const [isCreating, setIsCreating] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -83,7 +84,11 @@ export function ChapterForm({ initialData, courseId }: ChapterFormProps) {
   };
 
   const onEdit = (id: string) => {
-    router.push(`/teacher/courses/${courseId}/chapters/${id}`);
+    if (pathname.startsWith("/admin")) {
+      router.push(`/admin/courses/${courseId}/chapters/${id}`);
+    } else {
+      router.push(`/teacher/courses/${courseId}/chapters/${id}`);
+    }
   };
 
   return (

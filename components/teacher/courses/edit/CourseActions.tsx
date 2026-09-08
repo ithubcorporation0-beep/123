@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { ConfirmModal } from "@/components/shared/ConfirmModal";
@@ -21,6 +21,7 @@ export function CourseActions({
   missingFields = [],
 }: CourseActionsProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(false);
 
   const onPublishToggle = async () => {
@@ -61,7 +62,8 @@ export function CourseActions({
       }
 
       toast.success("Course deleted successfully");
-      router.push("/teacher/courses");
+      const redirectPath = pathname.startsWith("/admin") ? "/admin/courses" : "/teacher/courses";
+      router.push(redirectPath);
       router.refresh();
     } catch (error: any) {
       toast.error(error.message || "Something went wrong");

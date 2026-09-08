@@ -185,15 +185,24 @@ export function AdminCourseTable({ courses }: AdminCourseTableProps) {
                       </div>
                       <div className="min-w-0">
                         <Link
-                          href={`/courses/${course.id}`}
-                          target="_blank"
+                          href={`/admin/courses/${course.id}`}
                           className="text-sm font-bold text-foreground hover:text-primary transition-colors line-clamp-1 block"
                         >
                           {course.title}
                         </Link>
-                        <p className="text-[11px] text-muted-foreground">
-                          {course.chaptersCount} chapters
-                        </p>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <span className="text-[11px] text-muted-foreground">
+                            {course.chaptersCount} chapters
+                          </span>
+                          <span className="text-[10px] text-muted-foreground">•</span>
+                          <Link
+                            href={`/courses/${course.id}`}
+                            target="_blank"
+                            className="text-[11px] text-primary/80 hover:text-primary hover:underline inline-flex items-center gap-0.5"
+                          >
+                            Preview
+                          </Link>
+                        </div>
                       </div>
                     </div>
                   </TableCell>
@@ -238,6 +247,19 @@ export function AdminCourseTable({ courses }: AdminCourseTableProps) {
                   {/* Actions */}
                   <TableCell className="py-4 text-right">
                     <div className="flex items-center justify-end gap-1.5">
+                      {/* Edit Course Button */}
+                      <Link href={`/admin/courses/${course.id}`}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="rounded-xl text-xs h-8 px-2.5 gap-1 border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+                          title="Edit Course Details & Pictures"
+                        >
+                          <Sparkles className="h-3.5 w-3.5" />
+                          <span>Edit</span>
+                        </Button>
+                      </Link>
+
                       {/* Featured Toggle */}
                       <Button
                         onClick={() => onToggleFeatured(course)}
@@ -247,7 +269,7 @@ export function AdminCourseTable({ courses }: AdminCourseTableProps) {
                         className="rounded-xl text-xs h-8 px-2.5 gap-1"
                         title={course.isFeatured ? "Remove from Featured" : "Feature Course on Home Page"}
                       >
-                        <Sparkles className="h-3.5 w-3.5" />
+                        <Star className="h-3.5 w-3.5" />
                         <span className="hidden sm:inline-block">
                           {course.isFeatured ? "Featured" : "Feature"}
                         </span>

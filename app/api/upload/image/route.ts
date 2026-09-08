@@ -47,27 +47,58 @@ export async function POST(req: NextRequest) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    // Upload to Cloudinary stream
-    const result: any = await new Promise((resolve, reject) => {
-      const uploadStream = cloudinary.uploader.upload_stream(
-        {
-          folder: "eduflow/courses",
-          resource_type: "image",
-        },
-        (error, res) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(res);
-          }
-        }
-      );
-      uploadStream.end(buffer);
-    });
+    // Check if Cloudinary credentials are fully configured
+    const hasCloudinary = Boolean(
+      (process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || process.env.CLOUDINARY_CLOUD_NAME) &&
+      process.env.CLOUDINARY_API_KEY &&
+      process.env.CLOUDINARY_API_SECRET
+    );
+
+    if (hasCloudinary) {
+      try {
+        // Upload to Cloudinary stream
+        const result: any = await new Promise((resolve, reject) => {
+          const uploadStream = cloudinary.uploader.upload_stream(
+            {
+              folder: "eduflow/courses",
+              resource_type: "image",
+            },
+            (error, res) => {
+              if (error) {
+                reject(error);
+              } else {
+                resolve(res);
+              }
+            }
+          );
+          uploadStream.end(buffer);
+        });
+
+        return NextResponse.json({
+          url: result.secure_url || result.url,
+          publicId: result.public_id,
+        });
+      } catch (cloudinaryError) {
+        console.warn("[UPLOAD_CLOUDINARY_FAILED, FALLING_BACK_TO_LOCAL]", cloudinaryError);
+      }
+    }
+
+    // Local filesystem fallback: write to public/uploads
+    const fs = await import("fs/promises");
+    const path = await import("path");
+    const uploadsDir = path.join(process.cwd(), "public", "uploads");
+
+    await fs.mkdir(uploadsDir, { recursive: true });
+
+    const ext = path.extname(file.name) || ".jpg";
+    const cleanFileName = `course-${Date.now()}-${Math.random().toString(36).substring(2, 9)}${ext}`;
+    const filePath = path.join(uploadsDir, cleanFileName);
+
+    await fs.writeFile(filePath, buffer);
 
     return NextResponse.json({
-      url: result.secure_url || result.url,
-      publicId: result.public_id,
+      url: `/uploads/${cleanFileName}`,
+      publicId: cleanFileName,
     });
   } catch (error: any) {
     console.error("[UPLOAD_IMAGE_POST]", error);

@@ -106,17 +106,22 @@ export default async function AdminOverviewPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Link href="/admin/users">
-            <Button variant="outline" size="sm" className="rounded-2xl text-xs gap-1.5 font-medium">
-              <Users className="h-3.5 w-3.5" />
-              Manage Users
+        <div className="flex flex-wrap items-center gap-2">
+          <Link href="/admin/courses/create">
+            <Button variant="default" size="sm" className="rounded-2xl text-xs gap-1.5 font-bold shadow-xs">
+              <BookOpen className="h-3.5 w-3.5" />
+              New Course
             </Button>
           </Link>
           <Link href="/admin/courses">
-            <Button variant="default" size="sm" className="rounded-2xl text-xs gap-1.5 font-bold shadow-xs">
-              <BookOpen className="h-3.5 w-3.5" />
+            <Button variant="outline" size="sm" className="rounded-2xl text-xs gap-1.5 font-medium">
               Manage Courses
+            </Button>
+          </Link>
+          <Link href="/admin/users">
+            <Button variant="outline" size="sm" className="rounded-2xl text-xs gap-1.5 font-medium">
+              <Users className="h-3.5 w-3.5" />
+              Users
             </Button>
           </Link>
         </div>
