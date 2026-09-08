@@ -130,7 +130,7 @@ export function AdminCourseTable({ courses }: AdminCourseTableProps) {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 animate-fade-in-up">
       {/* Search Bar */}
       <div className="relative max-w-sm">
         <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -138,7 +138,7 @@ export function AdminCourseTable({ courses }: AdminCourseTableProps) {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search by course title or instructor..."
-          className="pl-10 pr-9 rounded-2xl h-10 text-xs bg-card border shadow-xs"
+          className="pl-10 pr-9 rounded-2xl h-10 text-xs bg-card border shadow-xs transition-all focus:ring-2 focus:ring-primary/20"
         />
         {searchTerm && (
           <Button
@@ -153,10 +153,10 @@ export function AdminCourseTable({ courses }: AdminCourseTableProps) {
       </div>
 
       {/* Courses Table */}
-      <div className="rounded-3xl border bg-card shadow-xs overflow-hidden">
+      <div className="rounded-3xl border border-border/70 overflow-hidden shadow-xs bg-card">
         <Table>
-          <TableHeader>
-            <TableRow className="bg-muted/30">
+          <TableHeader className="bg-muted/40">
+            <TableRow>
               <TableHead className="text-xs font-bold">Course</TableHead>
               <TableHead className="text-xs font-bold">Instructor</TableHead>
               <TableHead className="text-xs font-bold">Category</TableHead>
@@ -170,7 +170,7 @@ export function AdminCourseTable({ courses }: AdminCourseTableProps) {
               const isLoading = loadingId === course.id;
 
               return (
-                <TableRow key={course.id} className="hover:bg-muted/10 transition-colors">
+                <TableRow key={course.id} className="hover:bg-muted/30 transition-all duration-200">
                   {/* Course Name & Thumbnail */}
                   <TableCell className="py-4">
                     <div className="flex items-center gap-3">

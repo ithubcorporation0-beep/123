@@ -20,13 +20,13 @@ export function HeroSection() {
     <section className="relative overflow-hidden pt-16 pb-24 md:pt-28 md:pb-36">
       {/* Background Radial Glow & Floating Shapes */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[700px] pointer-events-none -z-10 overflow-hidden">
-        <div className="absolute top-[-10%] left-[15%] w-[550px] h-[550px] bg-gradient-to-br from-indigo-500/20 via-purple-500/20 to-pink-500/10 rounded-full blur-[130px] animate-pulse-slow" />
-        <div className="absolute top-[20%] right-[10%] w-[500px] h-[500px] bg-gradient-to-tr from-blue-500/20 via-cyan-500/15 to-emerald-500/10 rounded-full blur-[120px]" />
+        <div className="absolute top-[-10%] left-[15%] w-[550px] h-[550px] bg-gradient-to-br from-indigo-500/25 via-purple-500/20 to-pink-500/15 rounded-full blur-[130px] animate-float-slow" />
+        <div className="absolute top-[20%] right-[10%] w-[500px] h-[500px] bg-gradient-to-tr from-blue-500/25 via-cyan-500/20 to-emerald-500/15 rounded-full blur-[120px] animate-float-reverse" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
         {/* Animated Feature Badge */}
-        <div className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 text-xs sm:text-sm font-semibold backdrop-blur-xl mb-8 shadow-sm hover:border-indigo-500/50 transition-all cursor-default">
+        <div className="animate-fade-in-down inline-flex items-center gap-2.5 px-5 py-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 text-xs sm:text-sm font-semibold backdrop-blur-xl mb-8 shadow-sm hover:border-indigo-500/50 transition-all cursor-default animate-pulse-glow">
           <Sparkles className="h-4 w-4 text-indigo-500 animate-spin-slow" />
           <span>IZBA Learning HUB • Next-Gen Interactive LMS</span>
           <span className="hidden sm:inline px-2 py-0.5 rounded-full bg-indigo-500/20 text-[11px] font-bold text-indigo-600 dark:text-indigo-200">
@@ -35,27 +35,27 @@ export function HeroSection() {
         </div>
 
         {/* Main Heading */}
-        <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight max-w-5xl text-foreground leading-[1.1]">
+        <h1 className="animate-fade-in-up text-4xl sm:text-6xl md:text-7xl font-black tracking-tight max-w-5xl text-foreground leading-[1.1]">
           Master modern skills with{" "}
-          <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-indigo-400 dark:via-purple-300 dark:to-pink-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-indigo-400 dark:via-purple-300 dark:to-pink-400 bg-clip-text text-transparent animate-gradient-flow">
             world-class curriculums.
           </span>
         </h1>
 
         {/* Subtitle */}
-        <p className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-3xl leading-relaxed font-normal">
+        <p className="animate-fade-in-up delay-100 mt-6 text-lg sm:text-xl text-muted-foreground max-w-3xl leading-relaxed font-normal">
           Structured learning paths, HD video lessons, real-world projects, and QR-verifiable certificates built for ambitious learners and industry professionals.
         </p>
 
         {/* CTA Buttons */}
-        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+        <div className="animate-fade-in-up delay-200 mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
           <Link href="/courses" className="w-full sm:w-auto">
             <Button
               size="lg"
-              className="h-14 px-8 text-base font-bold rounded-full w-full sm:w-auto bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-xl shadow-indigo-500/30 transition-all hover:scale-[1.02] active:scale-[0.98] gap-2"
+              className="h-14 px-8 text-base font-bold rounded-full w-full sm:w-auto bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-xl shadow-indigo-500/30 transition-all hover:scale-[1.03] active:scale-[0.98] gap-2 animate-pulse-glow"
             >
               <span>Explore All Courses</span>
-              <ArrowRight className="h-5 w-5" />
+              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Button>
           </Link>
 
@@ -63,20 +63,20 @@ export function HeroSection() {
             <Button
               size="lg"
               variant="outline"
-              className="h-14 px-8 text-base font-semibold rounded-full w-full sm:w-auto gap-2.5 bg-background/80 backdrop-blur-md hover:bg-muted/80 border-border/80 shadow-xs transition-all hover:scale-[1.02]"
+              className="h-14 px-8 text-base font-semibold rounded-full w-full sm:w-auto gap-2.5 bg-background/80 backdrop-blur-md hover:bg-muted/80 border-border/80 shadow-xs transition-all hover:scale-[1.03]"
             >
-              <Play className="h-4.5 w-4.5 text-indigo-600 dark:text-indigo-400 fill-indigo-600 dark:fill-indigo-400" />
+              <Play className="h-4.5 w-4.5 text-indigo-600 dark:text-indigo-400 fill-indigo-600 dark:fill-indigo-400 transition-transform group-hover:scale-110" />
               <span>How IZBA Works</span>
             </Button>
           </Link>
         </div>
 
         {/* Social Proof & Trust Badges */}
-        <div className="mt-12 pt-8 border-t border-border/40 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 text-xs sm:text-sm text-muted-foreground w-full max-w-3xl">
+        <div className="animate-fade-in-up delay-300 mt-12 pt-8 border-t border-border/40 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 text-xs sm:text-sm text-muted-foreground w-full max-w-3xl">
           {/* Avatar stack */}
           <div className="flex items-center gap-3">
             <div className="flex -space-x-2.5">
-              <div className="relative w-9 h-9 rounded-full border-2 border-background overflow-hidden bg-muted shadow-sm">
+              <div className="relative w-9 h-9 rounded-full border-2 border-background overflow-hidden bg-muted shadow-sm hover:scale-110 transition-transform z-0 hover:z-10">
                 <Image
                   src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
                   alt="Student avatar"
@@ -84,7 +84,7 @@ export function HeroSection() {
                   className="object-cover"
                 />
               </div>
-              <div className="relative w-9 h-9 rounded-full border-2 border-background overflow-hidden bg-muted shadow-sm">
+              <div className="relative w-9 h-9 rounded-full border-2 border-background overflow-hidden bg-muted shadow-sm hover:scale-110 transition-transform z-0 hover:z-10">
                 <Image
                   src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80"
                   alt="Student avatar"
@@ -92,7 +92,7 @@ export function HeroSection() {
                   className="object-cover"
                 />
               </div>
-              <div className="relative w-9 h-9 rounded-full border-2 border-background overflow-hidden bg-muted shadow-sm">
+              <div className="relative w-9 h-9 rounded-full border-2 border-background overflow-hidden bg-muted shadow-sm hover:scale-110 transition-transform z-0 hover:z-10">
                 <Image
                   src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&auto=format&fit=crop&q=80"
                   alt="Student avatar"
@@ -100,7 +100,7 @@ export function HeroSection() {
                   className="object-cover"
                 />
               </div>
-              <div className="w-9 h-9 rounded-full border-2 border-background bg-gradient-to-tr from-indigo-600 to-purple-600 text-white font-bold text-xs flex items-center justify-center shadow-sm">
+              <div className="w-9 h-9 rounded-full border-2 border-background bg-gradient-to-tr from-indigo-600 to-purple-600 text-white font-bold text-xs flex items-center justify-center shadow-sm hover:scale-110 transition-transform z-0 hover:z-10">
                 +15k
               </div>
             </div>
@@ -108,7 +108,7 @@ export function HeroSection() {
             <div className="text-left">
               <div className="flex items-center text-amber-500 gap-0.5">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-amber-500 stroke-amber-500" />
+                  <Star key={i} className="h-4 w-4 fill-amber-500 stroke-amber-500 transition-transform hover:scale-125" />
                 ))}
               </div>
               <p className="text-xs font-semibold text-foreground mt-0.5">
@@ -120,18 +120,18 @@ export function HeroSection() {
           <div className="h-5 w-px bg-border hidden sm:block" />
 
           <div className="flex items-center gap-2 text-foreground font-semibold text-xs sm:text-sm">
-            <ShieldCheck className="h-5 w-5 text-emerald-500" />
+            <ShieldCheck className="h-5 w-5 text-emerald-500 animate-badge-pulse" />
             <span>Verified Certificates & Code Tracking</span>
           </div>
         </div>
 
         {/* Interactive Floating Preview Banner */}
-        <div className="mt-14 w-full max-w-5xl rounded-3xl border border-white/20 dark:border-white/10 glass-card shadow-2xl p-5 sm:p-8 text-left overflow-hidden relative group">
+        <div className="animate-fade-in-up delay-400 animate-float-slow mt-14 w-full max-w-5xl rounded-3xl border border-white/20 dark:border-white/10 glass-card shadow-2xl p-5 sm:p-8 text-left overflow-hidden relative group hover:shadow-indigo-500/20 transition-all duration-500">
           <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/10 via-purple-500/5 to-transparent pointer-events-none" />
 
           <div className="flex items-center justify-between border-b border-border/50 pb-4 mb-6 text-xs text-muted-foreground">
             <div className="flex items-center gap-2">
-              <div className="h-3 w-3 rounded-full bg-rose-500" />
+              <div className="h-3 w-3 rounded-full bg-rose-500 animate-pulse" />
               <div className="h-3 w-3 rounded-full bg-amber-500" />
               <div className="h-3 w-3 rounded-full bg-emerald-500" />
               <span className="ml-2 font-mono text-xs font-semibold text-foreground/80">izba.app/learning-hub</span>

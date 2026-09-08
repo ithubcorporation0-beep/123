@@ -55,11 +55,11 @@ export function HowItWorks() {
           return (
             <div
               key={idx}
-              className="p-7 rounded-3xl border border-border/80 bg-card/80 backdrop-blur-md relative flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:shadow-primary/5 hover:border-primary/40 hover:-translate-y-1 group"
+              className="p-7 rounded-3xl border border-border/80 bg-card/80 backdrop-blur-md relative flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/40 hover:-translate-y-2 hover-card-lift group"
             >
               <div>
                 <div className="flex items-center justify-between mb-6">
-                  <div className={`p-4 rounded-2xl bg-gradient-to-br ${item.color} border border-border/40 shadow-sm group-hover:scale-110 transition-transform`}>
+                  <div className={`p-4 rounded-2xl bg-gradient-to-br ${item.color} border border-border/40 shadow-sm group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
                     <Icon className="h-6 w-6" />
                   </div>
                   <span className="text-4xl font-black text-muted-foreground/20 font-mono group-hover:text-primary/40 transition-colors">

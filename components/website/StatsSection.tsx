@@ -67,10 +67,10 @@ export async function StatsSection() {
             return (
               <div
                 key={idx}
-                className="group p-7 rounded-3xl border border-white/20 dark:border-white/10 glass-card flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/10 hover:-translate-y-1.5"
+                className="group p-7 rounded-3xl border border-white/20 dark:border-white/10 glass-card flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/15 hover:-translate-y-2 hover-card-lift"
               >
                 <div className="flex items-center justify-between mb-6">
-                  <div className={`p-4 rounded-2xl bg-gradient-to-br ${stat.gradient} border border-border/40 shadow-sm ${stat.iconColor}`}>
+                  <div className={`p-4 rounded-2xl bg-gradient-to-br ${stat.gradient} border border-border/40 shadow-sm ${stat.iconColor} transition-all duration-300 group-hover:scale-110 group-hover:rotate-6`}>
                     <Icon className="h-7 w-7" />
                   </div>
                   <span className="text-4xl sm:text-5xl font-black tracking-tight text-foreground bg-gradient-to-b from-foreground to-foreground/70 bg-clip-text">

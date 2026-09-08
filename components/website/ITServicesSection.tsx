@@ -149,7 +149,7 @@ export function ITServicesSection() {
             return (
               <div
                 key={service.id}
-                className={`group relative rounded-3xl border border-border/70 bg-card/80 backdrop-blur-xl p-8 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-primary/5 ${service.accentBorder} flex flex-col justify-between overflow-hidden ${
+                className={`group relative rounded-3xl border border-border/70 bg-card/80 backdrop-blur-xl p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10 ${service.accentBorder} flex flex-col justify-between overflow-hidden hover-card-lift ${
                   index === 3 ? "lg:col-span-1 sm:col-span-1" : ""
                 }`}
               >
@@ -162,7 +162,7 @@ export function ITServicesSection() {
                   {/* Top bar with Icon & Badge */}
                   <div className="flex items-center justify-between mb-6">
                     <div
-                      className={`w-14 h-14 rounded-2xl flex items-center justify-center border shadow-xs transition-transform duration-300 group-hover:scale-110 ${service.iconBg}`}
+                      className={`w-14 h-14 rounded-2xl flex items-center justify-center border shadow-xs transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 ${service.iconBg}`}
                     >
                       <Icon className="h-7 w-7" />
                     </div>

@@ -49,7 +49,7 @@ export function CourseCard({
   const levelClass = levelColorMap[level || "Beginner"] || "border-muted text-muted-foreground bg-muted";
 
   return (
-    <Card className="group rounded-3xl border border-border/80 bg-card/80 backdrop-blur-sm overflow-hidden flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:shadow-primary/5 hover:border-primary/40 hover:-translate-y-1">
+    <Card className="group rounded-3xl border border-border/80 bg-card/80 backdrop-blur-sm overflow-hidden flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/10 hover:border-indigo-500/40 hover:-translate-y-1.5 hover-card-lift">
       <div>
         {/* Card Thumbnail */}
         <Link href={courseLink} className="relative aspect-video w-full block overflow-hidden bg-muted/40 border-b border-border/60">
@@ -58,7 +58,7 @@ export function CourseCard({
               src={thumbnail}
               alt={title}
               fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-108"
             />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-primary/10 via-primary/5 to-muted flex items-center justify-center p-6">

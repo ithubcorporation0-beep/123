@@ -246,13 +246,13 @@ export function ImageUpload({ initialData, courseId }: ImageUploadProps) {
         )}
 
         {isEditing && (
-          <div className="space-y-4">
+          <div className="space-y-4 animate-scale-in">
             {/* Tabs */}
             <div className="flex gap-2 border-b pb-2">
               <button
                 type="button"
                 onClick={() => setActiveTab("upload")}
-                className={`text-xs font-medium pb-1 px-2 border-b-2 transition-colors ${
+                className={`text-xs font-medium pb-1 px-2 border-b-2 transition-all ${
                   activeTab === "upload"
                     ? "border-primary text-primary font-semibold"
                     : "border-transparent text-muted-foreground hover:text-foreground"
@@ -263,7 +263,7 @@ export function ImageUpload({ initialData, courseId }: ImageUploadProps) {
               <button
                 type="button"
                 onClick={() => setActiveTab("url")}
-                className={`text-xs font-medium pb-1 px-2 border-b-2 transition-colors ${
+                className={`text-xs font-medium pb-1 px-2 border-b-2 transition-all ${
                   activeTab === "url"
                     ? "border-primary text-primary font-semibold"
                     : "border-transparent text-muted-foreground hover:text-foreground"
@@ -279,9 +279,9 @@ export function ImageUpload({ initialData, courseId }: ImageUploadProps) {
                 onDragLeave={onDragLeave}
                 onDrop={onDrop}
                 onClick={() => !isUploading && fileInputRef.current?.click()}
-                className={`flex flex-col items-center justify-center h-48 rounded-xl border-2 border-dashed transition-colors cursor-pointer text-center p-6 ${
+                className={`flex flex-col items-center justify-center h-48 rounded-xl border-2 border-dashed transition-all cursor-pointer text-center p-6 ${
                   isDragging
-                    ? "border-primary bg-primary/5"
+                    ? "border-primary bg-primary/5 animate-pulse-glow"
                     : "border-muted-foreground/30 hover:border-primary/50 bg-muted/20"
                 }`}
               >
