@@ -1,190 +1,147 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
-  Sparkles,
   ArrowRight,
-  Play,
-  CheckCircle2,
-  Star,
-  Award,
-  BookOpen,
-  Code2,
-  TrendingUp,
   ShieldCheck,
+  Code2,
+  Terminal,
+  CheckCircle2,
+  Lock,
+  Layers,
+  Sparkles,
+  Server,
+  Play,
 } from "lucide-react";
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden pt-16 pb-24 md:pt-28 md:pb-36">
-      {/* Background Radial Glow & Floating Shapes */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[700px] pointer-events-none -z-10 overflow-hidden">
-        <div className="absolute top-[-10%] left-[15%] w-[550px] h-[550px] bg-gradient-to-br from-indigo-500/25 via-purple-500/20 to-pink-500/15 rounded-full blur-[130px] animate-float-slow" />
-        <div className="absolute top-[20%] right-[10%] w-[500px] h-[500px] bg-gradient-to-tr from-blue-500/25 via-cyan-500/20 to-emerald-500/15 rounded-full blur-[120px] animate-float-reverse" />
-      </div>
-
+    <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-28 border-b border-border/60 spotlight-ambient bg-grid-subtle">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
-        {/* Animated Feature Badge */}
-        <div className="animate-fade-in-down inline-flex items-center gap-2.5 px-5 py-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 text-xs sm:text-sm font-semibold backdrop-blur-xl mb-8 shadow-sm hover:border-indigo-500/50 transition-all cursor-default animate-pulse-glow">
-          <Sparkles className="h-4 w-4 text-indigo-500 animate-spin-slow" />
-          <span>IZBA Learning HUB • Next-Gen Interactive LMS</span>
-          <span className="hidden sm:inline px-2 py-0.5 rounded-full bg-indigo-500/20 text-[11px] font-bold text-indigo-600 dark:text-indigo-200">
-            PRO PLATFORM
+        {/* Executive Announcement Pill */}
+        <div className="animate-fade-in-down inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-border/70 bg-background/90 text-foreground text-xs font-medium backdrop-blur-md mb-8 shadow-xs hover:border-border transition-all cursor-default">
+          <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-live-dot" />
+          <span className="text-muted-foreground font-normal">Next-Gen LMS Platform</span>
+          <span className="h-3 w-px bg-border/80" />
+          <span className="text-[11px] font-semibold tracking-wide uppercase text-foreground/90">
+            Enterprise Edition
           </span>
         </div>
 
         {/* Main Heading */}
-        <h1 className="animate-fade-in-up text-4xl sm:text-6xl md:text-7xl font-black tracking-tight max-w-5xl text-foreground leading-[1.1]">
-          Master modern skills with{" "}
-          <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-indigo-400 dark:via-purple-300 dark:to-pink-400 bg-clip-text text-transparent animate-gradient-flow">
-            world-class curriculums.
-          </span>
+        <h1 className="animate-fade-in-up text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight max-w-5xl leading-[1.08] headline-gradient">
+          Master modern software engineering and cloud infrastructure.
         </h1>
 
         {/* Subtitle */}
-        <p className="animate-fade-in-up delay-100 mt-6 text-lg sm:text-xl text-muted-foreground max-w-3xl leading-relaxed font-normal">
-          Structured learning paths, HD video lessons, real-world projects, and QR-verifiable certificates built for ambitious learners and industry professionals.
+        <p className="animate-fade-in-up delay-100 mt-6 text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed font-normal">
+          Structured technical curriculums, production-ready modules, and cryptographically verified certifications designed for ambitious developers and technical teams.
         </p>
 
         {/* CTA Buttons */}
-        <div className="animate-fade-in-up delay-200 mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+        <div className="animate-fade-in-up delay-200 mt-8 flex flex-col sm:flex-row items-center justify-center gap-3.5 w-full sm:w-auto">
           <Link href="/courses" className="w-full sm:w-auto">
             <Button
               size="lg"
-              className="h-14 px-8 text-base font-bold rounded-full w-full sm:w-auto bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-xl shadow-indigo-500/30 transition-all hover:scale-[1.03] active:scale-[0.98] gap-2 animate-pulse-glow"
+              className="h-11 px-6 text-sm font-semibold rounded-xl w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm transition-all gap-2"
             >
-              <span>Explore All Courses</span>
-              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+              <span>Explore All Curriculums</span>
+              <ArrowRight className="h-4 w-4" />
             </Button>
           </Link>
 
-          <Link href="/about" className="w-full sm:w-auto">
+          <Link href="/services" className="w-full sm:w-auto">
             <Button
               size="lg"
               variant="outline"
-              className="h-14 px-8 text-base font-semibold rounded-full w-full sm:w-auto gap-2.5 bg-background/80 backdrop-blur-md hover:bg-muted/80 border-border/80 shadow-xs transition-all hover:scale-[1.03]"
+              className="h-11 px-6 text-sm font-medium rounded-xl w-full sm:w-auto gap-2 border-border/80 bg-background/80 hover:bg-muted/60 transition-all"
             >
-              <Play className="h-4.5 w-4.5 text-indigo-600 dark:text-indigo-400 fill-indigo-600 dark:fill-indigo-400 transition-transform group-hover:scale-110" />
-              <span>How IZBA Works</span>
+              <Layers className="h-4 w-4 text-muted-foreground" />
+              <span>Enterprise IT Services</span>
             </Button>
           </Link>
         </div>
 
-        {/* Social Proof & Trust Badges */}
-        <div className="animate-fade-in-up delay-300 mt-12 pt-8 border-t border-border/40 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 text-xs sm:text-sm text-muted-foreground w-full max-w-3xl">
-          {/* Avatar stack */}
-          <div className="flex items-center gap-3">
-            <div className="flex -space-x-2.5">
-              <div className="relative w-9 h-9 rounded-full border-2 border-background overflow-hidden bg-muted shadow-sm hover:scale-110 transition-transform z-0 hover:z-10">
-                <Image
-                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
-                  alt="Student avatar"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="relative w-9 h-9 rounded-full border-2 border-background overflow-hidden bg-muted shadow-sm hover:scale-110 transition-transform z-0 hover:z-10">
-                <Image
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80"
-                  alt="Student avatar"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="relative w-9 h-9 rounded-full border-2 border-background overflow-hidden bg-muted shadow-sm hover:scale-110 transition-transform z-0 hover:z-10">
-                <Image
-                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&auto=format&fit=crop&q=80"
-                  alt="Student avatar"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="w-9 h-9 rounded-full border-2 border-background bg-gradient-to-tr from-indigo-600 to-purple-600 text-white font-bold text-xs flex items-center justify-center shadow-sm hover:scale-110 transition-transform z-0 hover:z-10">
-                +15k
-              </div>
-            </div>
-
-            <div className="text-left">
-              <div className="flex items-center text-amber-500 gap-0.5">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-amber-500 stroke-amber-500 transition-transform hover:scale-125" />
-                ))}
-              </div>
-              <p className="text-xs font-semibold text-foreground mt-0.5">
-                <strong>4.9 / 5.0 rating</strong> by 15,000+ graduates
-              </p>
-            </div>
+        {/* Enterprise Trust Metric Bar */}
+        <div className="animate-fade-in-up delay-300 mt-12 pt-8 border-t border-border/50 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs text-muted-foreground w-full max-w-3xl">
+          <div className="flex items-center gap-2 font-medium text-foreground">
+            <ShieldCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+            <span>Cryptographic QR Verification</span>
           </div>
-
-          <div className="h-5 w-px bg-border hidden sm:block" />
-
-          <div className="flex items-center gap-2 text-foreground font-semibold text-xs sm:text-sm">
-            <ShieldCheck className="h-5 w-5 text-emerald-500 animate-badge-pulse" />
-            <span>Verified Certificates & Code Tracking</span>
+          <div className="h-3.5 w-px bg-border/70 hidden sm:block" />
+          <div className="flex items-center gap-2 font-medium text-foreground">
+            <Lock className="h-4 w-4 text-primary" />
+            <span>Strict Role-Based Multi-Tenant Panels</span>
+          </div>
+          <div className="h-3.5 w-px bg-border/70 hidden sm:block" />
+          <div className="flex items-center gap-2 font-medium text-foreground">
+            <Server className="h-4 w-4 text-primary" />
+            <span>High-Def Video Streaming & Code Sandbox</span>
           </div>
         </div>
 
-        {/* Interactive Floating Preview Banner */}
-        <div className="animate-fade-in-up delay-400 animate-float-slow mt-14 w-full max-w-5xl rounded-3xl border border-white/20 dark:border-white/10 glass-card shadow-2xl p-5 sm:p-8 text-left overflow-hidden relative group hover:shadow-indigo-500/20 transition-all duration-500">
-          <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/10 via-purple-500/5 to-transparent pointer-events-none" />
-
-          <div className="flex items-center justify-between border-b border-border/50 pb-4 mb-6 text-xs text-muted-foreground">
+        {/* High-Fidelity Product UI Mockup */}
+        <div className="animate-fade-in-up delay-400 mt-14 w-full max-w-5xl rounded-2xl border border-border/80 bg-card/90 shadow-xl overflow-hidden text-left relative">
+          {/* Mockup Window Chrome */}
+          <div className="flex items-center justify-between border-b border-border/60 px-4 py-3 bg-muted/30 text-xs text-muted-foreground">
             <div className="flex items-center gap-2">
-              <div className="h-3 w-3 rounded-full bg-rose-500 animate-pulse" />
-              <div className="h-3 w-3 rounded-full bg-amber-500" />
-              <div className="h-3 w-3 rounded-full bg-emerald-500" />
-              <span className="ml-2 font-mono text-xs font-semibold text-foreground/80">izba.app/learning-hub</span>
+              <div className="h-2.5 w-2.5 rounded-full bg-border" />
+              <div className="h-2.5 w-2.5 rounded-full bg-border" />
+              <div className="h-2.5 w-2.5 rounded-full bg-border" />
+              <span className="ml-2 font-mono text-[11px] text-muted-foreground/80">izba.app / lms-console</span>
             </div>
-            <span className="hidden sm:inline-flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold bg-emerald-500/10 px-3 py-1 rounded-full text-xs">
-              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
-              Live Workspace Active
-            </span>
+            <div className="flex items-center gap-2 font-mono text-[11px]">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+              <span>Production Cluster • Active</span>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div className="p-5 rounded-2xl bg-background/60 border border-border/50 backdrop-blur-md space-y-3 transition-all hover:border-indigo-500/40 hover:shadow-lg">
-              <div className="flex items-center justify-between text-xs font-bold text-foreground">
-                <span className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
-                  <Code2 className="h-4.5 w-4.5" /> Next.js Architecture
+          {/* Mockup Body Content */}
+          <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-5 rounded-xl bg-background/80 border border-border/70 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-foreground flex items-center gap-2">
+                  <Terminal className="h-4 w-4 text-primary" /> Architecture Track
                 </span>
-                <span className="text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md font-extrabold text-[11px]">Free Preview</span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-muted text-muted-foreground">MOD-01</span>
               </div>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Complete hands-on course modules with interactive code player & HD video streams.
+                Full-stack system architecture, microservices, containerization, and enterprise Next.js pipelines.
               </p>
-              <div className="w-full bg-muted rounded-full h-2 overflow-hidden mt-3">
-                <div className="bg-gradient-to-r from-indigo-600 to-purple-600 h-full w-[85%] rounded-full" />
+              <div className="pt-2 border-t border-border/40 flex items-center justify-between text-[11px] text-muted-foreground font-mono">
+                <span>Progress: 100%</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Completed</span>
               </div>
             </div>
 
-            <div className="p-5 rounded-2xl bg-background/60 border border-border/50 backdrop-blur-md space-y-3 transition-all hover:border-indigo-500/40 hover:shadow-lg">
-              <div className="flex items-center justify-between text-xs font-bold text-foreground">
-                <span className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
-                  <Award className="h-4.5 w-4.5" /> Instant Certification
+            <div className="p-5 rounded-xl bg-background/80 border border-border/70 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-foreground flex items-center gap-2">
+                  <Code2 className="h-4 w-4 text-primary" /> Cloud & Security
                 </span>
-                <span className="text-purple-600 dark:text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded-md font-extrabold text-[11px]">QR Verified</span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-muted text-muted-foreground">MOD-02</span>
               </div>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Automated QR verification for employers and Linked-In sharing upon course completion.
+                TCP/IP routing, cloud infrastructure administration, and database optimization.
               </p>
-              <div className="w-full bg-muted rounded-full h-2 overflow-hidden mt-3">
-                <div className="bg-gradient-to-r from-purple-600 to-pink-600 h-full w-[100%] rounded-full" />
+              <div className="pt-2 border-t border-border/40 flex items-center justify-between text-[11px] text-muted-foreground font-mono">
+                <span>Progress: 75%</span>
+                <span className="text-primary font-semibold">Active Session</span>
               </div>
             </div>
 
-            <div className="p-5 rounded-2xl bg-background/60 border border-border/50 backdrop-blur-md space-y-3 transition-all hover:border-indigo-500/40 hover:shadow-lg">
-              <div className="flex items-center justify-between text-xs font-bold text-foreground">
-                <span className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
-                  <TrendingUp className="h-4.5 w-4.5" /> Student Analytics
+            <div className="p-5 rounded-xl bg-background/80 border border-border/70 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-foreground flex items-center gap-2">
+                  <ShieldCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" /> Verifiable Certs
                 </span>
-                <span className="text-blue-600 dark:text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-md font-extrabold text-[11px]">Realtime</span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">VERIFIED</span>
               </div>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Track your quiz scores, assignments, and curriculum progression seamlessly.
+                Tamper-proof digital certificates signed with unique cryptographic hash identification.
               </p>
-              <div className="w-full bg-muted rounded-full h-2 overflow-hidden mt-3">
-                <div className="bg-gradient-to-r from-blue-600 to-cyan-500 h-full w-[70%] rounded-full" />
+              <div className="pt-2 border-t border-border/40 flex items-center justify-between text-[11px] text-muted-foreground font-mono">
+                <span>Verification ID:</span>
+                <span className="text-muted-foreground font-semibold">#IZB-84920</span>
               </div>
             </div>
           </div>

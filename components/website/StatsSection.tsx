@@ -27,61 +27,53 @@ export async function StatsSection() {
     {
       icon: BookOpen,
       value: `${totalCourses > 0 ? totalCourses : 5}+`,
-      label: "Active Curriculums",
+      label: "Production Curriculums",
       description: "Structured beginner to advanced engineering tracks",
-      gradient: "from-blue-500/20 to-indigo-500/10",
-      iconColor: "text-blue-600 dark:text-blue-400",
     },
     {
       icon: Users,
       value: `${totalLearners > 0 ? totalLearners : 12}+`,
-      label: "Enrolled Learners",
-      description: "Active students mastering in-demand industry skills",
-      gradient: "from-emerald-500/20 to-teal-500/10",
-      iconColor: "text-emerald-600 dark:text-emerald-400",
+      label: "Active Learners",
+      description: "Developers mastering production-ready technologies",
     },
     {
       icon: Award,
       value: `${totalChapters > 0 ? totalChapters : 20}+`,
-      label: "Interactive Lessons",
-      description: "Step-by-step video tutorials and practical exercises",
-      gradient: "from-amber-500/20 to-orange-500/10",
-      iconColor: "text-amber-600 dark:text-amber-400",
+      label: "Technical Lessons",
+      description: "High-definition video lessons with code exercises",
     },
     {
       icon: ShieldCheck,
       value: "100%",
-      label: "Verified Credentials",
-      description: "Tamper-proof verifiable completion certificates",
-      gradient: "from-purple-500/20 to-pink-500/10",
-      iconColor: "text-purple-600 dark:text-purple-400",
+      label: "Verifiable Certs",
+      description: "Cryptographically signed tamper-proof credentials",
     },
   ];
 
   return (
-    <section className="py-20 border-y border-border/40 bg-gradient-to-b from-background via-muted/30 to-background relative overflow-hidden">
+    <section className="py-16 border-b border-border/60 bg-muted/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {stats.map((stat, idx) => {
             const Icon = stat.icon;
             return (
               <div
                 key={idx}
-                className="group p-7 rounded-3xl border border-white/20 dark:border-white/10 glass-card flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/15 hover:-translate-y-2 hover-card-lift"
+                className="p-6 rounded-2xl border border-border/70 bg-card/80 flex flex-col justify-between hover:border-border transition-all hover-card-lift"
               >
-                <div className="flex items-center justify-between mb-6">
-                  <div className={`p-4 rounded-2xl bg-gradient-to-br ${stat.gradient} border border-border/40 shadow-sm ${stat.iconColor} transition-all duration-300 group-hover:scale-110 group-hover:rotate-6`}>
-                    <Icon className="h-7 w-7" />
+                <div className="flex items-center justify-between mb-4">
+                  <div className="p-2 rounded-lg bg-muted text-muted-foreground border border-border/50">
+                    <Icon className="h-4 w-4" />
                   </div>
-                  <span className="text-4xl sm:text-5xl font-black tracking-tight text-foreground bg-gradient-to-b from-foreground to-foreground/70 bg-clip-text">
+                  <span className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground font-mono">
                     {stat.value}
                   </span>
                 </div>
                 <div>
-                  <h4 className="font-bold text-base sm:text-lg text-foreground group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                  <h4 className="font-semibold text-sm text-foreground">
                     {stat.label}
                   </h4>
-                  <p className="text-xs sm:text-sm text-muted-foreground mt-2 leading-relaxed font-normal">
+                  <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
                     {stat.description}
                   </p>
                 </div>

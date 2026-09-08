@@ -134,7 +134,7 @@ export function Footer() {
           <div className="flex flex-wrap items-center gap-4 sm:gap-6">
             <Link
               href="/admin"
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary font-bold hover:bg-primary/20 transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border border-border/80 text-muted-foreground font-medium hover:text-foreground hover:bg-muted/50 transition-colors"
             >
               <Shield className="h-3.5 w-3.5" />
               <span>Admin Panel</span>

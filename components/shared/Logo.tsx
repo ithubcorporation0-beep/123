@@ -9,17 +9,17 @@ interface LogoProps {
 export function Logo({ className = "", isWhite = false }: LogoProps) {
   return (
     <Link href="/" className={`flex items-center gap-2.5 group ${className}`}>
-      <div className={`p-2 rounded-xl transition-transform group-hover:scale-105 shadow-sm ${
-        isWhite ? "bg-white text-primary" : "bg-primary text-primary-foreground"
+      <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
+        isWhite ? "bg-white text-black" : "bg-foreground text-background shadow-xs"
       }`}>
-        <GraduationCap className="h-5 w-5" />
+        <GraduationCap className="h-4 w-4" />
       </div>
       <div className="flex flex-col">
-        <span className={`font-black text-xl tracking-tight leading-none ${isWhite ? "text-white" : "text-foreground"}`}>
+        <span className={`font-bold text-base tracking-tight leading-tight ${isWhite ? "text-white" : "text-foreground"}`}>
           IZBA
         </span>
-        <span className="text-[10px] uppercase font-bold tracking-widest text-indigo-600 dark:text-indigo-400">
-          Learning HUB
+        <span className="text-[9px] uppercase font-semibold tracking-wider text-muted-foreground">
+          Learning Platform
         </span>
       </div>
     </Link>

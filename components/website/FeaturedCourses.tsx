@@ -51,25 +51,24 @@ export async function FeaturedCourses() {
         }));
 
   return (
-    <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
-        <div className="space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary font-bold text-xs uppercase tracking-wider">
-            <Sparkles className="h-3.5 w-3.5" />
-            <span>Featured Programs</span>
+    <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+        <div className="space-y-2">
+          <div className="text-xs font-mono font-medium uppercase tracking-wider text-muted-foreground">
+            Featured Curriculums
           </div>
-          <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-foreground">
-            Explore Top Learning Paths
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+            Engineering & Technology Tracks
           </h2>
-          <p className="text-muted-foreground max-w-2xl text-sm sm:text-base leading-relaxed">
-            Comprehensive curriculums built from the ground up to prepare you for real-world software engineering, design systems, and cloud architecture.
+          <p className="text-muted-foreground max-w-2xl text-sm leading-relaxed">
+            Hands-on technical curriculums designed to prepare engineers for cloud systems, SaaS architectures, and full-stack software development.
           </p>
         </div>
 
         <Link href="/courses">
-          <Button variant="outline" className="gap-2 font-bold rounded-2xl h-12 px-6 border-border/80 hover:bg-muted/80 shadow-xs">
+          <Button variant="outline" className="h-10 px-4 text-xs font-semibold rounded-xl border-border/80 hover:bg-muted/60 shadow-xs gap-1.5">
             <span>Browse Full Catalog</span>
-            <ArrowRight className="h-4 w-4" />
+            <ArrowRight className="h-3.5 w-3.5" />
           </Button>
         </Link>
       </div>

@@ -1,56 +1,54 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { GraduationCap, ArrowRight, Video, Users2, LineChart, Sparkles } from "lucide-react";
+import { GraduationCap, ArrowRight, Video, LineChart, ShieldCheck } from "lucide-react";
 
 export function TeacherCTABanner() {
   return (
-    <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      <div className="rounded-3xl bg-gradient-to-r from-primary via-indigo-600 to-blue-700 text-white p-8 sm:p-14 md:p-18 shadow-2xl shadow-primary/20 relative overflow-hidden">
-        {/* Background Ambient Elements */}
-        <div className="absolute right-0 bottom-0 translate-x-12 translate-y-12 opacity-10 pointer-events-none">
-          <GraduationCap className="w-[450px] h-[450px]" />
-        </div>
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl pointer-events-none" />
+    <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <div className="rounded-2xl bg-slate-950 dark:bg-card border border-slate-800 text-slate-100 p-8 sm:p-14 md:p-16 relative overflow-hidden shadow-xl">
+        {/* Subtle engineering grid / ambient glow */}
+        <div className="absolute inset-0 bg-grid-subtle opacity-10 pointer-events-none" />
+        <div className="absolute -right-20 -bottom-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 max-w-3xl space-y-6">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 text-xs font-bold backdrop-blur-md border border-white/20">
-            <Sparkles className="h-4 w-4" /> 
-            <span>Educator & Instructor Network</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-slate-900/90 border border-slate-800 text-xs font-mono text-slate-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block"></span>
+            <span>EDUCATOR WORKSPACE & PUBLISHING</span>
           </div>
 
-          <h2 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight text-white">
-            Share your expertise with thousands of ambitious learners.
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight text-white">
+            Deliver engineering masterclasses to thousands of ambitious learners.
           </h2>
 
-          <p className="text-base sm:text-lg text-white/85 leading-relaxed">
-            Create multi-chapter curriculums, publish video masterclasses, attach project assignments, and manage student enrollments with our dedicated Instructor Workspace.
+          <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-2xl font-normal">
+            Build structured multi-chapter curriculums, stream verified video lectures, assess progress with automated quiz engines, and manage enrollments through our unified Instructor Console.
           </p>
 
-          <div className="flex flex-wrap gap-6 pt-2 text-sm text-white/90 font-medium">
+          <div className="flex flex-wrap gap-6 pt-1 text-xs sm:text-sm text-slate-300">
             <div className="flex items-center gap-2">
-              <Video className="h-4.5 w-4.5 text-blue-200" />
-              <span>Built-in Video Streaming</span>
+              <Video className="h-4 w-4 text-slate-400" />
+              <span>Multi-Source Video Engine</span>
             </div>
             <div className="flex items-center gap-2">
-              <LineChart className="h-4.5 w-4.5 text-blue-200" />
-              <span>Real-Time Student Analytics</span>
+              <LineChart className="h-4 w-4 text-slate-400" />
+              <span>Cohort Analytics & Insights</span>
             </div>
             <div className="flex items-center gap-2">
-              <GraduationCap className="h-4.5 w-4.5 text-blue-200" />
-              <span>Automated Certificate Issuance</span>
+              <ShieldCheck className="h-4 w-4 text-slate-400" />
+              <span>Cryptographic Certificate Verification</span>
             </div>
           </div>
 
-          <div className="pt-4 flex flex-wrap gap-4">
+          <div className="pt-3 flex flex-wrap gap-3.5">
             <Link href="/register">
-              <Button size="lg" variant="secondary" className="h-13 px-8 font-bold text-foreground bg-white hover:bg-white/90 rounded-2xl shadow-lg gap-2">
+              <Button size="lg" className="h-11 px-6 font-semibold text-slate-950 bg-white hover:bg-slate-100 rounded-xl shadow-sm gap-2">
                 <span>Become an Instructor</span>
-                <ArrowRight className="h-4.5 w-4.5" />
+                <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
             <Link href="/about">
-              <Button size="lg" variant="outline" className="h-13 px-8 font-semibold text-white border-white/30 hover:bg-white/10 rounded-2xl backdrop-blur-sm">
-                Explore Platform Features
+              <Button size="lg" variant="outline" className="h-11 px-6 font-semibold text-slate-200 border-slate-800 hover:bg-slate-900 rounded-xl">
+                Platform Architecture
               </Button>
             </Link>
           </div>

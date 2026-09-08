@@ -72,26 +72,26 @@ export function CoursesFilter({ categories }: CoursesFilterProps) {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Search courses by title or topic..."
-          className="pl-10 pr-10 rounded-2xl h-12 text-sm bg-card border shadow-xs"
+          className="pl-10 pr-10 rounded-xl h-11 text-sm bg-card border-border/80 shadow-xs"
         />
         {title && (
           <Button
             size="icon"
             variant="ghost"
             onClick={clearSearch}
-            className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full text-muted-foreground hover:text-foreground"
+            className="absolute right-1.5 top-1/2 -translate-y-1/2 h-7 w-7 rounded-md text-muted-foreground hover:text-foreground"
           >
-            <X className="h-4 w-4" />
+            <X className="h-3.5 w-3.5" />
           </Button>
         )}
       </div>
 
-      {/* Category Filter Pills */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+      {/* Category Filter Tabs */}
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none">
         <Badge
           onClick={() => onSelectCategory(null)}
           variant={!currentCategoryId ? "default" : "outline"}
-          className="cursor-pointer py-1.5 px-4 text-xs font-semibold rounded-full transition-all shrink-0 select-none shadow-xs"
+          className="cursor-pointer py-1 px-3 text-xs font-medium rounded-lg transition-colors shrink-0 select-none border-border/70"
         >
           All Subjects
         </Badge>
@@ -102,7 +102,7 @@ export function CoursesFilter({ categories }: CoursesFilterProps) {
               key={cat.id}
               onClick={() => onSelectCategory(cat.id)}
               variant={isSelected ? "default" : "outline"}
-              className="cursor-pointer py-1.5 px-4 text-xs font-semibold rounded-full transition-all shrink-0 select-none shadow-xs"
+              className="cursor-pointer py-1 px-3 text-xs font-medium rounded-lg transition-colors shrink-0 select-none border-border/70"
             >
               {cat.name}
             </Badge>

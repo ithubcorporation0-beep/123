@@ -19,13 +19,6 @@ const iconMap: Record<string, any> = {
   "ecommerce-solutions": ShoppingCart,
 };
 
-const categoryColorMap: Record<string, string> = {
-  "software-solutions": "from-blue-500/20 to-indigo-500/10 text-blue-600 dark:text-blue-400",
-  "website-solutions": "from-emerald-500/20 to-teal-500/10 text-emerald-600 dark:text-emerald-400",
-  "digital-marketing": "from-rose-500/20 to-red-500/10 text-rose-600 dark:text-rose-400",
-  "graphic-design": "from-purple-500/20 to-pink-500/10 text-purple-600 dark:text-purple-400",
-  "ecommerce-solutions": "from-amber-500/20 to-orange-500/10 text-amber-600 dark:text-amber-400",
-};
 
 const defaultCategories = [
   {
@@ -108,39 +101,38 @@ export async function CategorySection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {displayCategories.map((cat) => {
             const Icon = iconMap[cat.slug] || BookOpen;
-            const colorClass = categoryColorMap[cat.slug] || "from-primary/20 to-primary/10 text-primary";
             const courseCount = cat._count?.courses ?? 1;
 
             return (
               <Link
                 key={cat.id || cat.slug}
                 href={`/courses?category=${cat.slug}`}
-                className="group p-7 rounded-3xl border border-border/80 bg-card/80 backdrop-blur-md hover:bg-card hover:border-primary/40 transition-all duration-300 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 flex flex-col justify-between"
+                className="group p-6 rounded-2xl border border-border/80 bg-card hover:border-foreground/20 transition-all duration-200 hover-card-lift shadow-xs flex flex-col justify-between"
               >
                 <div>
-                  <div className="flex items-center justify-between mb-5">
-                    <div className={`p-4 rounded-2xl bg-gradient-to-br ${colorClass} border border-border/40 shadow-sm group-hover:scale-110 transition-transform duration-300`}>
-                      <Icon className="h-6 w-6" />
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="p-2.5 rounded-xl bg-muted text-foreground border border-border/60">
+                      <Icon className="h-5 w-5" />
                     </div>
-                    <span className="text-xs font-bold px-3 py-1 rounded-full bg-muted/80 text-foreground border border-border/60">
+                    <span className="text-[11px] font-mono font-medium px-2.5 py-0.5 rounded-md bg-muted text-muted-foreground border border-border/50">
                       {courseCount} {courseCount === 1 ? "Program" : "Programs"}
                     </span>
                   </div>
 
-                  <h3 className="font-extrabold text-xl text-foreground group-hover:text-primary transition-colors">
+                  <h3 className="font-bold text-base text-foreground group-hover:text-primary transition-colors">
                     {cat.name}
                   </h3>
-                  <p className="text-xs sm:text-sm text-muted-foreground mt-2 leading-relaxed">
+                  <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
                     {cat.description || `Comprehensive courses and practical training in ${cat.name}.`}
                   </p>
                 </div>
 
-                <div className="mt-8 pt-4 border-t border-border/60 flex items-center text-xs font-bold text-primary gap-1 group-hover:translate-x-1.5 transition-transform">
-                  <span>Browse {cat.name} Catalog</span>
-                  <ArrowRight className="h-4 w-4" />
+                <div className="mt-6 pt-4 border-t border-border/50 flex items-center text-xs font-semibold text-foreground/80 gap-1.5 group-hover:text-primary transition-colors">
+                  <span>Explore Track</span>
+                  <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
                 </div>
               </Link>
             );
