@@ -212,7 +212,19 @@ export function Sidebar({ userRole = Role.student, userName, onNavigate }: Sideb
       </div>
 
       {/* Footer Utility Link */}
-      <div className="pt-4 border-t space-y-2">
+      <div className="pt-4 border-t space-y-1.5">
+        {isAdmin && (
+          <Link href="/admin" onClick={onNavigate} className="w-full block">
+            <Button
+              variant={isViewingAdmin ? "default" : "outline"}
+              size="sm"
+              className="w-full justify-start gap-2 text-xs rounded-xl font-bold"
+            >
+              <Shield className="h-3.5 w-3.5" />
+              Admin Panel
+            </Button>
+          </Link>
+        )}
         <Link href="/" target="_blank" className="w-full block">
           <Button
             variant="ghost"

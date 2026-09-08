@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/shared/Logo";
-import { Heart } from "lucide-react";
+import { Heart, Shield } from "lucide-react";
 
 export function Footer() {
   return (
@@ -131,7 +131,14 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="pt-8 border-t flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
           <p>&copy; {new Date().getFullYear()} IZBA Learning HUB. All rights reserved.</p>
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6">
+            <Link
+              href="/admin"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary font-bold hover:bg-primary/20 transition-colors"
+            >
+              <Shield className="h-3.5 w-3.5" />
+              <span>Admin Panel</span>
+            </Link>
             <Link href="/about" className="hover:text-foreground transition-colors">
               Privacy Policy
             </Link>
