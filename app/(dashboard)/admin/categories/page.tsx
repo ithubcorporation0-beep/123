@@ -6,8 +6,15 @@ import { CategoryManagement, CategoryItem } from "@/components/admin/categories/
 export default async function AdminCategoriesPage() {
   const currentUser = await getCurrentUser();
 
-  if (!currentUser || currentUser.role !== "admin") {
+  if (!currentUser) {
     redirect("/login");
+  }
+
+  if (currentUser.role !== "admin") {
+    if (currentUser.role === "instructor") {
+      redirect("/teacher");
+    }
+    redirect("/student");
   }
 
   const categories = await db.courseCategory.findMany({

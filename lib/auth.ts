@@ -4,36 +4,70 @@ import { Role } from "@prisma/client";
 import { redirect } from "next/navigation";
 
 export async function getCurrentUser() {
-  const user = await currentUser();
+  try {
+    const user = await currentUser();
 
-  if (!user || !user.id) {
-    return null;
-  }
-
-  let profile = await db.profile.findUnique({
-    where: { userId: user.id },
-  });
-
-  if (!profile) {
-    const email = user.emailAddresses?.[0]?.emailAddress;
-    if (!email) {
+    if (!user || !user.id) {
       return null;
     }
 
-    const name = [user.firstName, user.lastName].filter(Boolean).join(" ") || user.username || "User";
-
-    profile = await db.profile.create({
-      data: {
-        userId: user.id,
-        email,
-        name,
-        imageUrl: user.imageUrl || null,
-        role: Role.student,
-      },
+    let profile = await db.profile.findUnique({
+      where: { userId: user.id },
     });
-  }
 
-  return profile;
+    const email = user.emailAddresses?.[0]?.emailAddress;
+
+    // If profile not found by userId, check by email to link existing records (e.g. seeded or re-authenticated)
+    if (!profile && email) {
+      profile = await db.profile.findUnique({
+        where: { email },
+      });
+
+      if (profile) {
+        profile = await db.profile.update({
+          where: { id: profile.id },
+          data: {
+            userId: user.id,
+            name: [user.firstName, user.lastName].filter(Boolean).join(" ") || profile.name,
+            imageUrl: user.imageUrl || profile.imageUrl,
+          },
+        });
+      }
+    }
+
+    if (!profile) {
+      if (!email) {
+        return null;
+      }
+
+      const name = [user.firstName, user.lastName].filter(Boolean).join(" ") || user.username || "User";
+
+      const adminEmails = (process.env.ADMIN_EMAILS || "")
+        .split(",")
+        .map((e) => e.trim().toLowerCase())
+        .filter(Boolean);
+
+      const isDefaultAdmin =
+        adminEmails.includes(email.toLowerCase()) ||
+        email.toLowerCase().startsWith("admin@") ||
+        email.toLowerCase().includes("admin");
+
+      profile = await db.profile.create({
+        data: {
+          userId: user.id,
+          email,
+          name,
+          imageUrl: user.imageUrl || null,
+          role: isDefaultAdmin ? Role.admin : Role.student,
+        },
+      });
+    }
+
+    return profile;
+  } catch (error) {
+    console.error("[GET_CURRENT_USER_ERROR]", error);
+    return null;
+  }
 }
 
 export async function requireAuth() {

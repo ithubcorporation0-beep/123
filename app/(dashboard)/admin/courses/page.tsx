@@ -6,8 +6,15 @@ import { AdminCourseTable, AdminCourseRecord } from "@/components/admin/courses/
 export default async function AdminCoursesPage() {
   const currentUser = await getCurrentUser();
 
-  if (!currentUser || currentUser.role !== "admin") {
+  if (!currentUser) {
     redirect("/login");
+  }
+
+  if (currentUser.role !== "admin") {
+    if (currentUser.role === "instructor") {
+      redirect("/teacher");
+    }
+    redirect("/student");
   }
 
   const courses = await db.course.findMany({

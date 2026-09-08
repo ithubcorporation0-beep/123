@@ -21,8 +21,15 @@ import {
 export default async function AdminOverviewPage() {
   const currentUser = await getCurrentUser();
 
-  if (!currentUser || currentUser.role !== "admin") {
+  if (!currentUser) {
     redirect("/login");
+  }
+
+  if (currentUser.role !== "admin") {
+    if (currentUser.role === "instructor") {
+      redirect("/teacher");
+    }
+    redirect("/student");
   }
 
   const [
@@ -168,7 +175,7 @@ export default async function AdminOverviewPage() {
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="relative w-10 h-10 rounded-full overflow-hidden border bg-muted flex items-center justify-center shrink-0">
                       {user.imageUrl ? (
-                        <Image src={user.imageUrl} alt={user.name || "User"} fill className="object-cover" />
+                        <Image src={user.imageUrl} alt={user.name || "User"} fill unoptimized className="object-cover" />
                       ) : (
                         <User className="h-5 w-5 text-primary" />
                       )}

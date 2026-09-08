@@ -176,7 +176,7 @@ export function AdminCourseTable({ courses }: AdminCourseTableProps) {
                     <div className="flex items-center gap-3">
                       <div className="relative w-12 h-8 rounded-xl overflow-hidden border bg-muted shrink-0">
                         {course.thumbnail ? (
-                          <Image src={course.thumbnail} alt={course.title} fill className="object-cover" />
+                          <Image src={course.thumbnail} alt={course.title} fill unoptimized className="object-cover" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center bg-primary/10 text-primary">
                             <BookOpen className="h-4 w-4" />

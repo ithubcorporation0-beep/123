@@ -6,8 +6,15 @@ import { UserManagementTable, AdminUserRecord } from "@/components/admin/users/U
 export default async function AdminUsersPage() {
   const currentUser = await getCurrentUser();
 
-  if (!currentUser || currentUser.role !== "admin") {
+  if (!currentUser) {
     redirect("/login");
+  }
+
+  if (currentUser.role !== "admin") {
+    if (currentUser.role === "instructor") {
+      redirect("/teacher");
+    }
+    redirect("/student");
   }
 
   const users = await db.profile.findMany({

@@ -210,7 +210,7 @@ export function UserManagementTable({
                     <div className="flex items-center gap-3">
                       <div className="relative w-9 h-9 rounded-full overflow-hidden border bg-muted flex items-center justify-center shrink-0">
                         {user.avatar ? (
-                          <Image src={user.avatar} alt={user.name || "User"} fill className="object-cover" />
+                          <Image src={user.avatar} alt={user.name || "User"} fill unoptimized className="object-cover" />
                         ) : (
                           <User className="h-4 w-4 text-primary" />
                         )}
