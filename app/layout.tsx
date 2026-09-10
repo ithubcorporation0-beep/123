@@ -1,17 +1,21 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { DM_Serif_Display, Open_Sans } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const dmSerif = DM_Serif_Display({
+  weight: "400",
   subsets: ["latin"],
+  variable: "--font-dm-serif",
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const openSans = Open_Sans({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-open-sans",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -33,9 +37,9 @@ export default function RootLayout({
     <ClerkProvider publishableKey={publishableKey}>
       <html
         lang="en"
-        className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+        className={`${dmSerif.variable} ${openSans.variable} h-full antialiased`}
       >
-        <body className="min-h-full flex flex-col font-sans">
+        <body className="min-h-full flex flex-col font-sans text-foreground bg-background leading-relaxed">
           {children}
           <Toaster />
         </body>

@@ -7,7 +7,6 @@ import { Logo } from "@/components/shared/Logo";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import {
   Shield,
   KeyRound,
@@ -72,16 +71,12 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <main className="min-h-screen flex flex-col justify-center items-center bg-radial from-muted/50 via-background to-background p-4 sm:p-6 relative overflow-hidden">
-      {/* Background Decorative Ambient Glows */}
-      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
-
-      {/* Back to Home Button */}
+    <main className="min-h-screen flex flex-col justify-center items-center bg-[#F2F2F2] p-4 sm:p-6 relative">
+      {/* Back Links */}
       <div className="w-full max-w-md mb-4 flex items-center justify-between">
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors font-medium px-3 py-1.5 rounded-xl hover:bg-muted/50"
+          className="inline-flex items-center gap-1.5 text-xs text-[#545454] hover:text-[#194866] transition-colors font-semibold px-3 py-1.5 rounded-[30px] hover:bg-white"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
           <span>Back to Home</span>
@@ -89,15 +84,15 @@ export default function AdminLoginPage() {
 
         <Link
           href="/login"
-          className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors font-medium px-3 py-1.5 rounded-xl hover:bg-muted/50"
+          className="inline-flex items-center gap-1.5 text-xs text-[#545454] hover:text-[#194866] transition-colors font-semibold px-3 py-1.5 rounded-[30px] hover:bg-white"
         >
           <span>Student/Teacher Login</span>
         </Link>
       </div>
 
-      <Card className="w-full max-w-md shadow-2xl border-border/80 bg-card/95 backdrop-blur-xl rounded-3xl overflow-hidden animate-fade-in-up">
-        {/* Top Header Glow Bar */}
-        <div className="h-1.5 w-full bg-linear-to-r from-primary via-indigo-500 to-purple-500" />
+      <Card className="w-full max-w-md rounded-[16px] border border-[#DEDEDE] bg-white shadow-none overflow-hidden animate-fade-in-up">
+        {/* Top Accent Stripe */}
+        <div className="h-1.5 w-full bg-[#194866]" />
 
         <CardHeader className="text-center pt-8 pb-4 space-y-3">
           <div className="mx-auto flex items-center justify-center">
@@ -105,35 +100,35 @@ export default function AdminLoginPage() {
           </div>
 
           <div className="pt-2 flex justify-center">
-            <Badge variant="outline" className="px-3 py-1 gap-1.5 bg-primary/10 text-primary border-primary/25 rounded-full text-xs font-semibold">
-              <Shield className="h-3.5 w-3.5" />
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-[30px] bg-[#FF9F59]/20 text-[#194866] text-xs font-bold uppercase tracking-wider">
+              <Shield className="h-3.5 w-3.5 text-[#194866]" />
               <span>Administrative Portal</span>
-            </Badge>
+            </span>
           </div>
 
-          <CardTitle className="text-2xl font-black tracking-tight text-foreground">
+          <CardTitle className="font-serif text-[32px] font-normal leading-[1.05] tracking-tight text-[#194866]">
             Admin Passcode Access
           </CardTitle>
 
-          <CardDescription className="text-xs sm:text-sm text-muted-foreground max-w-xs mx-auto">
+          <CardDescription className="text-xs sm:text-sm text-[#545454] max-w-xs mx-auto leading-[1.6]">
             Enter the admin password to unlock all platform dashboards, user management, and course moderation.
           </CardDescription>
         </CardHeader>
 
         <CardContent className="p-6 pt-2 space-y-5">
           {/* Quick preset helper pill */}
-          <div className="p-3 rounded-2xl bg-muted/40 border border-border/60 flex items-center justify-between text-xs">
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <KeyRound className="h-4 w-4 text-primary shrink-0" />
+          <div className="p-3.5 rounded-[16px] bg-[#F2F2F2] border border-[#DEDEDE] flex items-center justify-between text-xs">
+            <div className="flex items-center gap-2 text-[#545454]">
+              <KeyRound className="h-4 w-4 text-[#194866] shrink-0" />
               <span>Master Admin Passcode:</span>
-              <code className="font-mono font-bold text-foreground bg-background px-1.5 py-0.5 rounded border">
+              <code className="font-mono font-bold text-[#194866] bg-white px-2 py-0.5 rounded-[4px] border border-[#DEDEDE]">
                 446655
               </code>
             </div>
             <button
               type="button"
               onClick={handleQuickFill}
-              className="text-[11px] font-bold text-primary hover:underline cursor-pointer ml-2"
+              className="text-xs font-bold text-[#194866] hover:underline cursor-pointer ml-2"
             >
               Fill Code
             </button>
@@ -144,17 +139,17 @@ export default function AdminLoginPage() {
             <div className="space-y-2">
               <label
                 htmlFor="admin-password"
-                className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center justify-between"
+                className="text-xs font-bold uppercase tracking-wider text-[#545454] flex items-center justify-between"
               >
                 <span>Passcode</span>
-                <span className="text-[10px] text-muted-foreground/80 font-normal">
+                <span className="text-[10px] text-[#545454] font-normal">
                   6-digit security code
                 </span>
               </label>
 
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-muted-foreground">
-                  <Lock className="h-4 w-4" />
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#545454]">
+                  <Lock className="h-4 w-4 text-[#194866]" />
                 </div>
 
                 <Input
@@ -168,14 +163,14 @@ export default function AdminLoginPage() {
                   }}
                   autoFocus
                   disabled={isLoading || success}
-                  className="pl-10 pr-10 h-12 text-center text-lg font-mono tracking-widest rounded-2xl border-border bg-background focus-visible:ring-primary/20"
+                  className="pl-10 pr-10 h-11 text-center text-lg font-mono tracking-widest rounded-[4px] border-[#DEDEDE] bg-white focus-visible:border-[#194866] focus-visible:ring-1 focus-visible:ring-[#194866]"
                 />
 
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   aria-label={showPassword ? "Hide password" : "Show password"}
-                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-[#545454] hover:text-[#194866] transition-colors cursor-pointer"
                 >
                   {showPassword ? (
                     <EyeOff className="h-4 w-4" />
@@ -188,7 +183,7 @@ export default function AdminLoginPage() {
 
             {/* Error Message */}
             {error && (
-              <div className="p-3 rounded-2xl bg-destructive/10 border border-destructive/20 text-destructive text-xs flex items-center gap-2 animate-shake">
+              <div className="p-3 rounded-[4px] bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
                 <AlertCircle className="h-4 w-4 shrink-0" />
                 <span>{error}</span>
               </div>
@@ -196,21 +191,21 @@ export default function AdminLoginPage() {
 
             {/* Success Feedback */}
             {success && (
-              <div className="p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs flex items-center gap-2">
+              <div className="p-3 rounded-[4px] bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs flex items-center gap-2">
                 <CheckCircle2 className="h-4 w-4 shrink-0" />
                 <span>Passcode verified! Loading all dashboards...</span>
               </div>
             )}
 
-            {/* Submit Button */}
+            {/* Submit Button (40px radius pill) */}
             <Button
               type="submit"
               disabled={isLoading || success || !password}
-              className="w-full h-12 rounded-2xl font-bold text-sm bg-primary hover:bg-primary/90 text-primary-foreground shadow-md transition-all gap-2 cursor-pointer"
+              className="w-full h-11 rounded-[40px] px-[25px] py-[12px] font-semibold text-sm bg-[#194866] hover:bg-[#194866]/90 text-white shadow-none gap-2 cursor-pointer"
             >
               {isLoading ? (
                 <div className="flex items-center gap-2">
-                  <div className="h-4 w-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
+                  <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                   <span>Verifying Passcode...</span>
                 </div>
               ) : success ? (
@@ -229,9 +224,9 @@ export default function AdminLoginPage() {
           </form>
 
           {/* Additional Info */}
-          <div className="pt-2 text-center text-xs text-muted-foreground border-t">
+          <div className="pt-2 text-center text-xs text-[#545454] border-t border-[#DEDEDE] leading-[1.6]">
             <span>Entering </span>
-            <span className="font-semibold text-foreground">446655</span>
+            <span className="font-bold text-[#194866]">446655</span>
             <span> grants immediate access to the Admin Panel, Instructor Workspace, and Student Portal.</span>
           </div>
         </CardContent>

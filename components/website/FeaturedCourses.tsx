@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 import { FALLBACK_COURSES } from "@/lib/course-catalog";
 import { CourseCard } from "@/components/website/CourseCard";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export async function FeaturedCourses() {
   let courses: any[] = [];
@@ -51,24 +51,27 @@ export async function FeaturedCourses() {
         }));
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <section className="py-20 px-5 sm:px-8 lg:px-12 max-w-[1585px] mx-auto">
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-        <div className="space-y-2">
-          <div className="text-xs font-mono font-medium uppercase tracking-wider text-muted-foreground">
+        <div className="space-y-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-[30px] bg-[#FF9F59]/20 text-[#194866] text-xs font-bold uppercase tracking-wider">
             Featured Curriculums
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-[46px] text-[#194866] font-normal leading-[1.05] tracking-tight">
             Engineering & Technology Tracks
           </h2>
-          <p className="text-muted-foreground max-w-2xl text-sm leading-relaxed">
+          <p className="text-[#545454] max-w-2xl text-sm leading-[1.6] font-normal">
             Hands-on technical curriculums designed to prepare engineers for cloud systems, SaaS architectures, and full-stack software development.
           </p>
         </div>
 
         <Link href="/courses">
-          <Button variant="outline" className="h-10 px-4 text-xs font-semibold rounded-xl border-border/80 hover:bg-muted/60 shadow-xs gap-1.5">
+          <Button
+            variant="outline"
+            className="rounded-[40px] px-[25px] py-[12px] h-auto text-xs font-semibold border-[#DEDEDE] bg-white hover:bg-[#F2F2F2] text-[#194866] shadow-none gap-2"
+          >
             <span>Browse Full Catalog</span>
-            <ArrowRight className="h-3.5 w-3.5" />
+            <ArrowRight className="h-4 w-4 text-[#FF9F59]" />
           </Button>
         </Link>
       </div>
