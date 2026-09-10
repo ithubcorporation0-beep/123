@@ -9,6 +9,7 @@ import {
   Layers,
   Server,
   Sparkles,
+  BookOpen,
 } from "lucide-react";
 import { db } from "@/lib/db";
 
@@ -62,14 +63,14 @@ export async function HeroSection() {
             </Button>
           </Link>
 
-          <Link href="/services" className="w-full sm:w-auto">
+          <Link href="/about" className="w-full sm:w-auto">
             <Button
               size="lg"
               variant="outline"
               className="w-full sm:w-auto rounded-[40px] px-[25px] py-[12px] h-auto text-sm font-semibold border-[#DEDEDE] bg-[#F2F2F2] hover:bg-[#EAEAEA] text-[#194866] shadow-none gap-2"
             >
-              <Layers className="h-4 w-4 text-[#194866]" />
-              <span>Enterprise IT Services</span>
+              <BookOpen className="h-4 w-4 text-[#194866]" />
+              <span>How It Works</span>
             </Button>
           </Link>
 

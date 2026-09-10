@@ -73,7 +73,7 @@ export function WebsiteContentManager({ initialBlocks }: WebsiteContentManagerPr
   const sections = [
     { key: "hero", label: "Homepage Hero" },
     { key: "about", label: "About Section" },
-    { key: "features", label: "Features & Services" },
+    { key: "features", label: "Features & Benefits" },
     { key: "testimonials", label: "Testimonials" },
     { key: "faq", label: "FAQ Items" },
     { key: "contact", label: "Contact Info" },

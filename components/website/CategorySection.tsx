@@ -90,13 +90,13 @@ export async function CategorySection() {
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
           <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-[30px] bg-[#194866] text-white text-xs font-bold uppercase tracking-wider">
             <Sparkles className="h-3.5 w-3.5 text-[#FF9F59]" />
-            <span>Main IT Services & Specializations</span>
+            <span>Curated Learning Tracks & Disciplines</span>
           </div>
           <h2 className="font-serif text-3xl sm:text-4xl md:text-[46px] text-[#194866] font-normal leading-[1.05] tracking-tight">
-            Explore by Specialization
+            Explore by Learning Track
           </h2>
           <p className="text-[#545454] text-sm sm:text-base leading-[1.6] font-normal">
-            Dive into our 5 core technology domains structured for rapid mastery, portfolio building, and real enterprise delivery.
+            Dive into comprehensive educational paths structured for rapid mastery, hands-on projects, and verified credentials.
           </p>
         </div>
 

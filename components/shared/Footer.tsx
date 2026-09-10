@@ -22,13 +22,8 @@ export function Footer() {
             </h3>
             <ul className="space-y-2.5 text-sm text-[#545454]">
               <li>
-                <Link href="/courses" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
+                <Link href="/courses" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform font-semibold text-[#194866]">
                   Explore Courses
-                </Link>
-              </li>
-              <li>
-                <Link href="/services" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform font-semibold text-[#194866]">
-                  IT Services & Solutions
                 </Link>
               </li>
               <li>
@@ -42,6 +37,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/student" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
+                  Student Verification
+                </Link>
+              </li>
+              <li>
                 <Link href="/contact" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
                   Help & Support
                 </Link>
@@ -49,35 +49,35 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Col 3: IT Services & Solutions */}
+          {/* Col 3: Course Tracks & Disciplines */}
           <div>
             <h3 className="font-serif text-base text-[#194866] font-normal mb-4">
-              IT Services
+              Learning Tracks
             </h3>
             <ul className="space-y-2.5 text-sm text-[#545454]">
               <li>
-                <Link href="/services#software-solutions" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
-                  Software Solutions
+                <Link href="/courses" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
+                  Web & Fullstack Development
                 </Link>
               </li>
               <li>
-                <Link href="/services#website-solutions" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
-                  Website Solutions
+                <Link href="/courses" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
+                  Cloud & DevOps Engineering
                 </Link>
               </li>
               <li>
-                <Link href="/services#digital-marketing" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
-                  Digital Marketing
+                <Link href="/courses" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
+                  AI & Machine Learning
                 </Link>
               </li>
               <li>
-                <Link href="/services#graphic-design" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
-                  Graphic Design
+                <Link href="/courses" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
+                  UI/UX & Product Design
                 </Link>
               </li>
               <li>
-                <Link href="/services#ecommerce-solutions" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
-                  E-Commerce Systems
+                <Link href="/courses" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
+                  Data Science & Analytics
                 </Link>
               </li>
             </ul>

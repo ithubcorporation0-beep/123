@@ -5,6 +5,7 @@ import { ADMIN_SESSION_COOKIE, verifyAdminToken } from "@/lib/admin-auth";
 const isPublicRoute = createRouteMatcher([
   "/",
   "/about",
+  "/services(.*)",
   "/courses(.*)",
   "/instructors(.*)",
   "/pricing",

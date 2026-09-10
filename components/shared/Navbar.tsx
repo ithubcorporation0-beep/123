@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
 
 const defaultNavLinks = [
   { label: "All Courses", href: "/courses" },
-  { label: "IT Services", href: "/services" },
+  { label: "Pricing & Plans", href: "/pricing" },
   { label: "How It Works", href: "/about" },
   { label: "Contact & Support", href: "/contact" },
 ];
