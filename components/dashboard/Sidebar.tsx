@@ -33,6 +33,9 @@ import {
   Compass,
   Activity,
   Layers,
+  LogOut,
+  FileText,
+  User,
 } from "lucide-react";
 import { Role } from "@prisma/client";
 
@@ -69,20 +72,24 @@ export function Sidebar({ userRole = Role.student, userName, onNavigate }: Sideb
     { label: "Settings", href: "/teacher/settings", icon: Settings },
   ];
 
+  // Exact 13 items + Logout requested by the user:
+  // 1. Dashboard, 2. Courses, 3. Categories, 4. Modules, 5. Lessons, 6. Students,
+  // 7. Teachers, 8. Enrollments, 9. Media Library, 10. Website Content, 11. Certificates,
+  // 12. Settings, 13. Admin Profile
   const adminLinks = [
     { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { label: "Courses", href: "/admin/courses", icon: BookOpen },
-    { label: "Curriculum", href: "/admin/curriculum", icon: Layers },
+    { label: "Categories", href: "/admin/categories", icon: FolderTree },
+    { label: "Modules", href: "/admin/modules", icon: Layers },
+    { label: "Lessons", href: "/admin/lessons", icon: FileText },
     { label: "Students", href: "/admin/students", icon: GraduationCap },
     { label: "Teachers", href: "/admin/teachers", icon: Presentation },
     { label: "Enrollments", href: "/admin/enrollments", icon: Users },
-    { label: "Categories", href: "/admin/categories", icon: FolderTree },
-    { label: "Certificates", href: "/admin/certificates", icon: Award },
     { label: "Media Library", href: "/admin/media", icon: ImageIcon },
     { label: "Website Content", href: "/admin/content", icon: Globe },
-    { label: "Navigation", href: "/admin/navigation", icon: Compass },
-    { label: "Activity Logs", href: "/admin/activity", icon: Activity },
+    { label: "Certificates", href: "/admin/certificates", icon: Award },
     { label: "Settings", href: "/admin/settings", icon: Settings },
+    { label: "Admin Profile", href: "/admin/profile", icon: User },
   ];
 
   // Active panel configuration
@@ -100,6 +107,13 @@ export function Sidebar({ userRole = Role.student, userName, onNavigate }: Sideb
   const navigateTo = (href: string) => {
     if (onNavigate) onNavigate();
     router.push(href);
+  };
+
+  const handleAdminLogout = async () => {
+    try {
+      await fetch("/api/admin/logout", { method: "POST" });
+    } catch {}
+    window.location.href = "/admin/login";
   };
 
   return (
@@ -222,6 +236,15 @@ export function Sidebar({ userRole = Role.student, userName, onNavigate }: Sideb
               </Link>
             );
           })}
+          {isViewingAdmin && (
+            <button
+              onClick={handleAdminLogout}
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-rose-600 hover:bg-rose-50 hover:text-rose-700 w-full transition-all text-left cursor-pointer"
+            >
+              <LogOut className="h-4 w-4 shrink-0 text-rose-600" />
+              <span className="truncate">Logout</span>
+            </button>
+          )}
         </nav>
       </div>
 
