@@ -22,6 +22,8 @@ model Profile {
   imageUrl  String?
   role      Role     @default(student)
   bio       String?
+  phone     String?
+  status    String   @default("ACTIVE") // ACTIVE, SUSPENDED
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -40,25 +42,33 @@ model CourseCategory {
   name        String   @unique
   slug        String   @unique
   description String?
+  imageUrl    String?
+  position    Int      @default(0)
   courses     Course[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
 
 model Course {
-  id          String         @id @default(uuid())
-  title       String
-  slug        String         @unique
-  description String?
-  thumbnail   String?
-  price       Float          @default(0.0)
-  isPublished Boolean        @default(false)
-  isFeatured  Boolean        @default(false)
-  instructorId String
-  instructor  Profile        @relation("InstructorCourses", fields: [instructorId], references: [id], onDelete: Cascade)
-  categoryId  String?
-  category    CourseCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  level       String?        @default("BEGINNER")
+  id             String         @id @default(uuid())
+  title          String
+  slug           String         @unique
+  description    String?
+  thumbnail      String?
+  bannerUrl      String?
+  introVideoUrl  String?
+  duration       String?
+  price          Float          @default(0.0)
+  isPublished    Boolean        @default(false)
+  isFeatured     Boolean        @default(false)
+  status         String         @default("DRAFT") // DRAFT, PUBLISHED, ARCHIVED
+  seoTitle       String?
+  seoDescription String?
+  instructorId   String
+  instructor     Profile        @relation("InstructorCourses", fields: [instructorId], references: [id], onDelete: Cascade)
+  categoryId     String?
+  category       CourseCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  level          String?        @default("BEGINNER")
 
   modules      CourseModule[]
   chapters     Chapter[]
@@ -74,14 +84,15 @@ model Course {
 }
 
 model CourseModule {
-  id        String   @id @default(uuid())
-  title     String
-  position  Int
-  courseId  String
-  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  lessons   Lesson[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  position    Int
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons     Lesson[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@index([courseId])
 }
@@ -94,15 +105,19 @@ enum LessonContentType {
 }
 
 model Lesson {
-  id          String            @id @default(uuid())
-  title       String
-  position    Int
-  isFree      Boolean           @default(false)
-  contentType LessonContentType @default(VIDEO)
-  videoUrl    String?
-  content     String?           // Markdown or HTML
-  moduleId    String
-  module      CourseModule      @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  id             String            @id @default(uuid())
+  title          String
+  position       Int
+  isFree         Boolean           @default(false)
+  isPublished    Boolean           @default(true)
+  contentType    LessonContentType @default(VIDEO)
+  videoUrl       String?
+  videoThumbnail String?
+  duration       String?
+  externalUrl    String?
+  content        String?           // Markdown or HTML
+  moduleId       String
+  module         CourseModule      @relation(fields: [moduleId], references: [id], onDelete: Cascade)
 
   resources   LessonResource[]
   progress    LessonProgress[]
@@ -219,13 +234,15 @@ model AssignmentSubmission {
 }
 
 model Certificate {
-  id             String   @id @default(uuid())
+  id              String   @id @default(uuid())
   certificateCode String   @unique
-  profileId      String
-  profile        Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  courseId       String
-  course         Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  issuedAt       DateTime @default(now())
+  profileId       String
+  profile         Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  courseId        String
+  course          Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  issuedAt        DateTime @default(now())
+  pdfUrl          String?
+  status          String   @default("ISSUED") // ISSUED, REVOKED
 
   @@unique([profileId, courseId])
 }
@@ -298,3 +315,70 @@ model UserProgress {
   @@unique([profileId, chapterId])
   @@index([chapterId])
 }
+
+model MediaItem {
+  id        String   @id @default(uuid())
+  name      String
+  url       String
+  publicId  String?
+  type      String   // image, video, pdf, document
+  size      Int?     // bytes
+  mimeType  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WebsiteContent {
+  id          String   @id @default(uuid())
+  section     String   // hero, about, services, testimonials, faq, contact, footer, banner
+  key         String   @unique
+  title       String?
+  subtitle    String?
+  content     String?
+  imageUrl    String?
+  videoUrl    String?
+  linkUrl     String?
+  linkText    String?
+  metadata    Json?
+  isPublished Boolean  @default(true)
+  position    Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([section])
+}
+
+model NavigationItem {
+  id           String   @id @default(uuid())
+  label        String
+  url          String
+  location     String   @default("header") // header, footer, topbar
+  position     Int      @default(0)
+  isActive     Boolean  @default(true)
+  openInNewTab Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model AdminSetting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String
+  group     String   @default("general") // general, contact, social, courses, registration, certificate, seo
+  updatedAt DateTime @updatedAt
+}
+
+model ActivityLog {
+  id         String   @id @default(uuid())
+  adminEmail String   @default("admin@lms.local")
+  action     String   // CREATE, UPDATE, DELETE, UPLOAD, SETTING_CHANGE
+  targetType String   // course, lesson, module, user, category, media, content, setting, enrollment
+  targetId   String?
+  details    String?
+  createdAt  DateTime @default(now())
+
+  @@index([action])
+  @@index([targetType])
+  @@index([createdAt])
+}
+

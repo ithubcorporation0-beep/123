@@ -28,6 +28,11 @@ import {
   ChevronDown,
   Shield,
   GraduationCap,
+  Image as ImageIcon,
+  Globe,
+  Compass,
+  Activity,
+  Layers,
 } from "lucide-react";
 import { Role } from "@prisma/client";
 
@@ -65,10 +70,19 @@ export function Sidebar({ userRole = Role.student, userName, onNavigate }: Sideb
   ];
 
   const adminLinks = [
-    { label: "Overview", href: "/admin", icon: ShieldAlert },
-    { label: "Users", href: "/admin/users", icon: Users },
+    { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { label: "Courses", href: "/admin/courses", icon: BookOpen },
+    { label: "Curriculum", href: "/admin/curriculum", icon: Layers },
+    { label: "Students", href: "/admin/students", icon: GraduationCap },
+    { label: "Teachers", href: "/admin/teachers", icon: Presentation },
+    { label: "Enrollments", href: "/admin/enrollments", icon: Users },
     { label: "Categories", href: "/admin/categories", icon: FolderTree },
+    { label: "Certificates", href: "/admin/certificates", icon: Award },
+    { label: "Media Library", href: "/admin/media", icon: ImageIcon },
+    { label: "Website Content", href: "/admin/content", icon: Globe },
+    { label: "Navigation", href: "/admin/navigation", icon: Compass },
+    { label: "Activity Logs", href: "/admin/activity", icon: Activity },
+    { label: "Settings", href: "/admin/settings", icon: Settings },
   ];
 
   // Active panel configuration

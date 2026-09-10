@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { logActivity } from "@/lib/activity-log";
 
 export const dynamic = "force-dynamic";
 
@@ -19,25 +20,33 @@ export async function PATCH(
     }
 
     const { categoryId } = await params;
-    const { name, description } = await req.json();
+    const body = await req.json();
+    const { name, description, imageUrl, position } = body;
 
-    if (!name || !name.trim()) {
-      return NextResponse.json({ error: "Category name is required" }, { status: 400 });
+    const dataToUpdate: any = {};
+    if (name !== undefined) {
+      dataToUpdate.name = name.trim();
+      dataToUpdate.slug = name
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "");
     }
-
-    const slug = name
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-|-$/g, "");
+    if (description !== undefined) dataToUpdate.description = description?.trim() || null;
+    if (imageUrl !== undefined) dataToUpdate.imageUrl = imageUrl || null;
+    if (position !== undefined) dataToUpdate.position = parseInt(position) || 0;
 
     const updatedCategory = await db.courseCategory.update({
       where: { id: categoryId },
-      data: {
-        name: name.trim(),
-        slug,
-        description: description?.trim() || null,
-      },
+      data: dataToUpdate,
+    });
+
+    await logActivity({
+      adminEmail: user.email,
+      action: "UPDATE",
+      targetType: "category",
+      targetId: categoryId,
+      details: `Updated category: "${updatedCategory.name}"`,
     });
 
     return NextResponse.json(updatedCategory);
@@ -66,7 +75,6 @@ export async function DELETE(
 
     const { categoryId } = await params;
 
-    // Check if category has courses attached
     const coursesCount = await db.course.count({
       where: { categoryId },
     });
@@ -74,7 +82,7 @@ export async function DELETE(
     if (coursesCount > 0) {
       return NextResponse.json(
         {
-          error: `Cannot delete category: it is currently assigned to ${coursesCount} ${coursesCount === 1 ? "course" : "courses"}. Please reassign or delete the courses first.`,
+          error: `Cannot delete category: it is assigned to ${coursesCount} ${coursesCount === 1 ? "course" : "courses"}. Reassign courses first.`,
         },
         { status: 400 }
       );
@@ -82,6 +90,14 @@ export async function DELETE(
 
     const deletedCategory = await db.courseCategory.delete({
       where: { id: categoryId },
+    });
+
+    await logActivity({
+      adminEmail: user.email,
+      action: "DELETE",
+      targetType: "category",
+      targetId: categoryId,
+      details: `Deleted category: "${deletedCategory.name}"`,
     });
 
     return NextResponse.json(deletedCategory);

@@ -247,6 +247,19 @@ export function AdminCourseTable({ courses }: AdminCourseTableProps) {
                   {/* Actions */}
                   <TableCell className="py-4 text-right">
                     <div className="flex items-center justify-end gap-1.5">
+                      {/* Curriculum Button */}
+                      <Link href={`/admin/courses/${course.id}/curriculum`}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="rounded-xl text-xs h-8 px-2.5 gap-1 border-border text-foreground hover:bg-muted transition-colors"
+                          title="Manage Modules & Lessons"
+                        >
+                          <BookOpen className="h-3.5 w-3.5 text-primary" />
+                          <span className="hidden sm:inline">Curriculum</span>
+                        </Button>
+                      </Link>
+
                       {/* Edit Course Button */}
                       <Link href={`/admin/courses/${course.id}`}>
                         <Button

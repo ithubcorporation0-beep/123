@@ -7,9 +7,9 @@ import { Logo } from "@/components/shared/Logo";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, LayoutDashboard, ArrowRight, Shield } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const navLinks = [
+const defaultNavLinks = [
   { label: "All Courses", href: "/courses" },
   { label: "IT Services", href: "/services" },
   { label: "How It Works", href: "/about" },
@@ -19,7 +19,20 @@ const navLinks = [
 export function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const [navLinks, setNavLinks] = useState(defaultNavLinks);
   const { isSignedIn, isLoaded } = useAuth();
+
+  useEffect(() => {
+    fetch("/api/admin/navigation?location=header")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          const active = data.filter((d: any) => d.isActive).map((d: any) => ({ label: d.label, href: d.url }));
+          if (active.length > 0) setNavLinks(active);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[#DEDEDE] bg-white transition-all">
