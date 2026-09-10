@@ -16,6 +16,8 @@ import {
   ArrowRight,
   User,
   Shield,
+  Presentation,
+  LayoutDashboard,
 } from "lucide-react";
 
 export default async function AdminOverviewPage() {
@@ -124,6 +126,109 @@ export default async function AdminOverviewPage() {
               Users
             </Button>
           </Link>
+        </div>
+      </div>
+
+      {/* All Dashboards & Workspaces Hub */}
+      <div className="space-y-3">
+        <div>
+          <h2 className="text-lg font-bold tracking-tight text-foreground flex items-center gap-2">
+            <LayoutDashboard className="h-5 w-5 text-primary" />
+            <span>All Dashboards & Workspaces</span>
+          </h2>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Switch instantly between root administrative control, the instructor course builder, and the student learning portal.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Card 1: Admin Control Center */}
+          <Card className="rounded-3xl border border-primary/30 bg-primary/5 shadow-xs">
+            <CardContent className="p-5 flex flex-col justify-between h-full space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="p-2.5 rounded-2xl bg-primary/10 text-primary">
+                  <Shield className="h-5 w-5" />
+                </div>
+                <Badge className="bg-primary text-primary-foreground text-[10px] font-bold">
+                  Current Panel
+                </Badge>
+              </div>
+              <div>
+                <h3 className="font-bold text-sm text-foreground">Admin Control Center</h3>
+                <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                  System overview, user role management ({totalUsers} total users), course moderation, and taxonomy.
+                </p>
+              </div>
+              <div className="pt-2 flex items-center gap-2">
+                <Link href="/admin/users" className="flex-1">
+                  <Button variant="outline" size="sm" className="w-full rounded-xl text-xs font-semibold h-8">
+                    Users ({totalUsers})
+                  </Button>
+                </Link>
+                <Link href="/admin/courses" className="flex-1">
+                  <Button variant="outline" size="sm" className="w-full rounded-xl text-xs font-semibold h-8">
+                    Courses ({totalCourses})
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Card 2: Instructor Workspace */}
+          <Card className="rounded-3xl border bg-card shadow-xs hover:border-purple-500/40 hover:shadow-md transition-all">
+            <CardContent className="p-5 flex flex-col justify-between h-full space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="p-2.5 rounded-2xl bg-purple-500/10 text-purple-600 dark:text-purple-400">
+                  <Presentation className="h-5 w-5" />
+                </div>
+                <Badge variant="outline" className="text-purple-600 border-purple-300 dark:border-purple-800 text-[10px] font-bold">
+                  {instructorsCount} Instructors
+                </Badge>
+              </div>
+              <div>
+                <h3 className="font-bold text-sm text-foreground">Instructor Workspace</h3>
+                <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                  Curriculum creator, video lectures, quizzes, assignments, enrolled students, and teaching analytics.
+                </p>
+              </div>
+              <div className="pt-2">
+                <Link href="/teacher">
+                  <Button variant="default" size="sm" className="w-full rounded-xl text-xs font-bold gap-1.5 bg-purple-600 hover:bg-purple-700 text-white h-8">
+                    <span>Open Instructor Dashboard</span>
+                    <ArrowRight className="h-3 w-3" />
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Card 3: Student Learning Portal */}
+          <Card className="rounded-3xl border bg-card shadow-xs hover:border-blue-500/40 hover:shadow-md transition-all">
+            <CardContent className="p-5 flex flex-col justify-between h-full space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="p-2.5 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400">
+                  <GraduationCap className="h-5 w-5" />
+                </div>
+                <Badge variant="outline" className="text-blue-600 border-blue-300 dark:border-blue-800 text-[10px] font-bold">
+                  {studentsCount} Students
+                </Badge>
+              </div>
+              <div>
+                <h3 className="font-bold text-sm text-foreground">Student Learning Portal</h3>
+                <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                  Student view, video player, enrolled courses, lesson progress, interactive quizzes, and certificates.
+                </p>
+              </div>
+              <div className="pt-2">
+                <Link href="/student">
+                  <Button variant="default" size="sm" className="w-full rounded-xl text-xs font-bold gap-1.5 bg-blue-600 hover:bg-blue-700 text-white h-8">
+                    <span>Open Student Dashboard</span>
+                    <ArrowRight className="h-3 w-3" />
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
 

@@ -4,7 +4,7 @@ import { UserButton } from "@clerk/nextjs";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Sidebar } from "@/components/dashboard/Sidebar";
-import { Menu, GraduationCap } from "lucide-react";
+import { Menu, GraduationCap, LogOut } from "lucide-react";
 import { Role } from "@prisma/client";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
@@ -62,6 +62,22 @@ export function TopNavbar({ userRole, userName, userEmail }: TopNavbarProps) {
           </span>
           <span className="text-xs text-muted-foreground">{userEmail}</span>
         </div>
+
+        {userRole === Role.admin && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={async () => {
+              await fetch("/api/admin/logout", { method: "POST" });
+              window.location.href = "/admin/login";
+            }}
+            className="h-8 px-2.5 rounded-xl text-xs gap-1.5 text-muted-foreground hover:text-destructive hover:border-destructive/40 cursor-pointer"
+            title="Sign out of Admin Session"
+          >
+            <LogOut className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline">Admin Exit</span>
+          </Button>
+        )}
 
         <UserButton />
       </div>

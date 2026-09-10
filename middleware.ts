@@ -1,5 +1,6 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
+import { ADMIN_SESSION_COOKIE, verifyAdminToken } from "@/lib/admin-auth";
 
 const isPublicRoute = createRouteMatcher([
   "/",
@@ -14,6 +15,9 @@ const isPublicRoute = createRouteMatcher([
   "/register(.*)",
   "/sign-in(.*)",
   "/sign-up(.*)",
+  "/admin/login(.*)",
+  "/api/admin/auth(.*)",
+  "/api/admin/logout(.*)",
   "/api/courses(.*)",
   "/api/categories(.*)",
   "/api/certificates/verify(.*)",
@@ -26,23 +30,48 @@ const hasClerkKeys = Boolean(
   process.env.CLERK_SECRET_KEY
 );
 
-export default async function middleware(req: NextRequest, event: any) {
-  if (!hasClerkKeys) {
-    console.warn(
-      "[CLERK_MIDDLEWARE] Missing NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY or CLERK_SECRET_KEY. Please configure them in your production environment variables."
-    );
+const defaultMiddleware = async (req: NextRequest) => {
+  const adminToken = req.cookies.get(ADMIN_SESSION_COOKIE)?.value;
+  const isAdminAuthenticated = await verifyAdminToken(adminToken);
+
+  if (isAdminAuthenticated) {
+    if (req.nextUrl.pathname === "/admin/login") {
+      return NextResponse.redirect(new URL("/admin", req.url));
+    }
     return NextResponse.next();
   }
 
-  return clerkMiddleware(async (auth, request) => {
-    if (!isPublicRoute(request)) {
-      const { userId, redirectToSignIn } = await auth();
-      if (!userId) {
-        return redirectToSignIn({ returnBackUrl: request.url });
+  if (req.nextUrl.pathname.startsWith("/admin") && req.nextUrl.pathname !== "/admin/login") {
+    return NextResponse.redirect(new URL("/admin/login", req.url));
+  }
+
+  return NextResponse.next();
+};
+
+export default hasClerkKeys
+  ? clerkMiddleware(async (auth, request) => {
+      const adminToken = request.cookies.get(ADMIN_SESSION_COOKIE)?.value;
+      const isAdminAuthenticated = await verifyAdminToken(adminToken);
+
+      if (isAdminAuthenticated) {
+        if (request.nextUrl.pathname === "/admin/login") {
+          return NextResponse.redirect(new URL("/admin", request.url));
+        }
+        return NextResponse.next();
       }
-    }
-  })(req, event);
-}
+
+      if (request.nextUrl.pathname.startsWith("/admin") && request.nextUrl.pathname !== "/admin/login") {
+        return NextResponse.redirect(new URL("/admin/login", request.url));
+      }
+
+      if (!isPublicRoute(request)) {
+        const { userId, redirectToSignIn } = await auth();
+        if (!userId) {
+          return redirectToSignIn({ returnBackUrl: request.url });
+        }
+      }
+    })
+  : defaultMiddleware;
 
 export const config = {
   matcher: [

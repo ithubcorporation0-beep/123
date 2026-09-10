@@ -2,9 +2,54 @@ import { currentUser } from "@clerk/nextjs/server";
 import { db } from "@/lib/db";
 import { Role } from "@prisma/client";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import {
+  ADMIN_SESSION_COOKIE,
+  ADMIN_USER_ID,
+  ADMIN_EMAIL,
+  ADMIN_NAME,
+  verifyAdminToken,
+} from "@/lib/admin-auth";
 
 export async function getCurrentUser() {
   try {
+    // 1. Check for dedicated Admin Passcode session
+    try {
+      const cookieStore = await cookies();
+      const adminToken = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
+      if (adminToken && (await verifyAdminToken(adminToken))) {
+        let adminProfile = await db.profile.findFirst({
+          where: {
+            OR: [
+              { userId: ADMIN_USER_ID },
+              { email: ADMIN_EMAIL },
+              { role: Role.admin },
+            ],
+          },
+        });
+
+        if (!adminProfile) {
+          adminProfile = await db.profile.create({
+            data: {
+              userId: ADMIN_USER_ID,
+              email: ADMIN_EMAIL,
+              name: ADMIN_NAME,
+              role: Role.admin,
+            },
+          });
+        } else if (adminProfile.role !== Role.admin) {
+          adminProfile = await db.profile.update({
+            where: { id: adminProfile.id },
+            data: { role: Role.admin },
+          });
+        }
+
+        return adminProfile;
+      }
+    } catch {
+      // In static generation or outside request context, proceed to Clerk
+    }
+
     const user = await currentUser();
 
     if (!user || !user.id) {
