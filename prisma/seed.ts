@@ -3,9 +3,9 @@ import { PrismaClient, Role } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("Seeding exact 5 core IT services & programs...");
+  console.log("Seeding authentic educational learning catalog...");
 
-  // Clear previous data to ensure ONLY the 5 requested services/courses exist
+  // Clear previous data
   await prisma.userProgress.deleteMany({});
   await prisma.enrollment.deleteMany({});
   await prisma.certificate.deleteMany({});
@@ -13,32 +13,37 @@ async function main() {
   await prisma.course.deleteMany({});
   await prisma.courseCategory.deleteMany({});
 
-  // 1. Seed Categories for the 5 requested IT Services
+  // 1. Seed Categories for Educational Learning Disciplines
   const categoriesData = [
     {
-      name: "Software Solutions",
-      slug: "software-solutions",
-      description: "Enterprise software architecture, scalable SaaS products, APIs, and cloud microservices.",
+      name: "Business & Leadership",
+      slug: "business-leadership",
+      description: "Executive strategy, organizational leadership, team management, and entrepreneurship.",
     },
     {
-      name: "Website Solutions",
-      slug: "website-solutions",
-      description: "Modern web engineering, Next.js applications, responsive portals, and headless CMS.",
+      name: "Design & Creative Arts",
+      slug: "design-creative-arts",
+      description: "Visual arts, graphic design, creative typography, digital illustration, and design thinking.",
     },
     {
-      name: "Digital Marketing",
-      slug: "digital-marketing",
-      description: "SEO optimization, Google & Meta ad campaigns, growth funnels, and performance marketing.",
+      name: "Science & Technology",
+      slug: "science-technology",
+      description: "Data science, statistical reasoning, scientific methods, and quantitative problem solving.",
     },
     {
-      name: "Graphic Design",
-      slug: "graphic-design",
-      description: "Brand identity systems, UI/UX prototyping in Figma, vector art, and creative media.",
+      name: "Communication & Languages",
+      slug: "communication-languages",
+      description: "Public speaking, persuasive storytelling, interpersonal communication, and rhetoric.",
     },
     {
-      name: "E-Commerce Solutions",
-      slug: "ecommerce-solutions",
-      description: "High-converting online storefronts, Shopify & headless engines, and payment integrations.",
+      name: "Finance & Economics",
+      slug: "finance-economics",
+      description: "Personal finance, budgeting, investment fundamentals, economics, and wealth building.",
+    },
+    {
+      name: "Personal Development",
+      slug: "personal-development",
+      description: "Mindfulness, cognitive performance, habit formation, emotional intelligence, and well-being.",
     },
   ];
 
@@ -59,12 +64,12 @@ async function main() {
   // 2. Seed Instructors
   const instructorsData = [
     {
-      userId: "inst_sarah_chen",
-      email: "sarah.chen@izba.app",
-      name: "Dr. Sarah Chen",
+      userId: "inst_david_kim",
+      email: "david.kim@izba.app",
+      name: "Prof. David Kim",
       role: Role.instructor,
-      imageUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&auto=format&fit=crop&q=80",
-      bio: "Full-Stack Web Architect and Technical Lead specializing in Next.js, modern frontends, and performance.",
+      imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80",
+      bio: "Executive Coach & Management Educator with 15+ years guiding organizational leaders.",
     },
     {
       userId: "inst_alex_rivera",
@@ -72,38 +77,54 @@ async function main() {
       name: "Alex Rivera",
       role: Role.instructor,
       imageUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80",
-      bio: "Creative Director & Marketing Strategist. Expert in brand storytelling, graphic design systems, and digital campaigns.",
+      bio: "Creative Director & Visual Arts Educator passionate about unlocking creative potential in learners.",
     },
     {
-      userId: "inst_david_kim",
-      email: "david.kim@izba.app",
-      name: "David Kim",
+      userId: "inst_sarah_chen",
+      email: "sarah.chen@izba.app",
+      name: "Dr. Sarah Chen",
       role: Role.instructor,
-      imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80",
-      bio: "Chief Technology Officer & Enterprise Architect with 15+ years delivering scalable SaaS, e-commerce, and cloud systems.",
+      imageUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&auto=format&fit=crop&q=80",
+      bio: "Associate Professor of Computational Science dedicated to making quantitative thinking accessible.",
+    },
+    {
+      userId: "inst_elena_rostova",
+      email: "elena.rostova@izba.app",
+      name: "Elena Rostova",
+      role: Role.instructor,
+      imageUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&auto=format&fit=crop&q=80",
+      bio: "Keynote Speaker & Communication Coach who has mentored over 10,000 public presenters globally.",
     },
   ];
 
   const instructorMap: Record<string, string> = {};
 
   for (const inst of instructorsData) {
-    const profile = await prisma.profile.upsert({
-      where: { email: inst.email },
-      update: {
-        name: inst.name,
-        role: inst.role,
-        imageUrl: inst.imageUrl,
-        bio: inst.bio,
-      },
-      create: {
-        userId: inst.userId,
-        email: inst.email,
-        name: inst.name,
-        role: inst.role,
-        imageUrl: inst.imageUrl,
-        bio: inst.bio,
-      },
+    let profile = await prisma.profile.findFirst({
+      where: { OR: [{ email: inst.email }, { userId: inst.userId }] },
     });
+    if (profile) {
+      profile = await prisma.profile.update({
+        where: { id: profile.id },
+        data: {
+          name: inst.name,
+          role: inst.role,
+          imageUrl: inst.imageUrl,
+          bio: inst.bio,
+        },
+      });
+    } else {
+      profile = await prisma.profile.create({
+        data: {
+          userId: inst.userId,
+          email: inst.email,
+          name: inst.name,
+          role: inst.role,
+          imageUrl: inst.imageUrl,
+          bio: inst.bio,
+        },
+      });
+    }
     instructorMap[inst.email] = profile.id;
     console.log(`✓ Instructor: ${profile.name}`);
   }
@@ -116,7 +137,7 @@ async function main() {
       name: "Emily Clark",
       role: Role.student,
       imageUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&auto=format&fit=crop&q=80",
-      bio: "Aspiring software engineer.",
+      bio: "Lifelong learner exploring business and design.",
     },
     {
       userId: "student_marcus_vance",
@@ -124,69 +145,77 @@ async function main() {
       name: "Marcus Vance",
       role: Role.student,
       imageUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80",
-      bio: "Digital entrepreneur and UI designer.",
+      bio: "Curious student studying data science and personal growth.",
     },
   ];
 
   const studentMap: Record<string, string> = {};
 
   for (const stud of studentsData) {
-    const profile = await prisma.profile.upsert({
-      where: { email: stud.email },
-      update: {
-        name: stud.name,
-        role: stud.role,
-        imageUrl: stud.imageUrl,
-        bio: stud.bio,
-      },
-      create: {
-        userId: stud.userId,
-        email: stud.email,
-        name: stud.name,
-        role: stud.role,
-        imageUrl: stud.imageUrl,
-        bio: stud.bio,
-      },
+    let profile = await prisma.profile.findFirst({
+      where: { OR: [{ email: stud.email }, { userId: stud.userId }] },
     });
+    if (profile) {
+      profile = await prisma.profile.update({
+        where: { id: profile.id },
+        data: {
+          name: stud.name,
+          role: stud.role,
+          imageUrl: stud.imageUrl,
+          bio: stud.bio,
+        },
+      });
+    } else {
+      profile = await prisma.profile.create({
+        data: {
+          userId: stud.userId,
+          email: stud.email,
+          name: stud.name,
+          role: stud.role,
+          imageUrl: stud.imageUrl,
+          bio: stud.bio,
+        },
+      });
+    }
     studentMap[stud.email] = profile.id;
     console.log(`✓ Student: ${profile.name}`);
   }
 
-  // 4. Seed EXACTLY 5 IT Services Programs
+  // 4. Seed 6 Educational Learning Courses
   const sampleVideoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
 
   const coursesData = [
     {
-      title: "Software Solutions & Enterprise Architecture",
-      slug: "software-solutions-enterprise-architecture",
-      description: "Master enterprise software engineering, scalable multi-tenant SaaS architecture, cloud microservices, REST & GraphQL APIs, and high-performance databases.",
-      thumbnail: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop&q=80",
+      title: "Mastering Business Leadership & Strategic Management",
+      slug: "mastering-business-leadership-management",
+      description: "Develop executive decision-making, team leadership strategies, operations management, organizational psychology, and strategic growth planning for modern leaders.",
+      thumbnail: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&auto=format&fit=crop&q=80",
       price: 0,
       isPublished: true,
       isFeatured: true,
       level: "INTERMEDIATE",
-      categorySlug: "software-solutions",
+      categorySlug: "business-leadership",
       instructorEmail: "david.kim@izba.app",
       chapters: [
         {
-          title: "Enterprise Software Architecture & Design Patterns",
-          description: "Understand domain-driven design, clean architecture, and decoupled service layers.",
+          title: "Principles of Modern Leadership & Vision Setting",
+          description: "Understand foundational leadership styles, emotional intelligence, and inspiring team alignment.",
           videoUrl: sampleVideoUrl,
           position: 1,
           isPublished: true,
           isFree: true,
         },
         {
-          title: "Scalable APIs, Microservices & Database Sharding",
-          description: "Build fault-tolerant APIs with PostgreSQL indexing, Redis caching, and rate limiting.",
+          title: "High-Performance Team Management & Delegation",
+          description: "Learn effective delegation frameworks, active listening, and constructive feedback loops.",
           videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
           position: 2,
           isPublished: true,
           isFree: false,
         },
         {
-          title: "Cloud Deployment, CI/CD & Security Hardening",
-          description: "Automate containerized deployments with automated testing and zero-downtime rollouts.",
+          title: "Strategic Decision Making & Organizational Growth",
+          description: "Analyze market opportunities, manage change resistance, and build resilient organizations.",
           videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
           position: 3,
           isPublished: true,
@@ -195,37 +224,75 @@ async function main() {
       ],
     },
     {
-      title: "Website Solutions & Modern Web Development",
-      slug: "website-solutions-modern-web-development",
-      description: "Build blazing-fast, responsive web applications using Next.js 15+, React 19, TypeScript, Tailwind CSS, headless CMS integrations, and Web Core Vitals tuning.",
-      thumbnail: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&auto=format&fit=crop&q=80",
+      title: "Creative Visual Arts & Graphic Design Mastery",
+      slug: "creative-visual-arts-graphic-design",
+      description: "Master visual composition, color theory, creative typography, digital illustration, brand identity systems, and design thinking for aspiring visual artists.",
+      thumbnail: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&auto=format&fit=crop&q=80",
       price: 0,
       isPublished: true,
       isFeatured: true,
       level: "BEGINNER",
-      categorySlug: "website-solutions",
+      categorySlug: "design-creative-arts",
+      instructorEmail: "alex.rivera@izba.app",
+      chapters: [
+        {
+          title: "Foundations of Visual Harmony & Color Theory",
+          description: "Master color palettes, contrast, negative space, and visual weight in composition.",
+          videoUrl: sampleVideoUrl,
+          position: 1,
+          isPublished: true,
+          isFree: true,
+        },
+        {
+          title: "Creative Typography, Layout & Hierarchy",
+          description: "Learn font pairing, editorial layouts, grid systems, and expressive lettering.",
+          videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+          position: 2,
+          isPublished: true,
+          isFree: false,
+        },
+        {
+          title: "Digital Illustration & Brand Identity Systems",
+          description: "Build cohesive visual identities, brand guidelines, and evocative digital art.",
+          videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+          position: 3,
+          isPublished: true,
+          isFree: false,
+        },
+      ],
+    },
+    {
+      title: "Foundations of Data Science & Critical Thinking",
+      slug: "foundations-of-data-science-critical-thinking",
+      description: "Learn quantitative reasoning, exploratory data analysis, statistical logic, data visualization, and evidence-based problem solving for modern learners.",
+      thumbnail: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80",
+      price: 0,
+      isPublished: true,
+      isFeatured: true,
+      level: "BEGINNER",
+      categorySlug: "science-technology",
       instructorEmail: "sarah.chen@izba.app",
       chapters: [
         {
-          title: "Next.js 15 App Router & Modern Web Architecture",
-          description: "Master React Server Components, server actions, dynamic routing, and streaming UI.",
+          title: "Introduction to Data-Driven Thinking & Statistical Logic",
+          description: "Understand variables, distributions, averages, and avoiding common cognitive biases in data.",
           videoUrl: sampleVideoUrl,
           position: 1,
           isPublished: true,
           isFree: true,
         },
         {
-          title: "Responsive UI Engineering with Tailwind & Glassmorphism",
-          description: "Craft modern aesthetic layouts, dark-mode styling, micro-animations, and accessible dialogs.",
-          videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+          title: "Exploratory Analysis & Pattern Discovery",
+          description: "Explore datasets to uncover correlations, trends, anomalies, and underlying drivers.",
+          videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
           position: 2,
           isPublished: true,
           isFree: false,
         },
         {
-          title: "SEO, Web Core Vitals & Production Deployment",
-          description: "Optimize metadata, sitemaps, OpenGraph tags, Edge CDN caching, and custom domain setup.",
-          videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+          title: "Data Visualization & Communicating Scientific Insights",
+          description: "Translate complex numbers into clear, narrative-driven charts and presentations.",
+          videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
           position: 3,
           isPublished: true,
           isFree: false,
@@ -233,36 +300,36 @@ async function main() {
       ],
     },
     {
-      title: "Digital Marketing Masterclass & Growth Strategy",
-      slug: "digital-marketing-masterclass",
-      description: "Master modern digital marketing strategies, SEO optimization, social media ad funnels, content marketing, and conversion rate analytics.",
-      thumbnail: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80",
+      title: "Mastering Public Speaking & Confident Communication",
+      slug: "mastering-public-speaking-communication",
+      description: "Overcome stage anxiety, master articulate verbal delivery, persuasive storytelling techniques, and compelling presentation skills for any audience.",
+      thumbnail: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&auto=format&fit=crop&q=80",
       price: 0,
       isPublished: true,
       isFeatured: true,
       level: "BEGINNER",
-      categorySlug: "digital-marketing",
-      instructorEmail: "alex.rivera@izba.app",
+      categorySlug: "communication-languages",
+      instructorEmail: "elena.rostova@izba.app",
       chapters: [
         {
-          title: "Introduction to Digital Marketing & Growth Funnels",
-          description: "Understand customer acquisition channels, lead magnet creation, and digital brand positioning.",
+          title: "The Psychology of Confident Public Speaking",
+          description: "Deconstruct speech anxiety, reprogram stage fright, and build authentic executive presence.",
           videoUrl: sampleVideoUrl,
           position: 1,
           isPublished: true,
           isFree: true,
         },
         {
-          title: "Search Engine Optimization (SEO) & Content Strategy",
-          description: "Learn keyword research, technical SEO, content structuring, and Google ranking algorithms.",
+          title: "Crafting Compelling Speeches & Narrative Structure",
+          description: "Master the 3-act speech structure, emotional hooks, and persuasive arguments.",
           videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
           position: 2,
           isPublished: true,
           isFree: false,
         },
         {
-          title: "Social Media Ads & Conversion Analytics",
-          description: "Design high-converting Facebook, Meta, and Google ad campaigns with real-time ROI tracking.",
+          title: "Vocal Control, Body Language & Audience Engagement",
+          description: "Harness eye contact, purposeful gestures, vocal modulation, and audience Q&A mastery.",
           videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
           position: 3,
           isPublished: true,
@@ -271,75 +338,75 @@ async function main() {
       ],
     },
     {
-      title: "Graphic Design & Visual Identity Systems",
-      slug: "graphic-design-visual-identity",
-      description: "Comprehensive guide to graphic design principles, color theory, typography, branding assets, Photoshop retouching, and Illustrator vector graphics.",
-      thumbnail: "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=800&auto=format&fit=crop&q=80",
+      title: "Financial Literacy, Personal Finance & Smart Investing",
+      slug: "financial-literacy-personal-finance-investing",
+      description: "Build a strong financial future with practical mastery of budgeting, debt elimination, savings strategies, compound interest, index investing, and wealth building.",
+      thumbnail: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&auto=format&fit=crop&q=80",
       price: 0,
       isPublished: true,
       isFeatured: true,
       level: "BEGINNER",
-      categorySlug: "graphic-design",
-      instructorEmail: "alex.rivera@izba.app",
-      chapters: [
-        {
-          title: "Fundamentals of Graphic Design & Composition",
-          description: "Master visual balance, grid systems, contrast, white space, and color psychology.",
-          videoUrl: sampleVideoUrl,
-          position: 1,
-          isPublished: true,
-          isFree: true,
-        },
-        {
-          title: "Logo Design & Brand Identity Systems",
-          description: "Craft memorable brand logos, color palettes, typography specs, and brand style guides.",
-          videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-          position: 2,
-          isPublished: true,
-          isFree: false,
-        },
-        {
-          title: "Figma UI/UX Design & Digital Media Creative",
-          description: "Hands-on vector design, responsive wireframes, design systems, and ad collateral.",
-          videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
-          position: 3,
-          isPublished: true,
-          isFree: false,
-        },
-      ],
-    },
-    {
-      title: "E-Commerce Solutions & High-Converting Storefronts",
-      slug: "ecommerce-solutions-high-converting-storefronts",
-      description: "Engineer and launch full-scale online storefronts, headless commerce integrations, multi-currency payment checkouts, and inventory sync systems.",
-      thumbnail: "https://images.unsplash.com/photo-1556742049-0a67c5574f73?w=800&auto=format&fit=crop&q=80",
-      price: 0,
-      isPublished: true,
-      isFeatured: true,
-      level: "INTERMEDIATE",
-      categorySlug: "ecommerce-solutions",
+      categorySlug: "finance-economics",
       instructorEmail: "david.kim@izba.app",
       chapters: [
         {
-          title: "E-Commerce Architecture & Headless Storefronts",
-          description: "Understand modern commerce stacks, catalog modeling, product variants, and carts.",
+          title: "Core Principles of Budgeting & Money Management",
+          description: "Establish baseline net worth, cash flow tracking, and automated emergency funds.",
           videoUrl: sampleVideoUrl,
           position: 1,
           isPublished: true,
           isFree: true,
         },
         {
-          title: "Payment Gateways, Stripe Webhooks & Security",
-          description: "Secure payment transactions, PCI compliance, webhook verification, and automated order receipting.",
-          videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+          title: "Understanding Debt, Savings & Compound Growth",
+          description: "Master high-yield savings, debt snowball vs avalanche, and the mathematics of compounding.",
+          videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
           position: 2,
           isPublished: true,
           isFree: false,
         },
         {
-          title: "Inventory Management, Fulfillment & Conversion Optimization",
-          description: "Real-time stock alerts, third-party logistics (3PL) webhooks, and conversion rate engineering.",
-          videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+          title: "Smart Investing in Stocks, Index Funds & Assets",
+          description: "Demystify asset allocation, low-cost index funds, risk management, and long-term horizons.",
+          videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
+          position: 3,
+          isPublished: true,
+          isFree: false,
+        },
+      ],
+    },
+    {
+      title: "Mindfulness, Habit Formation & Personal Growth",
+      slug: "mindfulness-productivity-personal-growth",
+      description: "Unlock daily focus, sustainable habit formation, emotional balance, stress reduction, and mindful routines designed for lifelong well-being.",
+      thumbnail: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&auto=format&fit=crop&q=80",
+      price: 0,
+      isPublished: true,
+      isFeatured: true,
+      level: "BEGINNER",
+      categorySlug: "personal-development",
+      instructorEmail: "sarah.chen@izba.app",
+      chapters: [
+        {
+          title: "The Science of Habit Formation & Deep Focus",
+          description: "Learn cue-routine-reward loops, habit stacking, and overcoming procrastination.",
+          videoUrl: sampleVideoUrl,
+          position: 1,
+          isPublished: true,
+          isFree: true,
+        },
+        {
+          title: "Stress Reduction, Breathwork & Mindful Living",
+          description: "Practical breathing exercises, somatic awareness, and cognitive reframing techniques.",
+          videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+          position: 2,
+          isPublished: true,
+          isFree: false,
+        },
+        {
+          title: "Designing Your Personal Growth Blueprint",
+          description: "Synthesize learning into a personalized daily schedule, goal review, and lifelong vision.",
+          videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
           position: 3,
           isPublished: true,
           isFree: false,
@@ -404,7 +471,7 @@ async function main() {
     }
   }
 
-  console.log("Seeding finished successfully with 5 core IT services!");
+  console.log("Seeding finished successfully with genuine educational learning catalog!");
 }
 
 main()

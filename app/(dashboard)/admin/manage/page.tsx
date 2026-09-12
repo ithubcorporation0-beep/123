@@ -80,11 +80,12 @@ export default async function AdminManageItemsPage() {
     dbCategories && dbCategories.length > 0
       ? dbCategories.map((cat) => cat.name)
       : [
-          "Software Solutions",
-          "Website Solutions",
-          "Digital Marketing",
-          "Graphic Design",
-          "E-Commerce Solutions",
+          "Business & Leadership",
+          "Design & Creative Arts",
+          "Science & Technology",
+          "Communication & Languages",
+          "Finance & Economics",
+          "Personal Development",
         ];
 
   return (

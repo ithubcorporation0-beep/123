@@ -55,13 +55,13 @@ export async function FeaturedCourses() {
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
         <div className="space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-[30px] bg-[#FF9F59]/20 text-[#194866] text-xs font-bold uppercase tracking-wider">
-            Featured Curriculums
+            Featured Courses
           </div>
           <h2 className="font-serif text-3xl sm:text-4xl md:text-[46px] text-[#194866] font-normal leading-[1.05] tracking-tight">
-            Engineering & Technology Tracks
+            Explore Top-Rated Learning Programs
           </h2>
           <p className="text-[#545454] max-w-2xl text-sm leading-[1.6] font-normal">
-            Hands-on technical curriculums designed to prepare engineers for cloud systems, SaaS architectures, and full-stack software development.
+            Comprehensive learning courses across business leadership, creative arts, data science, communication, and personal growth taught by inspiring educators.
           </p>
         </div>
 

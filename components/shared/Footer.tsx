@@ -27,23 +27,23 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/courses?category=software-solutions" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
-                  Software Solutions
+                <Link href="/courses?category=business-leadership" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
+                  Business & Leadership
                 </Link>
               </li>
               <li>
-                <Link href="/courses?category=website-solutions" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
-                  Website Development
+                <Link href="/courses?category=design-creative-arts" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
+                  Design & Creative Arts
                 </Link>
               </li>
               <li>
-                <Link href="/courses?category=digital-marketing" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
-                  Digital Marketing
+                <Link href="/courses?category=science-technology" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
+                  Science & Technology
                 </Link>
               </li>
               <li>
-                <Link href="/courses?category=graphic-design" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
-                  Graphic Design
+                <Link href="/courses?category=communication-languages" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
+                  Communication & Languages
                 </Link>
               </li>
             </ul>
@@ -56,28 +56,28 @@ export function Footer() {
             </h3>
             <ul className="space-y-2.5 text-sm text-[#545454]">
               <li>
-                <Link href="/courses" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
-                  Web & Fullstack Development
+                <Link href="/courses?category=personal-development" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
+                  Personal Development
                 </Link>
               </li>
               <li>
-                <Link href="/courses" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
-                  Cloud & DevOps Engineering
+                <Link href="/courses?category=finance-economics" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
+                  Finance & Economics
                 </Link>
               </li>
               <li>
-                <Link href="/courses" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
-                  AI & Machine Learning
+                <Link href="/courses?category=business-leadership" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
+                  Strategic Management
                 </Link>
               </li>
               <li>
-                <Link href="/courses" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
-                  UI/UX & Product Design
+                <Link href="/courses?category=design-creative-arts" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
+                  Creative Visual Arts
                 </Link>
               </li>
               <li>
-                <Link href="/courses" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
-                  Data Science & Analytics
+                <Link href="/courses?category=communication-languages" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
+                  Public Speaking & Rhetoric
                 </Link>
               </li>
             </ul>

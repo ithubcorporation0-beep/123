@@ -18,11 +18,12 @@ interface CoursesPageProps {
 export const dynamic = "force-dynamic";
 
 const defaultCategoryList = [
-  { id: "cat_software", name: "Software Solutions", slug: "software-solutions" },
-  { id: "cat_website", name: "Website Solutions", slug: "website-solutions" },
-  { id: "cat_mktg", name: "Digital Marketing", slug: "digital-marketing" },
-  { id: "cat_design", name: "Graphic Design", slug: "graphic-design" },
-  { id: "cat_ecommerce", name: "E-Commerce Solutions", slug: "ecommerce-solutions" },
+  { id: "cat_business", name: "Business & Leadership", slug: "business-leadership" },
+  { id: "cat_design", name: "Design & Creative Arts", slug: "design-creative-arts" },
+  { id: "cat_science", name: "Science & Technology", slug: "science-technology" },
+  { id: "cat_communication", name: "Communication & Languages", slug: "communication-languages" },
+  { id: "cat_finance", name: "Finance & Economics", slug: "finance-economics" },
+  { id: "cat_personal", name: "Personal Development", slug: "personal-development" },
 ];
 
 export default async function CoursesPage({ searchParams }: CoursesPageProps) {
@@ -118,14 +119,14 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
         {/* Header section */}
         <div className="max-w-3xl mb-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold mb-3">
-            <span>Verified Curriculums</span>
+            <span>Verified Courses</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-foreground">
             Explore All Courses
           </h1>
           <p className="mt-3 text-base sm:text-lg text-muted-foreground leading-relaxed">
-            Discover free, interactive, project-based courses designed by industry engineers.
-            Learn practical skills and earn verified credentials today.
+            Discover comprehensive, interactive learning courses taught by passionate educators.
+            Master practical knowledge and earn recognized completion certificates today.
           </p>
         </div>
 

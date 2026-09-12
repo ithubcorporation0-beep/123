@@ -12,10 +12,10 @@ export async function HeroSection() {
     });
   } catch {}
 
-  const title = heroContent?.title || "Master modern software engineering and cloud infrastructure.";
-  const subtitle = heroContent?.content || heroContent?.subtitle || "Structured technical curriculums, production-ready modules, and cryptographically verified certifications designed for ambitious developers and technical teams.";
-  const chipTag = heroContent?.subtitle ? "Featured Announcement" : "Next-Gen LMS Platform";
-  const ctaText = heroContent?.linkText || "Explore All Curriculums";
+  const title = heroContent?.title || "Empower Your Future with World-Class Online Learning.";
+  const subtitle = heroContent?.content || heroContent?.subtitle || "Access structured learning courses, interactive lessons, and recognized certificates designed by passionate educators to help you master new skills at your own pace.";
+  const chipTag = heroContent?.subtitle ? "Featured Announcement" : "Online Learning Academy";
+  const ctaText = heroContent?.linkText || "Start Learning Now";
   const ctaUrl = heroContent?.linkUrl || "/courses";
 
   return (
@@ -27,7 +27,7 @@ export async function HeroSection() {
           <span className="text-[#545454] font-normal">{chipTag}</span>
           <span className="h-3 w-px bg-[#DEDEDE]" />
           <span className="text-[11px] font-bold tracking-wide uppercase text-[#194866]">
-            Enterprise Edition
+            Open Enrollment
           </span>
         </div>
 

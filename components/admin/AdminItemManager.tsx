@@ -54,35 +54,40 @@ interface AdminItemManagerProps {
 
 const DEFAULT_THUMBNAILS = [
   {
-    label: "Coding & Software",
-    url: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop&q=80",
+    label: "Business & Leadership",
+    url: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&auto=format&fit=crop&q=80",
   },
   {
-    label: "Web Development",
-    url: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&auto=format&fit=crop&q=80",
+    label: "Creative Arts & Design",
+    url: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&auto=format&fit=crop&q=80",
   },
   {
-    label: "Marketing & Growth",
-    url: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80",
+    label: "Science & Technology",
+    url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80",
   },
   {
-    label: "Design & Creative",
-    url: "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=800&auto=format&fit=crop&q=80",
+    label: "Communication & Speaking",
+    url: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&auto=format&fit=crop&q=80",
   },
   {
-    label: "E-Commerce",
-    url: "https://images.unsplash.com/photo-1556742049-0a67c5574f73?w=800&auto=format&fit=crop&q=80",
+    label: "Finance & Economics",
+    url: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&auto=format&fit=crop&q=80",
+  },
+  {
+    label: "Personal Development",
+    url: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&auto=format&fit=crop&q=80",
   },
 ];
 
 export function AdminItemManager({
   initialCourses,
   availableCategories = [
-    "Software Solutions",
-    "Website Solutions",
-    "Digital Marketing",
-    "Graphic Design",
-    "E-Commerce Solutions",
+    "Business & Leadership",
+    "Design & Creative Arts",
+    "Science & Technology",
+    "Communication & Languages",
+    "Finance & Economics",
+    "Personal Development",
   ],
 }: AdminItemManagerProps) {
   const router = useRouter();
@@ -97,7 +102,7 @@ export function AdminItemManager({
 
   // Form Fields
   const [newTitle, setNewTitle] = useState("");
-  const [newCategory, setNewCategory] = useState(availableCategories[0] || "Software Solutions");
+  const [newCategory, setNewCategory] = useState(availableCategories[0] || "Business & Leadership");
   const [newCustomCategory, setNewCustomCategory] = useState("");
   const [newLevel, setNewLevel] = useState<"BEGINNER" | "INTERMEDIATE" | "ADVANCED">("BEGINNER");
   const [newPrice, setNewPrice] = useState<number>(0);
