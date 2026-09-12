@@ -38,20 +38,21 @@ import {
   User,
   PlusCircle,
 } from "lucide-react";
-import { Role } from "@prisma/client";
+
+export type UserRole = "admin" | "instructor" | "student" | string;
 
 interface SidebarProps {
-  userRole?: Role;
+  userRole?: UserRole;
   userName?: string | null;
   onNavigate?: () => void;
 }
 
-export function Sidebar({ userRole = Role.student, userName, onNavigate }: SidebarProps) {
+export function Sidebar({ userRole = "student", userName, onNavigate }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
 
-  const isAdmin = userRole === Role.admin;
-  const isInstructor = userRole === Role.instructor || isAdmin;
+  const isAdmin = userRole === "admin";
+  const isInstructor = userRole === "instructor" || isAdmin;
 
   // Determine current active panel based on URL
   const isViewingAdmin = pathname.startsWith("/admin");
@@ -133,10 +134,10 @@ export function Sidebar({ userRole = Role.student, userName, onNavigate }: Sideb
               render={
                 <Button
                   variant="outline"
-                  className="w-full justify-between h-auto py-2.5 px-3 rounded-2xl bg-muted/40 hover:bg-muted/70 border text-left cursor-pointer"
+                  className="w-full justify-between h-auto py-2.5 px-3 rounded-[10px] bg-muted/40 hover:bg-muted/70 border text-left cursor-pointer transition-all duration-200"
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="p-1.5 rounded-xl bg-primary/10 text-primary shrink-0">
+                    <div className="p-1.5 rounded-[10px] bg-primary/10 text-primary shrink-0">
                       {isViewingAdmin ? (
                         <Shield className="h-4 w-4" />
                       ) : isViewingInstructor ? (
@@ -158,21 +159,21 @@ export function Sidebar({ userRole = Role.student, userName, onNavigate }: Sideb
                 </Button>
               }
             />
-            <DropdownMenuContent align="start" className="w-56 rounded-2xl p-2 shadow-lg">
+            <DropdownMenuContent align="start" className="w-56 rounded-[10px] p-2 shadow-lg">
               <DropdownMenuLabel className="text-[11px] font-bold text-muted-foreground uppercase px-2 py-1">
                 Select Portal
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => navigateTo("/student")}
-                className="flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-xs font-medium cursor-pointer"
+                className="flex items-center gap-2.5 px-2.5 py-2 rounded-[10px] text-xs font-medium cursor-pointer"
               >
                 <GraduationCap className="h-4 w-4 text-primary" />
                 <span>Student Portal</span>
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => navigateTo("/teacher")}
-                className="flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-xs font-medium cursor-pointer"
+                className="flex items-center gap-2.5 px-2.5 py-2 rounded-[10px] text-xs font-medium cursor-pointer"
               >
                 <Presentation className="h-4 w-4 text-primary" />
                 <span>Instructor Workspace</span>
@@ -180,7 +181,7 @@ export function Sidebar({ userRole = Role.student, userName, onNavigate }: Sideb
               {isAdmin && (
                 <DropdownMenuItem
                   onClick={() => navigateTo("/admin")}
-                  className="flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-xs font-medium cursor-pointer"
+                  className="flex items-center gap-2.5 px-2.5 py-2 rounded-[10px] text-xs font-medium cursor-pointer"
                 >
                   <Shield className="h-4 w-4 text-primary" />
                   <span>Admin Panel</span>
@@ -189,14 +190,14 @@ export function Sidebar({ userRole = Role.student, userName, onNavigate }: Sideb
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (
-          <div className="px-3 py-2 rounded-xl bg-muted/40 border flex items-center justify-between">
+          <div className="px-3 py-2 rounded-[10px] bg-muted/40 border flex items-center justify-between">
             <div className="flex items-center gap-2 truncate">
               <GraduationCap className="h-4 w-4 text-primary shrink-0" />
               <span className="text-xs font-bold text-foreground truncate">
                 Student Portal
               </span>
             </div>
-            <Badge variant="outline" className="text-[10px] uppercase font-bold py-0.5 px-2">
+            <Badge variant="outline" className="text-[10px] uppercase font-bold py-0.5 px-2 rounded-[10px]">
               Learner
             </Badge>
           </div>
@@ -223,15 +224,15 @@ export function Sidebar({ userRole = Role.student, userName, onNavigate }: Sideb
                 key={link.href}
                 href={link.href}
                 onClick={onNavigate}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 ${
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-[10px] text-sm font-medium transition-all duration-200 ${
                   isActive
-                    ? "bg-primary text-primary-foreground shadow-sm font-semibold"
+                    ? "bg-primary text-primary-foreground shadow-xs font-semibold"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
                 }`}
               >
                 <Icon
                   className={`h-4 w-4 shrink-0 ${
-                    isActive ? "text-primary-foreground" : "text-primary/70"
+                    isActive ? "text-primary-foreground" : "text-primary/80"
                   }`}
                 />
                 <span className="truncate">{link.label}</span>
@@ -241,9 +242,9 @@ export function Sidebar({ userRole = Role.student, userName, onNavigate }: Sideb
           {isViewingAdmin && (
             <button
               onClick={handleAdminLogout}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-rose-600 hover:bg-rose-50 hover:text-rose-700 w-full transition-all text-left cursor-pointer"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-[10px] text-sm font-medium text-destructive hover:bg-destructive/10 w-full transition-all duration-200 text-left cursor-pointer"
             >
-              <LogOut className="h-4 w-4 shrink-0 text-rose-600" />
+              <LogOut className="h-4 w-4 shrink-0 text-destructive" />
               <span className="truncate">Logout</span>
             </button>
           )}
@@ -257,7 +258,7 @@ export function Sidebar({ userRole = Role.student, userName, onNavigate }: Sideb
             <Button
               variant={isViewingAdmin ? "default" : "outline"}
               size="sm"
-              className="w-full justify-start gap-2 text-xs rounded-xl font-bold"
+              className="w-full justify-start gap-2 text-xs rounded-[10px] font-bold"
             >
               <Shield className="h-3.5 w-3.5" />
               Admin Panel
@@ -268,7 +269,7 @@ export function Sidebar({ userRole = Role.student, userName, onNavigate }: Sideb
           <Button
             variant="ghost"
             size="sm"
-            className="w-full justify-start gap-2 text-xs text-muted-foreground hover:text-foreground rounded-xl"
+            className="w-full justify-start gap-2 text-xs text-muted-foreground hover:text-foreground rounded-[10px]"
           >
             <ExternalLink className="h-3.5 w-3.5" />
             Public Website

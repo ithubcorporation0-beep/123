@@ -29,7 +29,7 @@ export default async function AdminManageItemsPage() {
   let dbCategories: any[] = [];
 
   try {
-    [dbCourses, dbCategories] = await Promise.all([
+    const results = await Promise.allSettled([
       db.course.findMany({
         include: {
           category: { select: { name: true } },
@@ -41,8 +41,14 @@ export default async function AdminManageItemsPage() {
         orderBy: { name: "asc" },
       }),
     ]);
+    if (results[0].status === "fulfilled" && Array.isArray(results[0].value)) {
+      dbCourses = results[0].value;
+    }
+    if (results[1].status === "fulfilled" && Array.isArray(results[1].value)) {
+      dbCategories = results[1].value;
+    }
   } catch (err) {
-    console.error("[ADMIN_MANAGE_FETCH_ERROR]", err);
+    console.warn("[ADMIN_MANAGE_FETCH_WARN]", err);
   }
 
   let formattedCourses: ManagedCourseItem[] = [];

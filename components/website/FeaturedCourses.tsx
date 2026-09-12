@@ -54,13 +54,13 @@ export async function FeaturedCourses() {
     <section id="courses" className="py-20 px-5 sm:px-8 lg:px-12 max-w-[1585px] mx-auto scroll-mt-20">
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
         <div className="space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-[30px] bg-[#FF9F59]/20 text-[#194866] text-xs font-bold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-[10px] bg-[#0E68B3]/10 text-[#0E68B3] text-xs font-bold uppercase tracking-wider">
             Featured Courses
           </div>
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-[46px] text-[#194866] font-normal leading-[1.05] tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-[46px] text-[#061C30] font-bold leading-[1.17] tracking-[-2px]">
             Explore Top-Rated Learning Programs
           </h2>
-          <p className="text-[#545454] max-w-2xl text-sm leading-[1.6] font-normal">
+          <p className="text-[#5B5B5B] max-w-2xl text-base leading-[1.6] font-normal">
             Comprehensive learning courses across business leadership, creative arts, data science, communication, and personal growth taught by inspiring educators.
           </p>
         </div>
@@ -68,10 +68,10 @@ export async function FeaturedCourses() {
         <Link href="/courses">
           <Button
             variant="outline"
-            className="rounded-[40px] px-[25px] py-[12px] h-auto text-xs font-semibold border-[#DEDEDE] bg-white hover:bg-[#F2F2F2] text-[#194866] shadow-none gap-2"
+            className="rounded-[10px] px-6 py-3 h-auto text-xs font-bold border-[#E5E7EB] bg-white hover:bg-[#F2F2F2] text-[#061C30] shadow-none gap-2 transition-all duration-250 hover:-translate-y-[2px] cursor-pointer"
           >
             <span>Browse Full Catalog</span>
-            <ArrowRight className="h-4 w-4 text-[#FF9F59]" />
+            <ArrowRight className="h-4 w-4 text-[#0E68B3]" />
           </Button>
         </Link>
       </div>

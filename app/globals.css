@@ -48,53 +48,53 @@
 }
 
 :root {
-  /* Core Design Tokens */
+  /* User-Specified Design Tokens */
   --background: #FFFFFF;
-  --foreground: #282828;
+  --foreground: #061C30;
   --card: #FFFFFF;
-  --card-foreground: #282828;
+  --card-foreground: #061C30;
   --popover: #FFFFFF;
-  --popover-foreground: #282828;
+  --popover-foreground: #061C30;
   
-  --primary: #194866;
+  --primary: #0E68B3;
   --primary-foreground: #FFFFFF;
   
-  --accent: #FF9F59;
-  --accent-foreground: #194866;
+  --accent: #0B538F;
+  --accent-foreground: #FFFFFF;
   
   --secondary: #F2F2F2;
-  --secondary-foreground: #194866;
+  --secondary-foreground: #061C30;
   
   --muted: #F2F2F2;
-  --muted-foreground: #545454;
+  --muted-foreground: #5B5B5B;
   
   --destructive: #cf2e2e;
-  --border: #DEDEDE;
-  --input: #DEDEDE;
-  --ring: #194866;
+  --border: #E5E7EB;
+  --input: #E5E7EB;
+  --ring: #0E68B3;
   
-  --radius: 16px;
-  --radius-button: 40px;
-  --radius-card: 16px;
-  --radius-input: 4px;
-  --radius-chip: 30px;
+  --radius: 10px;
+  --radius-button: 10px;
+  --radius-card: 10px;
+  --radius-input: 10px;
+  --radius-chip: 10px;
   
   /* Sidebar Tokens */
   --sidebar: #FFFFFF;
-  --sidebar-foreground: #282828;
-  --sidebar-primary: #194866;
+  --sidebar-foreground: #061C30;
+  --sidebar-primary: #0E68B3;
   --sidebar-primary-foreground: #FFFFFF;
   --sidebar-accent: #F2F2F2;
-  --sidebar-accent-foreground: #194866;
-  --sidebar-border: #DEDEDE;
-  --sidebar-ring: #194866;
+  --sidebar-accent-foreground: #061C30;
+  --sidebar-border: #E5E7EB;
+  --sidebar-ring: #0E68B3;
 
   /* Extended Palette */
-  --wp-block-synced-color: #7a00df;
-  --wp-admin-theme-color: #007cba;
-  --wp-vivid-cyan: #0693e3;
-  --wp-vivid-orange: #ff6900;
-  --wp-vivid-green: #00d084;
+  --wp-block-synced-color: #0E68B3;
+  --wp-admin-theme-color: #0E68B3;
+  --wp-vivid-cyan: #0E68B3;
+  --wp-vivid-orange: #0B538F;
+  --wp-vivid-green: #10B981;
 }
 
 .dark {
@@ -168,47 +168,58 @@
   }
 
   a {
-    color: #194866;
-    transition: transform 0.2s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.2s ease, color 0.2s ease;
+    color: #0E68B3;
+    transition: transform 0.25s ease-in-out, opacity 0.25s ease-in-out, color 0.25s ease-in-out;
   }
 }
 
-/* Design System Interaction States */
+/* User Design System Interaction States */
 .hover-link-shift {
-  transition: transform 0.2s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.2s ease;
+  transition: transform 0.25s ease-in-out, opacity 0.25s ease-in-out;
 }
 .hover-link-shift:hover {
-  transform: translateX(5px);
+  transform: translateX(4px);
+  opacity: 0.8;
+}
+
+/* Button Tokens (10px radius, 10px 24px padding, vibrant hover) */
+.btn-vibrant {
+  border-radius: 10px;
+  padding: 10px 24px;
+  font-weight: 600;
+  transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out, opacity 0.25s ease-in-out;
+}
+.btn-vibrant:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 6px 1px rgba(23, 121, 186, 0.5);
   opacity: 0.9;
 }
 
-/* Pill Buttons (40px radius, 12px 25px padding) */
-.btn-pill {
-  border-radius: 40px;
-  padding: 12px 25px;
-  font-weight: 600;
-  transition: all 0.2s cubic-bezier(0.33, 1, 0.68, 1);
-}
-
-/* Card Tokens (16px radius, flat border #DEDEDE) */
+/* Card Tokens (10px radius, flat border #E5E7EB, #FFFFFF bg, hover translateY) */
 .card-flat {
-  border-radius: 16px;
-  border: 1px solid #DEDEDE;
+  border-radius: 10px;
+  border: 1px solid #E5E7EB;
   background-color: #FFFFFF;
   box-shadow: none;
+  transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out, border-color 0.25s ease-in-out;
+}
+.card-flat:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 6px 1px rgba(23, 121, 186, 0.35);
+  border-color: rgba(14, 104, 179, 0.4);
 }
 
 .card-elevated {
-  border-radius: 16px;
-  border: 1px solid #DEDEDE;
+  border-radius: 10px;
+  border: 1px solid #E5E7EB;
   background-color: #F2F2F2;
   box-shadow: none;
 }
 
-/* Chips / Badges (30px radius) */
+/* Chips / Badges (10px radius) */
 .chip-pill {
-  border-radius: 30px;
-  padding: 4px 14px;
+  border-radius: 10px;
+  padding: 4px 12px;
   font-size: 0.8125rem;
   font-weight: 600;
 }
