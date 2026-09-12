@@ -12,40 +12,65 @@ export default async function AdminStudentsPage() {
     redirect("/admin/login");
   }
 
-  const students = await db.profile.findMany({
-    where: { role: "student" },
-    include: {
-      enrollments: {
-        include: {
-          course: {
-            select: { id: true, title: true, slug: true, thumbnail: true },
+  let students: any[] = [];
+  try {
+    students = await db.profile.findMany({
+      where: { role: "student" },
+      include: {
+        enrollments: {
+          include: {
+            course: {
+              select: { id: true, title: true, slug: true, thumbnail: true },
+            },
           },
         },
-      },
-      certificates: {
-        include: {
-          course: { select: { title: true } },
+        certificates: {
+          include: {
+            course: { select: { title: true } },
+          },
+        },
+        _count: {
+          select: { enrollments: true, certificates: true },
         },
       },
-      _count: {
-        select: { enrollments: true, certificates: true },
-      },
-    },
-    orderBy: { createdAt: "desc" },
-  });
+      orderBy: { createdAt: "desc" },
+    });
+  } catch (err) {
+    console.warn("[ADMIN_STUDENTS_WARN]", err);
+  }
 
-  const formatted: StudentRecord[] = students.map((s) => ({
+  const formatted: StudentRecord[] = (students || []).map((s) => ({
     id: s.id,
-    name: s.name,
-    email: s.email,
-    phone: s.phone,
-    bio: s.bio,
-    imageUrl: s.imageUrl,
-    status: s.status,
-    createdAt: s.createdAt,
-    enrollments: s.enrollments,
-    certificates: s.certificates,
-    _count: s._count,
+    name: s.name || "Student",
+    email: s.email || "student@example.com",
+    phone: s.phone || null,
+    bio: s.bio || null,
+    imageUrl: s.imageUrl || null,
+    status: s.status || "ACTIVE",
+    createdAt: s.createdAt ? new Date(s.createdAt).toISOString() : new Date().toISOString(),
+    enrollments: Array.isArray(s.enrollments)
+      ? s.enrollments
+          .filter((e: any) => Boolean(e && e.course))
+          .map((e: any) => ({
+            id: e.id,
+            course: {
+              id: e.course.id,
+              title: e.course.title || "Course",
+              slug: e.course.slug || "course",
+              thumbnail: e.course.thumbnail || null,
+            },
+          }))
+      : [],
+    certificates: Array.isArray(s.certificates)
+      ? s.certificates.map((c: any) => ({
+          id: c.id,
+          course: { title: c.course?.title || "Course" },
+        }))
+      : [],
+    _count: {
+      enrollments: s._count?.enrollments ?? (s.enrollments?.length || 0),
+      certificates: s._count?.certificates ?? (s.certificates?.length || 0),
+    },
   }));
 
   return (

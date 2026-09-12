@@ -12,18 +12,23 @@ export default async function AdminNavigationPage() {
     redirect("/admin/login");
   }
 
-  const items = await db.navigationItem.findMany({
-    orderBy: { position: "asc" },
-  });
+  let items: any[] = [];
+  try {
+    items = await db.navigationItem.findMany({
+      orderBy: { position: "asc" },
+    });
+  } catch (err) {
+    console.warn("[ADMIN_NAVIGATION_QUERY_WARN]", err);
+  }
 
-  const formatted: NavigationRecord[] = items.map((i) => ({
+  const formatted: NavigationRecord[] = (items || []).map((i) => ({
     id: i.id,
-    label: i.label,
-    url: i.url,
-    location: i.location,
-    position: i.position,
-    isActive: i.isActive,
-    openInNewTab: i.openInNewTab,
+    label: i.label || "Link",
+    url: i.url || "#",
+    location: i.location || "HEADER",
+    position: i.position ?? 0,
+    isActive: Boolean(i.isActive),
+    openInNewTab: Boolean(i.openInNewTab),
   }));
 
   return (

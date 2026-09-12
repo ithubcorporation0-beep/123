@@ -12,23 +12,28 @@ export default async function AdminContentPage() {
     redirect("/admin/login");
   }
 
-  const contentItems = await db.websiteContent.findMany({
-    orderBy: [{ section: "asc" }, { position: "asc" }],
-  });
+  let contentItems: any[] = [];
+  try {
+    contentItems = await db.websiteContent.findMany({
+      orderBy: [{ section: "asc" }, { position: "asc" }],
+    });
+  } catch (err) {
+    console.warn("[ADMIN_CONTENT_QUERY_WARN]", err);
+  }
 
-  const formatted: ContentBlock[] = contentItems.map((c) => ({
+  const formatted: ContentBlock[] = (contentItems || []).map((c) => ({
     id: c.id,
     section: c.section,
     key: c.key,
     title: c.title,
-    subtitle: c.subtitle,
-    content: c.content,
-    imageUrl: c.imageUrl,
-    videoUrl: c.videoUrl,
-    linkUrl: c.linkUrl,
-    linkText: c.linkText,
-    isPublished: c.isPublished,
-    position: c.position,
+    subtitle: c.subtitle || null,
+    content: c.content || "",
+    imageUrl: c.imageUrl || null,
+    videoUrl: c.videoUrl || null,
+    linkUrl: c.linkUrl || null,
+    linkText: c.linkText || null,
+    isPublished: Boolean(c.isPublished),
+    position: c.position ?? 0,
   }));
 
   return (

@@ -220,7 +220,7 @@ export function StudentManagementView({ initialStudents }: StudentManagementView
   return (
     <div className="space-y-6">
       {/* Top Filter and Search Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl bg-card border shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-[10px] bg-card border border-border shadow-xs">
         <div className="flex flex-wrap items-center gap-2">
           <div className="relative w-full sm:w-64">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
@@ -228,7 +228,7 @@ export function StudentManagementView({ initialStudents }: StudentManagementView
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by student name or email..."
-              className="pl-8 h-8 rounded-xl text-xs bg-background"
+              className="pl-8 h-8 rounded-[10px] text-xs bg-background border-border"
             />
           </div>
 
@@ -239,7 +239,7 @@ export function StudentManagementView({ initialStudents }: StudentManagementView
                 variant={statusFilter === st ? "default" : "outline"}
                 size="sm"
                 onClick={() => setStatusFilter(st)}
-                className="rounded-xl text-xs capitalize h-8"
+                className="rounded-[10px] text-xs capitalize h-8"
               >
                 {st === "all" ? "All Status" : st.toLowerCase()}
               </Button>
@@ -250,7 +250,7 @@ export function StudentManagementView({ initialStudents }: StudentManagementView
         <Button
           onClick={() => setIsAddOpen(true)}
           size="sm"
-          className="rounded-xl text-xs gap-1.5 font-bold shadow-xs shrink-0"
+          className="rounded-[10px] text-xs gap-1.5 font-bold shadow-xs shrink-0 bg-primary hover:bg-primary/90 text-primary-foreground transition-all duration-250 hover:-translate-y-[2px] hover:shadow-[0_0_6px_1px_rgba(23,121,186,0.4)]"
         >
           <UserPlus className="h-3.5 w-3.5" />
           Add Student
@@ -258,16 +258,16 @@ export function StudentManagementView({ initialStudents }: StudentManagementView
       </div>
 
       {/* Table */}
-      <div className="rounded-2xl border overflow-hidden bg-card shadow-xs">
+      <div className="rounded-[10px] border border-border overflow-hidden bg-card shadow-xs">
         <Table>
           <TableHeader className="bg-muted/40">
             <TableRow>
-              <TableHead className="text-xs font-bold">Student</TableHead>
-              <TableHead className="text-xs font-bold">Contact</TableHead>
-              <TableHead className="text-xs font-bold">Courses Enrolled</TableHead>
-              <TableHead className="text-xs font-bold">Status</TableHead>
-              <TableHead className="text-xs font-bold">Joined</TableHead>
-              <TableHead className="text-xs font-bold text-right">Actions</TableHead>
+              <TableHead className="text-xs font-bold text-foreground">Student</TableHead>
+              <TableHead className="text-xs font-bold text-foreground">Contact</TableHead>
+              <TableHead className="text-xs font-bold text-foreground">Courses Enrolled</TableHead>
+              <TableHead className="text-xs font-bold text-foreground">Status</TableHead>
+              <TableHead className="text-xs font-bold text-foreground">Joined</TableHead>
+              <TableHead className="text-xs font-bold text-right text-foreground">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -278,92 +278,106 @@ export function StudentManagementView({ initialStudents }: StudentManagementView
                 </TableCell>
               </TableRow>
             ) : (
-              filteredStudents.map((s) => (
-                <TableRow key={s.id} className="hover:bg-muted/30 transition-colors">
-                  <TableCell className="py-3.5">
-                    <div className="flex items-center gap-3">
-                      <div className="relative w-9 h-9 rounded-full overflow-hidden border bg-muted flex items-center justify-center shrink-0">
-                        {s.imageUrl ? (
-                          <Image src={s.imageUrl} alt={s.name || "Student"} fill unoptimized className="object-cover" />
-                        ) : (
-                          <User className="h-4 w-4 text-primary" />
-                        )}
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-xs font-bold text-foreground truncate">{s.name || "Unnamed Student"}</p>
-                        <p className="text-[11px] text-muted-foreground truncate">{s.email}</p>
-                      </div>
-                    </div>
-                  </TableCell>
+              filteredStudents.map((s) => {
+                const hasValidAvatar = Boolean(
+                  s.imageUrl &&
+                  typeof s.imageUrl === "string" &&
+                  s.imageUrl.startsWith("http")
+                );
 
-                  <TableCell className="py-3.5 text-xs text-muted-foreground">
-                    {s.phone ? (
-                      <span className="flex items-center gap-1 font-mono text-[11px]">
-                        <Phone className="h-3 w-3" /> {s.phone}
-                      </span>
-                    ) : (
-                      <span className="text-[11px] text-muted-foreground/60">—</span>
-                    )}
-                  </TableCell>
-
-                  <TableCell className="py-3.5">
-                    <Badge variant="outline" className="text-xs font-semibold gap-1">
-                      <BookOpen className="h-3 w-3 text-primary" />
-                      {s.enrollments.length} {s.enrollments.length === 1 ? "course" : "courses"}
-                    </Badge>
-                  </TableCell>
-
-                  <TableCell className="py-3.5">
-                    <Badge
-                      variant={s.status === "ACTIVE" ? "default" : "destructive"}
-                      className="text-[10px] uppercase font-bold"
-                    >
-                      {s.status}
-                    </Badge>
-                  </TableCell>
-
-                  <TableCell className="py-3.5 text-xs text-muted-foreground">
-                    {new Date(s.createdAt).toLocaleDateString("en-US", {
+                const dateString = s.createdAt
+                  ? new Date(s.createdAt).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
                       year: "numeric",
-                    })}
-                  </TableCell>
+                    })
+                  : "Recent";
 
-                  <TableCell className="py-3.5 text-right">
-                    <div className="flex items-center justify-end gap-1">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                          setSelectedStudent(s);
-                          setEditName(s.name || "");
-                          setEditEmail(s.email);
-                          setEditPhone(s.phone || "");
-                          setEditStatus(s.status);
-                        }}
-                        className="h-8 text-xs rounded-xl px-2.5"
-                      >
-                        Manage
-                      </Button>
+                const enrollmentsList = s.enrollments || [];
 
-                      <ConfirmModal
-                        onConfirm={() => handleDeleteStudent(s.id)}
-                        title="Delete Student"
-                        description={`Are you sure you want to permanently delete student account ${s.email}?`}
+                return (
+                  <TableRow key={s.id} className="hover:bg-muted/30 transition-colors">
+                    <TableCell className="py-3.5">
+                      <div className="flex items-center gap-3">
+                        <div className="relative w-9 h-9 rounded-[10px] overflow-hidden border bg-muted flex items-center justify-center shrink-0">
+                          {hasValidAvatar ? (
+                            <Image src={s.imageUrl!} alt={s.name || "Student"} fill unoptimized className="object-cover" />
+                          ) : (
+                            <User className="h-4 w-4 text-primary" />
+                          )}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-xs font-bold text-foreground truncate">{s.name || "Unnamed Student"}</p>
+                          <p className="text-[11px] text-muted-foreground truncate">{s.email}</p>
+                        </div>
+                      </div>
+                    </TableCell>
+
+                    <TableCell className="py-3.5 text-xs text-muted-foreground">
+                      {s.phone ? (
+                        <span className="flex items-center gap-1 font-mono text-[11px]">
+                          <Phone className="h-3 w-3" /> {s.phone}
+                        </span>
+                      ) : (
+                        <span className="text-[11px] text-muted-foreground/60">—</span>
+                      )}
+                    </TableCell>
+
+                    <TableCell className="py-3.5">
+                      <Badge variant="outline" className="text-xs font-semibold gap-1 rounded-[10px]">
+                        <BookOpen className="h-3 w-3 text-primary" />
+                        {enrollmentsList.length} {enrollmentsList.length === 1 ? "course" : "courses"}
+                      </Badge>
+                    </TableCell>
+
+                    <TableCell className="py-3.5">
+                      <Badge
+                        variant={s.status === "ACTIVE" ? "default" : "destructive"}
+                        className="text-[10px] uppercase font-bold rounded-[10px]"
                       >
+                        {s.status}
+                      </Badge>
+                    </TableCell>
+
+                    <TableCell className="py-3.5 text-xs text-muted-foreground">
+                      {dateString}
+                    </TableCell>
+
+                    <TableCell className="py-3.5 text-right">
+                      <div className="flex items-center justify-end gap-1">
                         <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 rounded-xl text-destructive hover:text-destructive"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setSelectedStudent(s);
+                            setEditName(s.name || "");
+                            setEditEmail(s.email);
+                            setEditPhone(s.phone || "");
+                            setEditStatus(s.status);
+                          }}
+                          className="h-8 text-xs rounded-[10px] px-2.5"
                         >
-                          <Trash2 className="h-3.5 w-3.5" />
+                          Manage
                         </Button>
-                      </ConfirmModal>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))
+
+                        <ConfirmModal
+                          onConfirm={() => handleDeleteStudent(s.id)}
+                          title="Delete Student"
+                          description={`Are you sure you want to permanently delete student account ${s.email}?`}
+                        >
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 rounded-[10px] text-destructive hover:text-destructive hover:bg-destructive/10"
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </Button>
+                        </ConfirmModal>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
             )}
           </TableBody>
         </Table>
@@ -371,7 +385,7 @@ export function StudentManagementView({ initialStudents }: StudentManagementView
 
       {/* --- Add Student Dialog --- */}
       <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
-        <DialogContent className="rounded-2xl max-w-md">
+        <DialogContent className="rounded-[10px] max-w-md">
           <DialogHeader>
             <DialogTitle>Register New Student</DialogTitle>
           </DialogHeader>
@@ -383,7 +397,7 @@ export function StudentManagementView({ initialStudents }: StudentManagementView
                 placeholder="Student Name"
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
-                className="rounded-xl text-sm"
+                className="rounded-[10px] text-sm"
               />
             </div>
 
@@ -394,7 +408,7 @@ export function StudentManagementView({ initialStudents }: StudentManagementView
                 placeholder="student@example.com"
                 value={newEmail}
                 onChange={(e) => setNewEmail(e.target.value)}
-                className="rounded-xl text-sm"
+                className="rounded-[10px] text-sm"
                 required
               />
             </div>
@@ -405,16 +419,16 @@ export function StudentManagementView({ initialStudents }: StudentManagementView
                 placeholder="+1 555-0199"
                 value={newPhone}
                 onChange={(e) => setNewPhone(e.target.value)}
-                className="rounded-xl text-sm"
+                className="rounded-[10px] text-sm"
               />
             </div>
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsAddOpen(false)} className="rounded-xl">
+            <Button variant="outline" onClick={() => setIsAddOpen(false)} className="rounded-[10px]">
               Cancel
             </Button>
-            <Button onClick={handleCreateStudent} disabled={loading} className="rounded-xl font-bold">
+            <Button onClick={handleCreateStudent} disabled={loading} className="rounded-[10px] font-bold bg-primary hover:bg-primary/90 text-primary-foreground">
               {loading && <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" />}
               Create Student
             </Button>
@@ -424,7 +438,7 @@ export function StudentManagementView({ initialStudents }: StudentManagementView
 
       {/* --- Manage Student Dialog --- */}
       <Dialog open={Boolean(selectedStudent)} onOpenChange={(open) => !open && setSelectedStudent(null)}>
-        <DialogContent className="rounded-2xl max-w-lg max-h-[90vh] overflow-y-auto">
+        <DialogContent className="rounded-[10px] max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Manage Student: {selectedStudent?.name || selectedStudent?.email}</DialogTitle>
           </DialogHeader>
@@ -432,7 +446,7 @@ export function StudentManagementView({ initialStudents }: StudentManagementView
           {selectedStudent && (
             <div className="space-y-5 py-2">
               {/* Profile Details Edit */}
-              <div className="space-y-3 p-4 rounded-xl border bg-muted/20">
+              <div className="space-y-3 p-4 rounded-[10px] border bg-muted/20">
                 <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                   Account Details
                 </h4>
@@ -442,7 +456,7 @@ export function StudentManagementView({ initialStudents }: StudentManagementView
                   <Input
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
-                    className="rounded-xl text-xs"
+                    className="rounded-[10px] text-xs"
                   />
                 </div>
 
@@ -452,7 +466,7 @@ export function StudentManagementView({ initialStudents }: StudentManagementView
                     <Input
                       value={editEmail}
                       onChange={(e) => setEditEmail(e.target.value)}
-                      className="rounded-xl text-xs"
+                      className="rounded-[10px] text-xs"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -460,7 +474,7 @@ export function StudentManagementView({ initialStudents }: StudentManagementView
                     <Input
                       value={editPhone}
                       onChange={(e) => setEditPhone(e.target.value)}
-                      className="rounded-xl text-xs"
+                      className="rounded-[10px] text-xs"
                     />
                   </div>
                 </div>
@@ -470,7 +484,7 @@ export function StudentManagementView({ initialStudents }: StudentManagementView
                   <select
                     value={editStatus}
                     onChange={(e) => setEditStatus(e.target.value)}
-                    className="w-full h-9 px-3 rounded-xl border bg-background text-xs font-semibold"
+                    className="w-full h-9 px-3 rounded-[10px] border bg-background text-xs font-semibold"
                   >
                     <option value="ACTIVE">ACTIVE (Can login and learn)</option>
                     <option value="SUSPENDED">SUSPENDED (Access blocked)</option>
@@ -481,11 +495,11 @@ export function StudentManagementView({ initialStudents }: StudentManagementView
               {/* Enrolled Courses & Remove Enrollment */}
               <div className="space-y-2">
                 <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                  Enrolled Courses ({selectedStudent.enrollments.length})
+                  Enrolled Courses ({selectedStudent.enrollments?.length || 0})
                 </h4>
 
-                {selectedStudent.enrollments.length === 0 ? (
-                  <p className="text-xs text-muted-foreground p-3 border rounded-xl bg-card">
+                {!selectedStudent.enrollments || selectedStudent.enrollments.length === 0 ? (
+                  <p className="text-xs text-muted-foreground p-3 border rounded-[10px] bg-card">
                     Student is not currently enrolled in any course.
                   </p>
                 ) : (
@@ -493,18 +507,18 @@ export function StudentManagementView({ initialStudents }: StudentManagementView
                     {selectedStudent.enrollments.map((enr) => (
                       <div
                         key={enr.id}
-                        className="p-3 rounded-xl border bg-card flex items-center justify-between gap-3 text-xs"
+                        className="p-3 rounded-[10px] border bg-card flex items-center justify-between gap-3 text-xs"
                       >
                         <div className="min-w-0">
-                          <p className="font-bold text-foreground truncate">{enr.course.title}</p>
-                          <p className="text-[10px] text-muted-foreground font-mono">/{enr.course.slug}</p>
+                          <p className="font-bold text-foreground truncate">{enr.course?.title || "Course"}</p>
+                          <p className="text-[10px] text-muted-foreground font-mono">/{enr.course?.slug || "course"}</p>
                         </div>
                         <ConfirmModal
                           onConfirm={() => handleRemoveEnrollment(selectedStudent.id, enr.id)}
                           title="Cancel Student Enrollment"
-                          description={`Remove ${selectedStudent.name || selectedStudent.email} from "${enr.course.title}"?`}
+                          description={`Remove ${selectedStudent.name || selectedStudent.email} from "${enr.course?.title || "Course"}"?`}
                         >
-                          <Button variant="ghost" size="sm" className="h-7 text-xs text-destructive hover:text-destructive">
+                          <Button variant="ghost" size="sm" className="h-7 text-xs text-destructive hover:text-destructive rounded-[10px]">
                             Remove
                           </Button>
                         </ConfirmModal>
@@ -517,10 +531,10 @@ export function StudentManagementView({ initialStudents }: StudentManagementView
           )}
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setSelectedStudent(null)} className="rounded-xl">
+            <Button variant="outline" onClick={() => setSelectedStudent(null)} className="rounded-[10px]">
               Cancel
             </Button>
-            <Button onClick={handleUpdateStudent} disabled={loading} className="rounded-xl font-bold">
+            <Button onClick={handleUpdateStudent} disabled={loading} className="rounded-[10px] font-bold bg-primary hover:bg-primary/90 text-primary-foreground">
               {loading && <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" />}
               Save Changes
             </Button>

@@ -12,36 +12,43 @@ export default async function AdminTeachersPage() {
     redirect("/admin/login");
   }
 
-  const teachers = await db.profile.findMany({
-    where: { role: "instructor" },
-    include: {
-      coursesCreated: {
-        select: {
-          id: true,
-          title: true,
-          slug: true,
-          isPublished: true,
-          price: true,
+  let teachers: any[] = [];
+  try {
+    teachers = await db.profile.findMany({
+      where: { role: "instructor" },
+      include: {
+        coursesCreated: {
+          select: {
+            id: true,
+            title: true,
+            slug: true,
+            isPublished: true,
+            price: true,
+          },
+        },
+        _count: {
+          select: { coursesCreated: true },
         },
       },
-      _count: {
-        select: { coursesCreated: true },
-      },
-    },
-    orderBy: { createdAt: "desc" },
-  });
+      orderBy: { createdAt: "desc" },
+    });
+  } catch (err) {
+    console.warn("[ADMIN_TEACHERS_WARN]", err);
+  }
 
-  const formatted: TeacherRecord[] = teachers.map((t) => ({
+  const formatted: TeacherRecord[] = (teachers || []).map((t) => ({
     id: t.id,
-    name: t.name,
-    email: t.email,
-    phone: t.phone,
-    bio: t.bio,
-    imageUrl: t.imageUrl,
-    status: t.status,
-    createdAt: t.createdAt,
-    coursesCreated: t.coursesCreated,
-    _count: t._count,
+    name: t.name || "Instructor",
+    email: t.email || "teacher@example.com",
+    phone: t.phone || null,
+    bio: t.bio || null,
+    imageUrl: t.imageUrl || null,
+    status: t.status || "ACTIVE",
+    createdAt: t.createdAt ? new Date(t.createdAt).toISOString() : new Date().toISOString(),
+    coursesCreated: Array.isArray(t.coursesCreated) ? t.coursesCreated : [],
+    _count: {
+      coursesCreated: t._count?.coursesCreated ?? (t.coursesCreated?.length || 0),
+    },
   }));
 
   return (

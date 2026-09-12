@@ -12,19 +12,24 @@ export default async function AdminMediaPage() {
     redirect("/admin/login");
   }
 
-  const mediaItems = await db.mediaItem.findMany({
-    orderBy: { createdAt: "desc" },
-  });
+  let mediaItems: any[] = [];
+  try {
+    mediaItems = await db.mediaItem.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+  } catch (err) {
+    console.warn("[ADMIN_MEDIA_QUERY_WARN]", err);
+  }
 
-  const formattedItems: MediaRecord[] = mediaItems.map((m) => ({
+  const formattedItems: MediaRecord[] = (mediaItems || []).map((m) => ({
     id: m.id,
-    name: m.name,
-    url: m.url,
-    publicId: m.publicId,
-    type: m.type,
-    size: m.size,
-    mimeType: m.mimeType,
-    createdAt: m.createdAt,
+    name: m.name || "File",
+    url: m.url || "",
+    publicId: m.publicId || null,
+    type: m.type || "image",
+    size: m.size || 0,
+    mimeType: m.mimeType || null,
+    createdAt: m.createdAt ? new Date(m.createdAt).toISOString() : new Date().toISOString(),
   }));
 
   return (

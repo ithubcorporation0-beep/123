@@ -12,19 +12,24 @@ export default async function AdminActivityPage() {
     redirect("/admin/login");
   }
 
-  const logs = await db.activityLog.findMany({
-    orderBy: { createdAt: "desc" },
-    take: 100,
-  });
+  let logs: any[] = [];
+  try {
+    logs = await db.activityLog.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 100,
+    });
+  } catch (err) {
+    console.warn("[ADMIN_ACTIVITY_QUERY_WARN]", err);
+  }
 
-  const formatted: LogItem[] = logs.map((l) => ({
+  const formatted: LogItem[] = (logs || []).map((l) => ({
     id: l.id,
-    adminEmail: l.adminEmail,
-    action: l.action,
-    targetType: l.targetType,
-    targetId: l.targetId,
-    details: l.details,
-    createdAt: l.createdAt,
+    adminEmail: l.adminEmail || "Admin",
+    action: l.action || "UPDATE",
+    targetType: l.targetType || "SYSTEM",
+    targetId: l.targetId || null,
+    details: l.details || null,
+    createdAt: l.createdAt ? new Date(l.createdAt).toISOString() : new Date().toISOString(),
   }));
 
   return (

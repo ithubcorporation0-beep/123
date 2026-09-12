@@ -12,10 +12,18 @@ export default async function AdminSettingsPage() {
     redirect("/admin/login");
   }
 
-  const settings = await db.adminSetting.findMany();
+  let settings: any[] = [];
+  try {
+    settings = await db.adminSetting.findMany();
+  } catch (err) {
+    console.warn("[ADMIN_SETTINGS_QUERY_WARN]", err);
+  }
+
   const config: Record<string, string> = {};
-  settings.forEach((s) => {
-    config[s.key] = s.value;
+  (settings || []).forEach((s) => {
+    if (s && s.key) {
+      config[s.key] = s.value || "";
+    }
   });
 
   return (

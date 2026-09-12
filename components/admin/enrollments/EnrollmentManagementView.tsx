@@ -79,13 +79,17 @@ export function EnrollmentManagementView({
 
   const filtered = enrollments.filter((e) => {
     const q = search.toLowerCase();
+    const studentName = e.profile?.name || "";
+    const studentEmail = e.profile?.email || "";
+    const courseTitle = e.course?.title || "";
+
     const matchesSearch =
-      (e.profile.name && e.profile.name.toLowerCase().includes(q)) ||
-      e.profile.email.toLowerCase().includes(q) ||
-      e.course.title.toLowerCase().includes(q);
+      studentName.toLowerCase().includes(q) ||
+      studentEmail.toLowerCase().includes(q) ||
+      courseTitle.toLowerCase().includes(q);
 
     const matchesCourse =
-      selectedCourseFilter === "all" || e.course.id === selectedCourseFilter;
+      selectedCourseFilter === "all" || e.course?.id === selectedCourseFilter;
 
     return matchesSearch && matchesCourse;
   });
@@ -108,14 +112,14 @@ export function EnrollmentManagementView({
       });
 
       if (!res.ok) {
-        const err = await res.json();
+        const err = await res.json().catch(() => ({}));
         throw new Error(err.error || "Enrollment failed");
       }
 
       const created = await res.json();
       setEnrollments((prev) => [created, ...prev]);
       setIsEnrollOpen(false);
-      toast.success("Student enrolled into course successfully! 🎓");
+      toast.success("Student enrolled into course successfully!");
       router.refresh();
     } catch (error: any) {
       toast.error(error.message || "Failed to enroll student");
@@ -143,7 +147,7 @@ export function EnrollmentManagementView({
   return (
     <div className="space-y-6">
       {/* Search & Filter Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl bg-card border shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-[10px] bg-card border border-border shadow-xs">
         <div className="flex flex-wrap items-center gap-3">
           <div className="relative w-full sm:w-64">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
@@ -151,14 +155,14 @@ export function EnrollmentManagementView({
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search student or course title..."
-              className="pl-8 h-8 rounded-xl text-xs bg-background"
+              className="pl-8 h-9 rounded-[10px] text-xs bg-background border-border"
             />
           </div>
 
           <select
             value={selectedCourseFilter}
             onChange={(e) => setSelectedCourseFilter(e.target.value)}
-            className="h-8 px-2.5 rounded-xl border bg-background text-xs"
+            className="h-9 px-3 rounded-[10px] border border-border bg-background text-xs text-foreground focus:outline-none"
           >
             <option value="all">All Courses ({allCourses.length})</option>
             {allCourses.map((c) => (
@@ -172,7 +176,7 @@ export function EnrollmentManagementView({
         <Button
           onClick={() => setIsEnrollOpen(true)}
           size="sm"
-          className="rounded-xl text-xs gap-1.5 font-bold shadow-xs shrink-0"
+          className="rounded-[10px] text-xs gap-1.5 font-bold shadow-xs shrink-0 bg-primary hover:bg-primary/90 text-primary-foreground transition-all duration-250 hover:-translate-y-[2px] hover:shadow-[0_0_6px_1px_rgba(23,121,186,0.4)]"
         >
           <Plus className="h-3.5 w-3.5" />
           Enroll Student
@@ -180,15 +184,15 @@ export function EnrollmentManagementView({
       </div>
 
       {/* Table */}
-      <div className="rounded-2xl border overflow-hidden bg-card shadow-xs">
+      <div className="rounded-[10px] border border-border overflow-hidden bg-card shadow-xs">
         <Table>
           <TableHeader className="bg-muted/40">
             <TableRow>
-              <TableHead className="text-xs font-bold">Student</TableHead>
-              <TableHead className="text-xs font-bold">Enrolled Course</TableHead>
-              <TableHead className="text-xs font-bold">Enrollment Date</TableHead>
-              <TableHead className="text-xs font-bold">Status</TableHead>
-              <TableHead className="text-xs font-bold text-right">Actions</TableHead>
+              <TableHead className="text-xs font-bold text-foreground">Student</TableHead>
+              <TableHead className="text-xs font-bold text-foreground">Enrolled Course</TableHead>
+              <TableHead className="text-xs font-bold text-foreground">Enrollment Date</TableHead>
+              <TableHead className="text-xs font-bold text-foreground">Status</TableHead>
+              <TableHead className="text-xs font-bold text-right text-foreground">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -199,82 +203,100 @@ export function EnrollmentManagementView({
                 </TableCell>
               </TableRow>
             ) : (
-              filtered.map((e) => (
-                <TableRow key={e.id} className="hover:bg-muted/30 transition-colors">
-                  {/* Student Cell */}
-                  <TableCell className="py-3.5">
-                    <div className="flex items-center gap-3">
-                      <div className="relative w-9 h-9 rounded-full overflow-hidden border bg-muted flex items-center justify-center shrink-0">
-                        {e.profile.imageUrl ? (
-                          <Image src={e.profile.imageUrl} alt={e.profile.name || "Student"} fill unoptimized className="object-cover" />
-                        ) : (
-                          <User className="h-4 w-4 text-primary" />
-                        )}
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-xs font-bold text-foreground truncate">{e.profile.name || "Student"}</p>
-                        <p className="text-[11px] text-muted-foreground truncate">{e.profile.email}</p>
-                      </div>
-                    </div>
-                  </TableCell>
+              filtered.map((e) => {
+                const hasValidProfileImg = Boolean(
+                  e.profile?.imageUrl &&
+                  typeof e.profile.imageUrl === "string" &&
+                  e.profile.imageUrl.startsWith("http")
+                );
 
-                  {/* Course Cell */}
-                  <TableCell className="py-3.5">
-                    <div className="flex items-center gap-2.5">
-                      <div className="relative w-10 h-7 rounded-lg overflow-hidden border bg-muted shrink-0">
-                        {e.course.thumbnail ? (
-                          <Image src={e.course.thumbnail} alt={e.course.title} fill unoptimized className="object-cover" />
-                        ) : (
-                          <BookOpen className="h-3.5 w-3.5 text-primary m-auto" />
-                        )}
-                      </div>
-                      <div className="min-w-0">
-                        <Link
-                          href={`/admin/courses/${e.course.id}`}
-                          className="text-xs font-bold text-foreground hover:text-primary truncate block"
-                        >
-                          {e.course.title}
-                        </Link>
-                        <span className="text-[10px] text-muted-foreground font-mono">/{e.course.slug}</span>
-                      </div>
-                    </div>
-                  </TableCell>
+                const hasValidCourseThumb = Boolean(
+                  e.course?.thumbnail &&
+                  typeof e.course.thumbnail === "string" &&
+                  e.course.thumbnail.startsWith("http")
+                );
 
-                  {/* Date */}
-                  <TableCell className="py-3.5 text-xs text-muted-foreground">
-                    {new Date(e.createdAt).toLocaleDateString("en-US", {
+                const dateString = e.createdAt
+                  ? new Date(e.createdAt).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
                       year: "numeric",
-                    })}
-                  </TableCell>
+                    })
+                  : "Recent";
 
-                  {/* Status */}
-                  <TableCell className="py-3.5">
-                    <Badge variant="default" className="text-[10px] uppercase font-bold bg-emerald-600">
-                      Active
-                    </Badge>
-                  </TableCell>
+                return (
+                  <TableRow key={e.id} className="hover:bg-muted/30 transition-colors">
+                    {/* Student Cell */}
+                    <TableCell className="py-3.5">
+                      <div className="flex items-center gap-3">
+                        <div className="relative w-8 h-8 rounded-[10px] overflow-hidden border bg-muted flex items-center justify-center shrink-0">
+                          {hasValidProfileImg ? (
+                            <Image src={e.profile.imageUrl!} alt={e.profile.name || "Student"} fill unoptimized className="object-cover" />
+                          ) : (
+                            <User className="h-4 w-4 text-primary" />
+                          )}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-xs font-bold text-foreground truncate">{e.profile?.name || "Student"}</p>
+                          <p className="text-[11px] text-muted-foreground truncate">{e.profile?.email || "No email"}</p>
+                        </div>
+                      </div>
+                    </TableCell>
 
-                  {/* Actions */}
-                  <TableCell className="py-3.5 text-right">
-                    <ConfirmModal
-                      onConfirm={() => handleCancelEnrollment(e.id)}
-                      title="Cancel Enrollment"
-                      description={`Remove ${e.profile.name || e.profile.email} from "${e.course.title}"?`}
-                    >
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-8 text-xs text-destructive hover:text-destructive hover:bg-destructive/10 rounded-xl"
+                    {/* Course Cell */}
+                    <TableCell className="py-3.5">
+                      <div className="flex items-center gap-2.5">
+                        <div className="relative w-10 h-7 rounded-[10px] overflow-hidden border bg-muted shrink-0">
+                          {hasValidCourseThumb ? (
+                            <Image src={e.course.thumbnail!} alt={e.course.title || "Course"} fill unoptimized className="object-cover" />
+                          ) : (
+                            <BookOpen className="h-3.5 w-3.5 text-primary m-auto" />
+                          )}
+                        </div>
+                        <div className="min-w-0">
+                          <Link
+                            href={`/admin/courses/${e.course?.id || ""}`}
+                            className="text-xs font-bold text-foreground hover:text-primary truncate block"
+                          >
+                            {e.course?.title || "Course"}
+                          </Link>
+                          <span className="text-[10px] text-muted-foreground font-mono">/{e.course?.slug || "course"}</span>
+                        </div>
+                      </div>
+                    </TableCell>
+
+                    {/* Date */}
+                    <TableCell className="py-3.5 text-xs text-muted-foreground">
+                      {dateString}
+                    </TableCell>
+
+                    {/* Status */}
+                    <TableCell className="py-3.5">
+                      <Badge variant="default" className="text-[10px] uppercase font-bold bg-emerald-600 rounded-[10px]">
+                        Active
+                      </Badge>
+                    </TableCell>
+
+                    {/* Actions */}
+                    <TableCell className="py-3.5 text-right">
+                      <ConfirmModal
+                        onConfirm={() => handleCancelEnrollment(e.id)}
+                        title="Cancel Enrollment"
+                        description={`Remove ${e.profile?.name || e.profile?.email || "Student"} from "${e.course?.title || "Course"}"?`}
                       >
-                        <Trash2 className="h-3.5 w-3.5 mr-1" />
-                        Cancel
-                      </Button>
-                    </ConfirmModal>
-                  </TableCell>
-                </TableRow>
-              ))
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-8 text-xs text-destructive hover:text-destructive hover:bg-destructive/10 rounded-[10px]"
+                        >
+                          <Trash2 className="h-3.5 w-3.5 mr-1" />
+                          Cancel
+                        </Button>
+                      </ConfirmModal>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
             )}
           </TableBody>
         </Table>
@@ -282,7 +304,7 @@ export function EnrollmentManagementView({
 
       {/* --- Manual Enroll Dialog --- */}
       <Dialog open={isEnrollOpen} onOpenChange={setIsEnrollOpen}>
-        <DialogContent className="rounded-2xl max-w-md">
+        <DialogContent className="rounded-[10px] max-w-md">
           <DialogHeader>
             <DialogTitle>Enroll Student into Course</DialogTitle>
           </DialogHeader>
@@ -293,7 +315,7 @@ export function EnrollmentManagementView({
               <select
                 value={selectedStudentId}
                 onChange={(e) => setSelectedStudentId(e.target.value)}
-                className="w-full h-10 px-3 rounded-xl border bg-background text-sm"
+                className="w-full h-10 px-3 rounded-[10px] border border-border bg-background text-sm"
               >
                 {allStudents.map((s) => (
                   <option key={s.id} value={s.id}>
@@ -308,7 +330,7 @@ export function EnrollmentManagementView({
               <select
                 value={selectedCourseId}
                 onChange={(e) => setSelectedCourseId(e.target.value)}
-                className="w-full h-10 px-3 rounded-xl border bg-background text-sm"
+                className="w-full h-10 px-3 rounded-[10px] border border-border bg-background text-sm"
               >
                 {allCourses.map((c) => (
                   <option key={c.id} value={c.id}>
@@ -320,10 +342,10 @@ export function EnrollmentManagementView({
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsEnrollOpen(false)} className="rounded-xl">
+            <Button variant="outline" onClick={() => setIsEnrollOpen(false)} className="rounded-[10px]">
               Cancel
             </Button>
-            <Button onClick={handleManualEnroll} disabled={loading} className="rounded-xl font-bold">
+            <Button onClick={handleManualEnroll} disabled={loading} className="rounded-[10px] font-bold bg-primary hover:bg-primary/90 text-primary-foreground">
               {loading && <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" />}
               Enroll Now
             </Button>

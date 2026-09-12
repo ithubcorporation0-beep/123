@@ -12,28 +12,33 @@ export default async function AdminCategoriesPage() {
     redirect("/admin/login");
   }
 
-  const categories = await db.courseCategory.findMany({
-    include: {
-      _count: {
-        select: {
-          courses: true,
+  let categories: any[] = [];
+  try {
+    categories = await db.courseCategory.findMany({
+      include: {
+        _count: {
+          select: {
+            courses: true,
+          },
         },
       },
-    },
-    orderBy: [
-      { position: "asc" },
-      { name: "asc" },
-    ],
-  });
+      orderBy: [
+        { position: "asc" },
+        { name: "asc" },
+      ],
+    });
+  } catch (err) {
+    console.warn("[ADMIN_CATEGORIES_WARN]", err);
+  }
 
-  const formattedCategories: CategoryItem[] = categories.map((c) => ({
+  const formattedCategories: CategoryItem[] = (categories || []).map((c) => ({
     id: c.id,
-    name: c.name,
-    slug: c.slug,
-    description: c.description,
-    imageUrl: c.imageUrl,
-    position: c.position,
-    coursesCount: c._count.courses,
+    name: c.name || "Category",
+    slug: c.slug || "category",
+    description: c.description || null,
+    imageUrl: c.imageUrl || null,
+    position: c.position ?? 0,
+    coursesCount: c._count?.courses ?? 0,
   }));
 
   return (

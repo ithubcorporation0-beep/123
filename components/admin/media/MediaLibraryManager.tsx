@@ -151,7 +151,7 @@ export function MediaLibraryManager({ initialItems }: MediaLibraryManagerProps) 
   return (
     <div className="space-y-6">
       {/* Top Filter & Action Bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 rounded-2xl bg-card border shadow-xs">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 rounded-[10px] bg-card border border-border shadow-xs">
         {/* Type Filter Buttons */}
         <div className="flex flex-wrap items-center gap-1.5">
           {["all", "image", "video", "pdf", "document"].map((t) => (
@@ -160,7 +160,7 @@ export function MediaLibraryManager({ initialItems }: MediaLibraryManagerProps) 
               variant={activeType === t ? "default" : "outline"}
               size="sm"
               onClick={() => setActiveType(t)}
-              className="rounded-xl text-xs capitalize h-8 font-medium"
+              className="rounded-[10px] text-xs capitalize h-8 font-medium"
             >
               {t === "all" ? "All Files" : `${t}s`}
             </Button>
@@ -175,7 +175,7 @@ export function MediaLibraryManager({ initialItems }: MediaLibraryManagerProps) 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search files by name..."
-              className="pl-8 pr-8 h-8 rounded-xl text-xs bg-background"
+              className="pl-8 pr-8 h-8 rounded-[10px] text-xs bg-background border-border"
             />
             {searchQuery && (
               <button
@@ -190,7 +190,7 @@ export function MediaLibraryManager({ initialItems }: MediaLibraryManagerProps) 
           <Button
             onClick={() => setIsUploadOpen(true)}
             size="sm"
-            className="rounded-xl text-xs gap-1.5 font-bold shadow-xs shrink-0"
+            className="rounded-[10px] text-xs gap-1.5 font-bold shadow-xs shrink-0 bg-primary hover:bg-primary/90 text-primary-foreground transition-all duration-250 hover:-translate-y-[2px] hover:shadow-[0_0_6px_1px_rgba(23,121,186,0.4)]"
           >
             <Upload className="h-3.5 w-3.5" />
             Upload File
@@ -200,7 +200,7 @@ export function MediaLibraryManager({ initialItems }: MediaLibraryManagerProps) 
 
       {/* Media Items Grid */}
       {filteredItems.length === 0 ? (
-        <Card className="rounded-2xl border p-12 text-center bg-card">
+        <Card className="rounded-[10px] border border-border p-12 text-center bg-card">
           <div className="max-w-sm mx-auto space-y-3">
             <HardDrive className="h-10 w-10 text-muted-foreground mx-auto" />
             <h3 className="text-base font-bold">No Media Files Found</h3>
@@ -212,7 +212,7 @@ export function MediaLibraryManager({ initialItems }: MediaLibraryManagerProps) 
             <Button
               onClick={() => setIsUploadOpen(true)}
               size="sm"
-              className="rounded-xl text-xs gap-1.5 font-bold"
+              className="rounded-[10px] text-xs gap-1.5 font-bold bg-primary text-primary-foreground"
             >
               <Upload className="h-3.5 w-3.5" />
               Upload First Media
@@ -221,116 +221,127 @@ export function MediaLibraryManager({ initialItems }: MediaLibraryManagerProps) 
         </Card>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {filteredItems.map((item) => (
-            <Card
-              key={item.id}
-              className="rounded-2xl border bg-card shadow-xs overflow-hidden flex flex-col justify-between group hover:border-primary/40 hover:shadow-md transition-all"
-            >
-              {/* Preview Thumbnail Container */}
-              <div
-                onClick={() => setPreviewItem(item)}
-                className="relative w-full h-36 bg-muted/50 border-b flex items-center justify-center cursor-pointer overflow-hidden"
+          {filteredItems.map((item) => {
+            const hasValidImage = Boolean(
+              item.type === "image" &&
+              item.url &&
+              typeof item.url === "string" &&
+              (item.url.startsWith("http") || item.url.startsWith("/"))
+            );
+
+            return (
+              <Card
+                key={item.id}
+                className="rounded-[10px] border border-border bg-card shadow-xs overflow-hidden flex flex-col justify-between group hover:border-primary/40 hover:shadow-md transition-all"
               >
-                {item.type === "image" ? (
-                  <Image
-                    src={item.url}
-                    alt={item.name}
-                    fill
-                    unoptimized
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                ) : item.type === "video" ? (
-                  <div className="flex flex-col items-center gap-1.5 text-muted-foreground">
-                    <Video className="h-8 w-8 text-blue-500" />
-                    <span className="text-[10px] uppercase font-mono font-bold">Video File</span>
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center gap-1.5 text-muted-foreground">
-                    {getTypeIcon(item.type)}
-                    <span className="text-[10px] uppercase font-mono font-bold">
-                      {item.type === "pdf" ? "PDF Document" : "Attachment"}
-                    </span>
-                  </div>
-                )}
+                {/* Preview Thumbnail Container */}
+                <div
+                  onClick={() => setPreviewItem(item)}
+                  className="relative w-full h-36 bg-muted/50 border-b flex items-center justify-center cursor-pointer overflow-hidden"
+                >
+                  {hasValidImage ? (
+                    <Image
+                      src={item.url}
+                      alt={item.name}
+                      fill
+                      unoptimized
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  ) : item.type === "video" ? (
+                    <div className="flex flex-col items-center gap-1.5 text-muted-foreground">
+                      <Video className="h-8 w-8 text-blue-500" />
+                      <span className="text-[10px] uppercase font-mono font-bold">Video File</span>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center gap-1.5 text-muted-foreground">
+                      {getTypeIcon(item.type)}
+                      <span className="text-[10px] uppercase font-mono font-bold">
+                        {item.type === "pdf" ? "PDF Document" : "Attachment"}
+                      </span>
+                    </div>
+                  )}
 
-                <div className="absolute top-2 right-2">
-                  <Badge variant="secondary" className="text-[9px] uppercase font-bold py-0.5 px-1.5 shadow-xs">
-                    {item.type}
-                  </Badge>
-                </div>
-              </div>
-
-              {/* Item Info and Actions */}
-              <CardContent className="p-3.5 space-y-2">
-                <div>
-                  <h4 className="text-xs font-bold text-foreground truncate" title={item.name}>
-                    {item.name}
-                  </h4>
-                  <div className="flex items-center justify-between text-[10px] text-muted-foreground mt-1">
-                    <span>{formatFileSize(item.size)}</span>
-                    <span>
-                      {new Date(item.createdAt).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </span>
+                  <div className="absolute top-2 right-2">
+                    <Badge variant="secondary" className="text-[9px] uppercase font-bold py-0.5 px-1.5 shadow-xs rounded-[10px]">
+                      {item.type}
+                    </Badge>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-2 border-t gap-1">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleCopyUrl(item)}
-                    className="h-7 px-2 text-[11px] rounded-lg gap-1 flex-1 font-medium"
-                  >
-                    {copiedId === item.id ? (
-                      <>
-                        <Check className="h-3 w-3 text-emerald-600" />
-                        <span className="text-emerald-600 font-bold">Copied</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="h-3 w-3" />
-                        <span>Copy URL</span>
-                      </>
-                    )}
-                  </Button>
+                {/* Item Info and Actions */}
+                <CardContent className="p-3.5 space-y-2">
+                  <div>
+                    <h4 className="text-xs font-bold text-foreground truncate" title={item.name}>
+                      {item.name}
+                    </h4>
+                    <div className="flex items-center justify-between text-[10px] text-muted-foreground mt-1">
+                      <span>{formatFileSize(item.size)}</span>
+                      <span>
+                        {item.createdAt
+                          ? new Date(item.createdAt).toLocaleDateString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                            })
+                          : "Recent"}
+                      </span>
+                    </div>
+                  </div>
 
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setPreviewItem(item)}
-                    className="h-7 w-7 rounded-lg"
-                    title="View Preview"
-                  >
-                    <Eye className="h-3.5 w-3.5" />
-                  </Button>
+                  <div className="flex items-center justify-between pt-2 border-t gap-1">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleCopyUrl(item)}
+                      className="h-7 px-2 text-[11px] rounded-[10px] gap-1 flex-1 font-medium"
+                    >
+                      {copiedId === item.id ? (
+                        <>
+                          <Check className="h-3 w-3 text-emerald-600" />
+                          <span className="text-emerald-600 font-bold">Copied</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="h-3 w-3" />
+                          <span>Copy URL</span>
+                        </>
+                      )}
+                    </Button>
 
-                  <ConfirmModal
-                    onConfirm={() => handleDeleteItem(item.id)}
-                    title="Delete Media Item"
-                    description={`Permanently delete "${item.name}" from library?`}
-                  >
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-7 w-7 rounded-lg text-destructive hover:text-destructive"
-                      title="Delete"
+                      onClick={() => setPreviewItem(item)}
+                      className="h-7 w-7 rounded-[10px]"
+                      title="View Preview"
                     >
-                      <Trash2 className="h-3.5 w-3.5" />
+                      <Eye className="h-3.5 w-3.5" />
                     </Button>
-                  </ConfirmModal>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+
+                    <ConfirmModal
+                      onConfirm={() => handleDeleteItem(item.id)}
+                      title="Delete Media Item"
+                      description={`Permanently delete "${item.name}" from library?`}
+                    >
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-7 w-7 rounded-[10px] text-destructive hover:text-destructive"
+                        title="Delete"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
+                    </ConfirmModal>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       )}
 
       {/* --- Upload Modal --- */}
       <Dialog open={isUploadOpen} onOpenChange={setIsUploadOpen}>
-        <DialogContent className="rounded-2xl max-w-md">
+        <DialogContent className="rounded-[10px] max-w-md">
           <DialogHeader>
             <DialogTitle>Upload File to Media Library</DialogTitle>
           </DialogHeader>
@@ -351,7 +362,7 @@ export function MediaLibraryManager({ initialItems }: MediaLibraryManagerProps) 
                     variant={uploadType === t.key ? "default" : "outline"}
                     size="sm"
                     onClick={() => setUploadType(t.key)}
-                    className="rounded-xl text-xs capitalize h-8"
+                    className="rounded-[10px] text-xs capitalize h-8"
                   >
                     {t.label}
                   </Button>
@@ -361,7 +372,7 @@ export function MediaLibraryManager({ initialItems }: MediaLibraryManagerProps) 
 
             <div className="space-y-1.5">
               <label className="text-xs font-semibold">Select File *</label>
-              <label className="border-2 border-dashed rounded-2xl p-6 text-center block cursor-pointer hover:border-primary/50 transition-colors bg-muted/20">
+              <label className="border-2 border-dashed border-border rounded-[10px] p-6 text-center block cursor-pointer hover:border-primary/50 transition-colors bg-muted/20">
                 <input
                   type="file"
                   accept={
@@ -406,14 +417,14 @@ export function MediaLibraryManager({ initialItems }: MediaLibraryManagerProps) 
                 setIsUploadOpen(false);
                 setSelectedFile(null);
               }}
-              className="rounded-xl"
+              className="rounded-[10px]"
             >
               Cancel
             </Button>
             <Button
               onClick={handleUploadSubmit}
               disabled={uploading || !selectedFile}
-              className="rounded-xl font-bold"
+              className="rounded-[10px] font-bold bg-primary hover:bg-primary/90 text-primary-foreground"
             >
               {uploading && <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" />}
               Upload to Library
@@ -424,15 +435,15 @@ export function MediaLibraryManager({ initialItems }: MediaLibraryManagerProps) 
 
       {/* --- Preview Modal --- */}
       <Dialog open={Boolean(previewItem)} onOpenChange={(open) => !open && setPreviewItem(null)}>
-        <DialogContent className="rounded-2xl max-w-2xl">
+        <DialogContent className="rounded-[10px] max-w-2xl">
           <DialogHeader>
             <DialogTitle className="truncate pr-4">{previewItem?.name}</DialogTitle>
           </DialogHeader>
 
           {previewItem && (
             <div className="space-y-4 py-2">
-              <div className="rounded-xl overflow-hidden border bg-muted flex items-center justify-center min-h-[250px] max-h-[400px]">
-                {previewItem.type === "image" ? (
+              <div className="rounded-[10px] overflow-hidden border border-border bg-muted flex items-center justify-center min-h-[250px] max-h-[400px]">
+                {previewItem.type === "image" && previewItem.url && (previewItem.url.startsWith("http") || previewItem.url.startsWith("/")) ? (
                   <div className="relative w-full h-[350px]">
                     <Image
                       src={previewItem.url}
@@ -461,7 +472,7 @@ export function MediaLibraryManager({ initialItems }: MediaLibraryManagerProps) 
                 )}
               </div>
 
-              <div className="p-3 rounded-xl border bg-muted/20 text-xs space-y-1">
+              <div className="p-3 rounded-[10px] border border-border bg-muted/20 text-xs space-y-1">
                 <div className="flex items-center justify-between">
                   <span className="text-muted-foreground font-semibold">Direct URL:</span>
                   <Button
@@ -479,7 +490,7 @@ export function MediaLibraryManager({ initialItems }: MediaLibraryManagerProps) 
           )}
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setPreviewItem(null)} className="rounded-xl">
+            <Button variant="outline" onClick={() => setPreviewItem(null)} className="rounded-[10px]">
               Close
             </Button>
           </DialogFooter>

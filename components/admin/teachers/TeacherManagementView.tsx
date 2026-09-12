@@ -227,21 +227,21 @@ export function TeacherManagementView({ initialTeachers }: TeacherManagementView
   return (
     <div className="space-y-6">
       {/* Top Filter and Search Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl bg-card border shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-[10px] bg-card border border-border shadow-xs">
         <div className="relative w-full sm:w-72">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search instructors by name or email..."
-            className="pl-8 h-8 rounded-xl text-xs bg-background"
+            className="pl-8 h-8 rounded-[10px] text-xs bg-background border-border"
           />
         </div>
 
         <Button
           onClick={() => setIsAddOpen(true)}
           size="sm"
-          className="rounded-xl text-xs gap-1.5 font-bold shadow-xs shrink-0"
+          className="rounded-[10px] text-xs gap-1.5 font-bold shadow-xs shrink-0 bg-primary hover:bg-primary/90 text-primary-foreground transition-all duration-250 hover:-translate-y-[2px] hover:shadow-[0_0_6px_1px_rgba(23,121,186,0.4)]"
         >
           <UserPlus className="h-3.5 w-3.5" />
           Add Teacher
@@ -249,16 +249,16 @@ export function TeacherManagementView({ initialTeachers }: TeacherManagementView
       </div>
 
       {/* Teachers Table */}
-      <div className="rounded-2xl border overflow-hidden bg-card shadow-xs">
+      <div className="rounded-[10px] border border-border overflow-hidden bg-card shadow-xs">
         <Table>
           <TableHeader className="bg-muted/40">
             <TableRow>
-              <TableHead className="text-xs font-bold">Teacher</TableHead>
-              <TableHead className="text-xs font-bold">Contact</TableHead>
-              <TableHead className="text-xs font-bold">Courses Created</TableHead>
-              <TableHead className="text-xs font-bold">Status</TableHead>
-              <TableHead className="text-xs font-bold">Joined</TableHead>
-              <TableHead className="text-xs font-bold text-right">Actions</TableHead>
+              <TableHead className="text-xs font-bold text-foreground">Teacher</TableHead>
+              <TableHead className="text-xs font-bold text-foreground">Contact</TableHead>
+              <TableHead className="text-xs font-bold text-foreground">Courses Created</TableHead>
+              <TableHead className="text-xs font-bold text-foreground">Status</TableHead>
+              <TableHead className="text-xs font-bold text-foreground">Joined</TableHead>
+              <TableHead className="text-xs font-bold text-right text-foreground">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -269,94 +269,108 @@ export function TeacherManagementView({ initialTeachers }: TeacherManagementView
                 </TableCell>
               </TableRow>
             ) : (
-              filteredTeachers.map((t) => (
-                <TableRow key={t.id} className="hover:bg-muted/30 transition-colors">
-                  <TableCell className="py-3.5">
-                    <div className="flex items-center gap-3">
-                      <div className="relative w-10 h-10 rounded-full overflow-hidden border bg-muted flex items-center justify-center shrink-0">
-                        {t.imageUrl ? (
-                          <Image src={t.imageUrl} alt={t.name || "Teacher"} fill unoptimized className="object-cover" />
-                        ) : (
-                          <User className="h-5 w-5 text-primary" />
-                        )}
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-xs font-bold text-foreground truncate">{t.name || "Instructor"}</p>
-                        <p className="text-[11px] text-muted-foreground truncate">{t.email}</p>
-                      </div>
-                    </div>
-                  </TableCell>
+              filteredTeachers.map((t) => {
+                const hasValidAvatar = Boolean(
+                  t.imageUrl &&
+                  typeof t.imageUrl === "string" &&
+                  t.imageUrl.startsWith("http")
+                );
 
-                  <TableCell className="py-3.5 text-xs text-muted-foreground">
-                    {t.phone ? (
-                      <span className="flex items-center gap-1 font-mono text-[11px]">
-                        <Phone className="h-3 w-3" /> {t.phone}
-                      </span>
-                    ) : (
-                      <span className="text-[11px] text-muted-foreground/60">—</span>
-                    )}
-                  </TableCell>
-
-                  <TableCell className="py-3.5">
-                    <Badge variant="outline" className="text-xs font-semibold gap-1">
-                      <BookOpen className="h-3 w-3 text-purple-600" />
-                      {t.coursesCreated.length} {t.coursesCreated.length === 1 ? "course" : "courses"}
-                    </Badge>
-                  </TableCell>
-
-                  <TableCell className="py-3.5">
-                    <Badge
-                      variant={t.status === "ACTIVE" ? "default" : "destructive"}
-                      className="text-[10px] uppercase font-bold"
-                    >
-                      {t.status}
-                    </Badge>
-                  </TableCell>
-
-                  <TableCell className="py-3.5 text-xs text-muted-foreground">
-                    {new Date(t.createdAt).toLocaleDateString("en-US", {
+                const dateString = t.createdAt
+                  ? new Date(t.createdAt).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
                       year: "numeric",
-                    })}
-                  </TableCell>
+                    })
+                  : "Recent";
 
-                  <TableCell className="py-3.5 text-right">
-                    <div className="flex items-center justify-end gap-1">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                          setSelectedTeacher(t);
-                          setEditName(t.name || "");
-                          setEditEmail(t.email);
-                          setEditPhone(t.phone || "");
-                          setEditBio(t.bio || "");
-                          setEditAvatar(t.imageUrl || "");
-                          setEditStatus(t.status);
-                        }}
-                        className="h-8 text-xs rounded-xl px-2.5"
-                      >
-                        Manage
-                      </Button>
+                const coursesList = t.coursesCreated || [];
 
-                      <ConfirmModal
-                        onConfirm={() => handleDeactivateTeacher(t.id)}
-                        title="Suspend Teacher"
-                        description={`Suspend instructor privileges for ${t.email}?`}
+                return (
+                  <TableRow key={t.id} className="hover:bg-muted/30 transition-colors">
+                    <TableCell className="py-3.5">
+                      <div className="flex items-center gap-3">
+                        <div className="relative w-10 h-10 rounded-[10px] overflow-hidden border bg-muted flex items-center justify-center shrink-0">
+                          {hasValidAvatar ? (
+                            <Image src={t.imageUrl!} alt={t.name || "Teacher"} fill unoptimized className="object-cover" />
+                          ) : (
+                            <User className="h-5 w-5 text-primary" />
+                          )}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-xs font-bold text-foreground truncate">{t.name || "Instructor"}</p>
+                          <p className="text-[11px] text-muted-foreground truncate">{t.email}</p>
+                        </div>
+                      </div>
+                    </TableCell>
+
+                    <TableCell className="py-3.5 text-xs text-muted-foreground">
+                      {t.phone ? (
+                        <span className="flex items-center gap-1 font-mono text-[11px]">
+                          <Phone className="h-3 w-3" /> {t.phone}
+                        </span>
+                      ) : (
+                        <span className="text-[11px] text-muted-foreground/60">—</span>
+                      )}
+                    </TableCell>
+
+                    <TableCell className="py-3.5">
+                      <Badge variant="outline" className="text-xs font-semibold gap-1 rounded-[10px]">
+                        <BookOpen className="h-3 w-3 text-primary" />
+                        {coursesList.length} {coursesList.length === 1 ? "course" : "courses"}
+                      </Badge>
+                    </TableCell>
+
+                    <TableCell className="py-3.5">
+                      <Badge
+                        variant={t.status === "ACTIVE" ? "default" : "destructive"}
+                        className="text-[10px] uppercase font-bold rounded-[10px]"
                       >
+                        {t.status}
+                      </Badge>
+                    </TableCell>
+
+                    <TableCell className="py-3.5 text-xs text-muted-foreground">
+                      {dateString}
+                    </TableCell>
+
+                    <TableCell className="py-3.5 text-right">
+                      <div className="flex items-center justify-end gap-1">
                         <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 rounded-xl text-destructive hover:text-destructive"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setSelectedTeacher(t);
+                            setEditName(t.name || "");
+                            setEditEmail(t.email);
+                            setEditPhone(t.phone || "");
+                            setEditBio(t.bio || "");
+                            setEditAvatar(t.imageUrl || "");
+                            setEditStatus(t.status);
+                          }}
+                          className="h-8 text-xs rounded-[10px] px-2.5"
                         >
-                          <Trash2 className="h-3.5 w-3.5" />
+                          Manage
                         </Button>
-                      </ConfirmModal>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))
+
+                        <ConfirmModal
+                          onConfirm={() => handleDeactivateTeacher(t.id)}
+                          title="Suspend Teacher"
+                          description={`Suspend instructor privileges for ${t.email}?`}
+                        >
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 rounded-[10px] text-destructive hover:text-destructive"
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </Button>
+                        </ConfirmModal>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
             )}
           </TableBody>
         </Table>
@@ -364,7 +378,7 @@ export function TeacherManagementView({ initialTeachers }: TeacherManagementView
 
       {/* --- Add Teacher Dialog --- */}
       <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
-        <DialogContent className="rounded-2xl max-w-md">
+        <DialogContent className="rounded-[10px] max-w-md">
           <DialogHeader>
             <DialogTitle>Add Instructor / Teacher</DialogTitle>
           </DialogHeader>
@@ -376,7 +390,7 @@ export function TeacherManagementView({ initialTeachers }: TeacherManagementView
                 placeholder="Dr. Sarah Jenkins"
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
-                className="rounded-xl text-sm"
+                className="rounded-[10px] text-sm"
               />
             </div>
 
@@ -387,7 +401,7 @@ export function TeacherManagementView({ initialTeachers }: TeacherManagementView
                 placeholder="sarah@university.edu"
                 value={newEmail}
                 onChange={(e) => setNewEmail(e.target.value)}
-                className="rounded-xl text-sm"
+                className="rounded-[10px] text-sm"
                 required
               />
             </div>
@@ -398,7 +412,7 @@ export function TeacherManagementView({ initialTeachers }: TeacherManagementView
                 placeholder="+1 555-0144"
                 value={newPhone}
                 onChange={(e) => setNewPhone(e.target.value)}
-                className="rounded-xl text-sm"
+                className="rounded-[10px] text-sm"
               />
             </div>
 
@@ -409,7 +423,7 @@ export function TeacherManagementView({ initialTeachers }: TeacherManagementView
                 value={newBio}
                 onChange={(e) => setNewBio(e.target.value)}
                 rows={3}
-                className="rounded-xl text-sm"
+                className="rounded-[10px] text-sm"
               />
             </div>
 
@@ -427,7 +441,7 @@ export function TeacherManagementView({ initialTeachers }: TeacherManagementView
                   value={newAvatar}
                   onChange={(e) => setNewAvatar(e.target.value)}
                   placeholder="https://... or upload photo"
-                  className="rounded-xl text-xs"
+                  className="rounded-[10px] text-xs"
                 />
                 <label className="cursor-pointer shrink-0">
                   <input
@@ -439,7 +453,7 @@ export function TeacherManagementView({ initialTeachers }: TeacherManagementView
                       if (f) handleAvatarUpload(f, false);
                     }}
                   />
-                  <div className="h-9 px-3 rounded-xl border bg-card hover:bg-muted text-xs font-medium flex items-center gap-1.5">
+                  <div className="h-9 px-3 rounded-[10px] border bg-card hover:bg-muted text-xs font-medium flex items-center gap-1.5">
                     <Upload className="h-3.5 w-3.5" />
                   </div>
                 </label>
@@ -448,10 +462,10 @@ export function TeacherManagementView({ initialTeachers }: TeacherManagementView
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsAddOpen(false)} className="rounded-xl">
+            <Button variant="outline" onClick={() => setIsAddOpen(false)} className="rounded-[10px]">
               Cancel
             </Button>
-            <Button onClick={handleCreateTeacher} disabled={loading} className="rounded-xl font-bold">
+            <Button onClick={handleCreateTeacher} disabled={loading} className="rounded-[10px] font-bold bg-primary hover:bg-primary/90 text-primary-foreground">
               {loading && <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" />}
               Create Teacher
             </Button>
@@ -461,21 +475,21 @@ export function TeacherManagementView({ initialTeachers }: TeacherManagementView
 
       {/* --- Manage Teacher Dialog --- */}
       <Dialog open={Boolean(selectedTeacher)} onOpenChange={(open) => !open && setSelectedTeacher(null)}>
-        <DialogContent className="rounded-2xl max-w-lg max-h-[90vh] overflow-y-auto">
+        <DialogContent className="rounded-[10px] max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Manage Teacher: {selectedTeacher?.name || selectedTeacher?.email}</DialogTitle>
           </DialogHeader>
 
           {selectedTeacher && (
             <div className="space-y-5 py-2">
-              <div className="space-y-3 p-4 rounded-xl border bg-muted/20">
+              <div className="space-y-3 p-4 rounded-[10px] border bg-muted/20">
                 <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                   Teacher Profile
                 </h4>
 
                 <div className="flex items-center gap-4">
-                  <div className="relative w-16 h-16 rounded-full overflow-hidden border bg-muted flex items-center justify-center shrink-0">
-                    {editAvatar ? (
+                  <div className="relative w-16 h-16 rounded-[10px] overflow-hidden border bg-muted flex items-center justify-center shrink-0">
+                    {editAvatar && typeof editAvatar === "string" && editAvatar.startsWith("http") ? (
                       <Image src={editAvatar} alt="Avatar" fill unoptimized className="object-cover" />
                     ) : (
                       <User className="h-7 w-7 text-primary" />
@@ -492,7 +506,7 @@ export function TeacherManagementView({ initialTeachers }: TeacherManagementView
                           if (f) handleAvatarUpload(f, true);
                         }}
                       />
-                      <div className="h-8 px-3 rounded-xl border bg-card hover:bg-muted text-xs font-medium flex items-center gap-1.5 transition-colors">
+                      <div className="h-8 px-3 rounded-[10px] border bg-card hover:bg-muted text-xs font-medium flex items-center gap-1.5 transition-colors">
                         <Upload className="h-3.5 w-3.5" />
                         Change Avatar
                       </div>
@@ -505,7 +519,7 @@ export function TeacherManagementView({ initialTeachers }: TeacherManagementView
                   <Input
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
-                    className="rounded-xl text-xs"
+                    className="rounded-[10px] text-xs"
                   />
                 </div>
 
@@ -515,7 +529,7 @@ export function TeacherManagementView({ initialTeachers }: TeacherManagementView
                     <Input
                       value={editEmail}
                       onChange={(e) => setEditEmail(e.target.value)}
-                      className="rounded-xl text-xs"
+                      className="rounded-[10px] text-xs"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -523,7 +537,7 @@ export function TeacherManagementView({ initialTeachers }: TeacherManagementView
                     <Input
                       value={editPhone}
                       onChange={(e) => setEditPhone(e.target.value)}
-                      className="rounded-xl text-xs"
+                      className="rounded-[10px] text-xs"
                     />
                   </div>
                 </div>
@@ -534,7 +548,7 @@ export function TeacherManagementView({ initialTeachers }: TeacherManagementView
                     value={editBio}
                     onChange={(e) => setEditBio(e.target.value)}
                     rows={3}
-                    className="rounded-xl text-xs"
+                    className="rounded-[10px] text-xs"
                   />
                 </div>
 
@@ -543,7 +557,7 @@ export function TeacherManagementView({ initialTeachers }: TeacherManagementView
                   <select
                     value={editStatus}
                     onChange={(e) => setEditStatus(e.target.value)}
-                    className="w-full h-9 px-3 rounded-xl border bg-background text-xs font-semibold"
+                    className="w-full h-9 px-3 rounded-[10px] border bg-background text-xs font-semibold"
                   >
                     <option value="ACTIVE">ACTIVE</option>
                     <option value="SUSPENDED">SUSPENDED</option>
@@ -554,10 +568,10 @@ export function TeacherManagementView({ initialTeachers }: TeacherManagementView
               {/* Assigned Courses */}
               <div className="space-y-2">
                 <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                  Teacher&apos;s Courses ({selectedTeacher.coursesCreated.length})
+                  Teacher&apos;s Courses ({selectedTeacher.coursesCreated?.length || 0})
                 </h4>
-                {selectedTeacher.coursesCreated.length === 0 ? (
-                  <p className="text-xs text-muted-foreground p-3 border rounded-xl bg-card">
+                {!selectedTeacher.coursesCreated || selectedTeacher.coursesCreated.length === 0 ? (
+                  <p className="text-xs text-muted-foreground p-3 border rounded-[10px] bg-card">
                     No courses currently assigned to this teacher.
                   </p>
                 ) : (
@@ -565,7 +579,7 @@ export function TeacherManagementView({ initialTeachers }: TeacherManagementView
                     {selectedTeacher.coursesCreated.map((c) => (
                       <div
                         key={c.id}
-                        className="p-3 rounded-xl border bg-card flex items-center justify-between gap-3 text-xs"
+                        className="p-3 rounded-[10px] border bg-card flex items-center justify-between gap-3 text-xs"
                       >
                         <div className="min-w-0">
                           <p className="font-bold text-foreground truncate">{c.title}</p>
@@ -574,7 +588,7 @@ export function TeacherManagementView({ initialTeachers }: TeacherManagementView
                           </p>
                         </div>
                         <Link href={`/admin/courses/${c.id}`} target="_blank">
-                          <Button variant="outline" size="sm" className="h-7 text-xs rounded-lg gap-1">
+                          <Button variant="outline" size="sm" className="h-7 text-xs rounded-[10px] gap-1">
                             <ExternalLink className="h-3 w-3" />
                             Edit
                           </Button>
@@ -588,10 +602,10 @@ export function TeacherManagementView({ initialTeachers }: TeacherManagementView
           )}
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setSelectedTeacher(null)} className="rounded-xl">
+            <Button variant="outline" onClick={() => setSelectedTeacher(null)} className="rounded-[10px]">
               Cancel
             </Button>
-            <Button onClick={handleUpdateTeacher} disabled={loading} className="rounded-xl font-bold">
+            <Button onClick={handleUpdateTeacher} disabled={loading} className="rounded-[10px] font-bold bg-primary hover:bg-primary/90 text-primary-foreground">
               {loading && <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" />}
               Save Changes
             </Button>

@@ -17,20 +17,25 @@ export default async function AdminUsersPage() {
     redirect("/student");
   }
 
-  const users = await db.profile.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+  let users: any[] = [];
+  try {
+    users = await db.profile.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+  } catch (err) {
+    console.warn("[ADMIN_USERS_QUERY_WARN]", err);
+  }
 
-  const formattedUsers: AdminUserRecord[] = users.map((u) => ({
+  const formattedUsers: AdminUserRecord[] = (users || []).map((u) => ({
     id: u.id,
     userId: u.userId,
-    name: u.name,
-    email: u.email,
-    avatar: u.imageUrl,
-    role: u.role,
-    createdAt: u.createdAt,
+    name: u.name || "User",
+    email: u.email || "user@example.com",
+    avatar: u.imageUrl || null,
+    role: u.role || "student",
+    createdAt: u.createdAt ? new Date(u.createdAt).toISOString() : new Date().toISOString(),
   }));
 
   return (

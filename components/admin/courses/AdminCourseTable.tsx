@@ -138,14 +138,14 @@ export function AdminCourseTable({ courses }: AdminCourseTableProps) {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search by course title or instructor..."
-          className="pl-10 pr-9 rounded-2xl h-10 text-xs bg-card border shadow-xs transition-all focus:ring-2 focus:ring-primary/20"
+          className="pl-10 pr-9 rounded-[10px] h-10 text-xs bg-card border border-border shadow-xs transition-all focus:ring-2 focus:ring-primary/20"
         />
         {searchTerm && (
           <Button
             size="icon"
             variant="ghost"
             onClick={() => setSearchTerm("")}
-            className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 rounded-full text-muted-foreground"
+            className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 rounded-[10px] text-muted-foreground"
           >
             <X className="h-3.5 w-3.5" />
           </Button>
@@ -153,30 +153,35 @@ export function AdminCourseTable({ courses }: AdminCourseTableProps) {
       </div>
 
       {/* Courses Table */}
-      <div className="rounded-3xl border border-border/70 overflow-hidden shadow-xs bg-card">
+      <div className="rounded-[10px] border border-border overflow-hidden shadow-xs bg-card">
         <Table>
           <TableHeader className="bg-muted/40">
             <TableRow>
-              <TableHead className="text-xs font-bold">Course</TableHead>
-              <TableHead className="text-xs font-bold">Instructor</TableHead>
-              <TableHead className="text-xs font-bold">Category</TableHead>
-              <TableHead className="text-xs font-bold">Students</TableHead>
-              <TableHead className="text-xs font-bold">Status</TableHead>
-              <TableHead className="text-xs font-bold text-right">Moderation Actions</TableHead>
+              <TableHead className="text-xs font-bold text-foreground">Course</TableHead>
+              <TableHead className="text-xs font-bold text-foreground">Instructor</TableHead>
+              <TableHead className="text-xs font-bold text-foreground">Category</TableHead>
+              <TableHead className="text-xs font-bold text-foreground">Students</TableHead>
+              <TableHead className="text-xs font-bold text-foreground">Status</TableHead>
+              <TableHead className="text-xs font-bold text-right text-foreground">Moderation Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredCourses.map((course) => {
               const isLoading = loadingId === course.id;
+              const hasValidThumb = Boolean(
+                course.thumbnail &&
+                typeof course.thumbnail === "string" &&
+                (course.thumbnail.startsWith("http") || course.thumbnail.startsWith("/"))
+              );
 
               return (
                 <TableRow key={course.id} className="hover:bg-muted/30 transition-all duration-200">
                   {/* Course Name & Thumbnail */}
                   <TableCell className="py-4">
                     <div className="flex items-center gap-3">
-                      <div className="relative w-12 h-8 rounded-xl overflow-hidden border bg-muted shrink-0">
-                        {course.thumbnail ? (
-                          <Image src={course.thumbnail} alt={course.title} fill unoptimized className="object-cover" />
+                      <div className="relative w-12 h-8 rounded-[10px] overflow-hidden border bg-muted shrink-0">
+                        {hasValidThumb ? (
+                          <Image src={course.thumbnail!} alt={course.title} fill unoptimized className="object-cover" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center bg-primary/10 text-primary">
                             <BookOpen className="h-4 w-4" />
@@ -219,7 +224,7 @@ export function AdminCourseTable({ courses }: AdminCourseTableProps) {
 
                   {/* Category */}
                   <TableCell className="py-4">
-                    <Badge variant="outline" className="text-xs font-semibold">
+                    <Badge variant="outline" className="text-xs font-semibold rounded-[10px]">
                       {course.categoryName}
                     </Badge>
                   </TableCell>
@@ -233,12 +238,12 @@ export function AdminCourseTable({ courses }: AdminCourseTableProps) {
                   <TableCell className="py-4 space-y-1">
                     <Badge
                       variant={course.isPublished ? "default" : "secondary"}
-                      className="text-[10px] uppercase font-bold block w-fit"
+                      className="text-[10px] uppercase font-bold block w-fit rounded-[10px]"
                     >
                       {course.isPublished ? "Published" : "Draft"}
                     </Badge>
                     {course.isFeatured && (
-                      <Badge className="bg-amber-500 hover:bg-amber-500 text-white text-[9px] font-bold block w-fit gap-0.5">
+                      <Badge className="bg-amber-500 hover:bg-amber-500 text-white text-[9px] font-bold block w-fit gap-0.5 rounded-[10px]">
                         <Star className="h-2.5 w-2.5 fill-white" /> Featured
                       </Badge>
                     )}
@@ -252,7 +257,7 @@ export function AdminCourseTable({ courses }: AdminCourseTableProps) {
                         <Button
                           variant="outline"
                           size="sm"
-                          className="rounded-xl text-xs h-8 px-2.5 gap-1 border-border text-foreground hover:bg-muted transition-colors"
+                          className="rounded-[10px] text-xs h-8 px-2.5 gap-1 border-border text-foreground hover:bg-muted transition-colors"
                           title="Manage Modules & Lessons"
                         >
                           <BookOpen className="h-3.5 w-3.5 text-primary" />
@@ -265,7 +270,7 @@ export function AdminCourseTable({ courses }: AdminCourseTableProps) {
                         <Button
                           variant="outline"
                           size="sm"
-                          className="rounded-xl text-xs h-8 px-2.5 gap-1 border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+                          className="rounded-[10px] text-xs h-8 px-2.5 gap-1 border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
                           title="Edit Course Details & Pictures"
                         >
                           <Sparkles className="h-3.5 w-3.5" />
@@ -279,7 +284,7 @@ export function AdminCourseTable({ courses }: AdminCourseTableProps) {
                         disabled={isLoading}
                         variant={course.isFeatured ? "default" : "outline"}
                         size="sm"
-                        className="rounded-xl text-xs h-8 px-2.5 gap-1"
+                        className="rounded-[10px] text-xs h-8 px-2.5 gap-1"
                         title={course.isFeatured ? "Remove from Featured" : "Feature Course on Home Page"}
                       >
                         <Star className="h-3.5 w-3.5" />
@@ -294,7 +299,7 @@ export function AdminCourseTable({ courses }: AdminCourseTableProps) {
                         disabled={isLoading}
                         variant="ghost"
                         size="sm"
-                        className="rounded-xl text-xs h-8 px-2"
+                        className="rounded-[10px] text-xs h-8 px-2"
                         title={course.isPublished ? "Force Unpublish" : "Publish Course"}
                       >
                         {course.isPublished ? (
@@ -316,7 +321,7 @@ export function AdminCourseTable({ courses }: AdminCourseTableProps) {
                           variant="ghost"
                           size="sm"
                           disabled={isLoading}
-                          className="rounded-xl text-xs h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
+                          className="rounded-[10px] text-xs h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
