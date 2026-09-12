@@ -1,16 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import {
-  ArrowRight,
-  ShieldCheck,
-  Code2,
-  Terminal,
-  Lock,
-  Layers,
-  Server,
-  Sparkles,
-  BookOpen,
-} from "lucide-react";
+import { ArrowRight, BookOpen } from "lucide-react";
 import { db } from "@/lib/db";
 
 export async function HeroSection() {
@@ -29,7 +19,7 @@ export async function HeroSection() {
   const ctaUrl = heroContent?.linkUrl || "/courses";
 
   return (
-    <section className="relative overflow-hidden pt-14 pb-20 md:pt-24 md:pb-28 border-b border-[#DEDEDE] bg-white">
+    <section className="relative overflow-hidden pt-14 pb-14 md:pt-20 md:pb-20 border-b border-[#DEDEDE] bg-white">
       <div className="max-w-[1585px] mx-auto px-5 sm:px-8 lg:px-12 flex flex-col items-center text-center">
         {/* Vibrant Rounded Announcement Chip */}
         <div className="animate-fade-in-down inline-flex items-center gap-2.5 px-4 py-1.5 rounded-[30px] border border-[#DEDEDE] bg-[#F2F2F2] text-[#282828] text-xs font-semibold mb-8 hover:bg-[#EAEAEA] transition-colors cursor-default">
@@ -73,92 +63,6 @@ export async function HeroSection() {
               <span>View Curriculums</span>
             </Button>
           </a>
-        </div>
-
-        {/* Trust Metrics Bar */}
-        <div className="animate-fade-in-up delay-300 mt-12 pt-8 border-t border-[#DEDEDE] flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs text-[#545454] w-full max-w-3xl">
-          <div className="flex items-center gap-2 font-medium text-[#282828]">
-            <ShieldCheck className="h-4 w-4 text-[#194866]" />
-            <span>Cryptographic QR Verification</span>
-          </div>
-          <div className="h-3.5 w-px bg-[#DEDEDE] hidden sm:block" />
-          <div className="flex items-center gap-2 font-medium text-[#282828]">
-            <Lock className="h-4 w-4 text-[#194866]" />
-            <span>Strict Role-Based Multi-Tenant Panels</span>
-          </div>
-          <div className="h-3.5 w-px bg-[#DEDEDE] hidden sm:block" />
-          <div className="flex items-center gap-2 font-medium text-[#282828]">
-            <Server className="h-4 w-4 text-[#194866]" />
-            <span>High-Def Video Streaming & Sandbox</span>
-          </div>
-        </div>
-
-        {/* Flat 16px Rounded Product UI Console */}
-        <div className="animate-fade-in-up delay-400 mt-14 w-full max-w-5xl rounded-[16px] border border-[#DEDEDE] bg-[#FFFFFF] shadow-none overflow-hidden text-left relative">
-          {/* Mockup Window Header */}
-          <div className="flex items-center justify-between border-b border-[#DEDEDE] px-5 py-3.5 bg-[#F2F2F2] text-xs text-[#545454]">
-            <div className="flex items-center gap-2">
-              <div className="h-2.5 w-2.5 rounded-full bg-[#DEDEDE]" />
-              <div className="h-2.5 w-2.5 rounded-full bg-[#DEDEDE]" />
-              <div className="h-2.5 w-2.5 rounded-full bg-[#DEDEDE]" />
-              <span className="ml-2 font-mono text-[11px] text-[#545454]">izba.app / lms-console</span>
-            </div>
-            <div className="flex items-center gap-2 font-mono text-[11px]">
-              <span className="h-2 w-2 rounded-full bg-[#FF9F59]" />
-              <span className="text-[#282828] font-medium">Production Cluster • Online</span>
-            </div>
-          </div>
-
-          {/* Mockup Body: 16px Cards with 1px border #DEDEDE */}
-          <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-3 gap-6 bg-[#FFFFFF]">
-            <div className="p-5 rounded-[16px] bg-[#F2F2F2] border border-[#DEDEDE] space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-[#194866] flex items-center gap-2">
-                  <Terminal className="h-4 w-4 text-[#194866]" /> Architecture Track
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-[4px] bg-white border border-[#DEDEDE] text-[#545454]">MOD-01</span>
-              </div>
-              <p className="text-xs text-[#545454] leading-[1.6]">
-                Full-stack system architecture, microservices, containerization, and enterprise Next.js pipelines.
-              </p>
-              <div className="pt-2 border-t border-[#DEDEDE] flex items-center justify-between text-[11px] text-[#545454] font-mono">
-                <span>Progress: 100%</span>
-                <span className="text-[#194866] font-bold">Completed</span>
-              </div>
-            </div>
-
-            <div className="p-5 rounded-[16px] bg-[#F2F2F2] border border-[#DEDEDE] space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-[#194866] flex items-center gap-2">
-                  <Code2 className="h-4 w-4 text-[#194866]" /> Cloud & Security
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-[4px] bg-white border border-[#DEDEDE] text-[#545454]">MOD-02</span>
-              </div>
-              <p className="text-xs text-[#545454] leading-[1.6]">
-                TCP/IP routing, cloud infrastructure administration, and database optimization.
-              </p>
-              <div className="pt-2 border-t border-[#DEDEDE] flex items-center justify-between text-[11px] text-[#545454] font-mono">
-                <span>Progress: 75%</span>
-                <span className="text-[#FF9F59] font-bold">Active Session</span>
-              </div>
-            </div>
-
-            <div className="p-5 rounded-[16px] bg-[#F2F2F2] border border-[#DEDEDE] space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-[#194866] flex items-center gap-2">
-                  <ShieldCheck className="h-4 w-4 text-[#194866]" /> Verifiable Certs
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-[4px] bg-[#FF9F59]/20 text-[#194866] font-bold">VERIFIED</span>
-              </div>
-              <p className="text-xs text-[#545454] leading-[1.6]">
-                Tamper-proof digital certificates signed with unique cryptographic hash identification.
-              </p>
-              <div className="pt-2 border-t border-[#DEDEDE] flex items-center justify-between text-[11px] text-[#545454] font-mono">
-                <span>Verification ID:</span>
-                <span className="text-[#282828] font-bold">#IZB-84920</span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
