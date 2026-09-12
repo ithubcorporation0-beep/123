@@ -51,7 +51,7 @@ export async function FeaturedCourses() {
         }));
 
   return (
-    <section className="py-20 px-5 sm:px-8 lg:px-12 max-w-[1585px] mx-auto">
+    <section id="courses" className="py-20 px-5 sm:px-8 lg:px-12 max-w-[1585px] mx-auto scroll-mt-20">
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
         <div className="space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-[30px] bg-[#FF9F59]/20 text-[#194866] text-xs font-bold uppercase tracking-wider">

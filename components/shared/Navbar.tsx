@@ -10,10 +10,7 @@ import { Menu, LayoutDashboard, ArrowRight, Shield } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const defaultNavLinks = [
-  { label: "All Courses", href: "/courses" },
-  { label: "Pricing & Plans", href: "/pricing" },
-  { label: "How It Works", href: "/about" },
-  { label: "Contact & Support", href: "/contact" },
+  { label: "Courses", href: "/courses" },
 ];
 
 export function Navbar() {

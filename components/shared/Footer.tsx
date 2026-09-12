@@ -18,32 +18,32 @@ export function Footer() {
           {/* Col 2: Platform Links */}
           <div>
             <h3 className="font-serif text-base text-[#194866] font-normal mb-4">
-              Platform Tracks
+              Course Disciplines
             </h3>
             <ul className="space-y-2.5 text-sm text-[#545454]">
               <li>
                 <Link href="/courses" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform font-semibold text-[#194866]">
-                  Explore Courses
+                  All Courses Catalog
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
-                  About IZBA HUB
+                <Link href="/courses?category=software-solutions" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
+                  Software Solutions
                 </Link>
               </li>
               <li>
-                <Link href="/pricing" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
-                  Pricing & Access
+                <Link href="/courses?category=website-solutions" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
+                  Website Development
                 </Link>
               </li>
               <li>
-                <Link href="/student" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
-                  Student Verification
+                <Link href="/courses?category=digital-marketing" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
+                  Digital Marketing
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
-                  Help & Support
+                <Link href="/courses?category=graphic-design" className="hover:text-[#194866] hover:translate-x-1 inline-block transition-transform">
+                  Graphic Design
                 </Link>
               </li>
             </ul>

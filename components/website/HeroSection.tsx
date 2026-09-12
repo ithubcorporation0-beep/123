@@ -53,36 +53,26 @@ export async function HeroSection() {
 
         {/* CTA Buttons - 40px radius, 12px 25px padding */}
         <div className="animate-fade-in-up delay-200 mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
-          <Link href={ctaUrl} className="w-full sm:w-auto">
+          <Link href="/courses" className="w-full sm:w-auto">
             <Button
               size="lg"
               className="w-full sm:w-auto rounded-[40px] px-[25px] py-[12px] h-auto text-sm font-semibold bg-[#194866] hover:bg-[#194866]/90 text-white shadow-none gap-2"
             >
-              <span>{ctaText}</span>
+              <span>{ctaText || "Explore All Courses"}</span>
               <ArrowRight className="h-4 w-4" />
             </Button>
           </Link>
 
-          <Link href="/about" className="w-full sm:w-auto">
+          <a href="#courses" className="w-full sm:w-auto">
             <Button
               size="lg"
               variant="outline"
               className="w-full sm:w-auto rounded-[40px] px-[25px] py-[12px] h-auto text-sm font-semibold border-[#DEDEDE] bg-[#F2F2F2] hover:bg-[#EAEAEA] text-[#194866] shadow-none gap-2"
             >
               <BookOpen className="h-4 w-4 text-[#194866]" />
-              <span>How It Works</span>
+              <span>View Curriculums</span>
             </Button>
-          </Link>
-
-          <Link href="/pricing" className="w-full sm:w-auto">
-            <Button
-              size="lg"
-              className="w-full sm:w-auto rounded-[40px] px-[25px] py-[12px] h-auto text-sm font-semibold bg-[#FF9F59] hover:bg-[#FF9F59]/90 text-[#194866] shadow-none gap-1.5"
-            >
-              <Sparkles className="h-4 w-4" />
-              <span>Free Access Tier</span>
-            </Button>
-          </Link>
+          </a>
         </div>
 
         {/* Trust Metrics Bar */}
