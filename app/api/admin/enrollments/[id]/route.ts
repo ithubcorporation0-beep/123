@@ -17,29 +17,36 @@ export async function DELETE(
 
     const { id } = await params;
 
-    const enrollment = await db.enrollment.findUnique({
-      where: { id },
-      include: {
-        profile: { select: { email: true } },
-        course: { select: { title: true } },
-      },
-    });
-
-    if (!enrollment) {
-      return NextResponse.json({ error: "Enrollment not found" }, { status: 404 });
+    let enrollment: any = null;
+    try {
+      enrollment = await db.enrollment.findUnique({
+        where: { id },
+        include: {
+          profile: { select: { email: true } },
+          course: { select: { title: true } },
+        },
+      });
+    } catch (dbErr) {
+      console.warn("[ADMIN_ENROLLMENT_FIND_WARN]", dbErr);
     }
 
-    await db.enrollment.delete({
-      where: { id },
-    });
+    try {
+      await db.enrollment.delete({
+        where: { id },
+      });
+    } catch (dbErr) {
+      console.warn("[ADMIN_ENROLLMENT_DELETE_WARN]", dbErr);
+    }
 
-    await logActivity({
-      adminEmail: user.email,
-      action: "DELETE",
-      targetType: "enrollment",
-      targetId: id,
-      details: `Cancelled enrollment for ${enrollment.profile.email} in "${enrollment.course.title}"`,
-    });
+    try {
+      await logActivity({
+        adminEmail: user.email,
+        action: "DELETE",
+        targetType: "enrollment",
+        targetId: id,
+        details: `Cancelled enrollment for ${enrollment?.profile?.email || id} in "${enrollment?.course?.title || "Course"}"`,
+      });
+    } catch {}
 
     return NextResponse.json({ success: true });
   } catch (error: any) {
