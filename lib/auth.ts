@@ -18,30 +18,49 @@ export async function getCurrentUser() {
       const cookieStore = await cookies();
       const adminToken = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
       if (adminToken && (await verifyAdminToken(adminToken))) {
-        let adminProfile = await db.profile.findFirst({
-          where: {
-            OR: [
-              { userId: ADMIN_USER_ID },
-              { email: ADMIN_EMAIL },
-              { role: Role.admin },
-            ],
-          },
-        });
-
-        if (!adminProfile) {
-          adminProfile = await db.profile.create({
-            data: {
-              userId: ADMIN_USER_ID,
-              email: ADMIN_EMAIL,
-              name: ADMIN_NAME,
-              role: Role.admin,
+        let adminProfile: any = null;
+        try {
+          adminProfile = await db.profile.findFirst({
+            where: {
+              OR: [
+                { userId: ADMIN_USER_ID },
+                { email: ADMIN_EMAIL },
+                { role: Role.admin },
+              ],
             },
           });
-        } else if (adminProfile.role !== Role.admin) {
-          adminProfile = await db.profile.update({
-            where: { id: adminProfile.id },
-            data: { role: Role.admin },
-          });
+
+          if (!adminProfile) {
+            adminProfile = await db.profile.create({
+              data: {
+                userId: ADMIN_USER_ID,
+                email: ADMIN_EMAIL,
+                name: ADMIN_NAME,
+                role: Role.admin,
+              },
+            });
+          } else if (adminProfile.role !== Role.admin) {
+            adminProfile = await db.profile.update({
+              where: { id: adminProfile.id },
+              data: { role: Role.admin },
+            });
+          }
+        } catch (dbError) {
+          console.warn("[ADMIN_AUTH_DB_WARN] Using fallback in-memory admin profile:", dbError);
+        }
+
+        if (!adminProfile) {
+          adminProfile = {
+            id: "admin_master_system_id",
+            userId: ADMIN_USER_ID,
+            email: ADMIN_EMAIL,
+            name: ADMIN_NAME,
+            role: Role.admin,
+            imageUrl: null,
+            bio: "System Administrator",
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          };
         }
 
         return adminProfile;

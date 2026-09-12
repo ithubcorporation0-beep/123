@@ -40,6 +40,35 @@ async function hmacSha256(data: string, secret: string): Promise<string> {
   return bufferToHex(signature);
 }
 
+function encodeBase64Url(str: string): string {
+  try {
+    if (typeof Buffer !== "undefined") {
+      return Buffer.from(str, "utf8").toString("base64url");
+    }
+  } catch {}
+  return btoa(unescape(encodeURIComponent(str)))
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+}
+
+function decodeBase64Url(str: string): string {
+  try {
+    if (typeof Buffer !== "undefined") {
+      return Buffer.from(str, "base64url").toString("utf8");
+    }
+  } catch {}
+  try {
+    let base64 = str.replace(/-/g, "+").replace(/_/g, "/");
+    while (base64.length % 4) {
+      base64 += "=";
+    }
+    return decodeURIComponent(escape(atob(base64)));
+  } catch {
+    return "";
+  }
+}
+
 export async function createAdminToken(): Promise<string> {
   const payload = JSON.stringify({
     role: "admin",
@@ -49,7 +78,7 @@ export async function createAdminToken(): Promise<string> {
     exp: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 
-  const payloadBase64 = Buffer.from(payload).toString("base64url");
+  const payloadBase64 = encodeBase64Url(payload);
   const signature = await hmacSha256(payloadBase64, SECRET_KEY);
   return `${payloadBase64}.${signature}`;
 }
@@ -68,7 +97,8 @@ export async function verifyAdminToken(token?: string | null): Promise<boolean> 
   }
 
   try {
-    const payloadStr = Buffer.from(payloadBase64, "base64url").toString("utf8");
+    const payloadStr = decodeBase64Url(payloadBase64);
+    if (!payloadStr) return false;
     const data = JSON.parse(payloadStr);
 
     if (data.role !== "admin") return false;

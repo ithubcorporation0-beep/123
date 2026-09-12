@@ -56,9 +56,8 @@ export default function AdminLoginPage() {
 
       setSuccess(true);
       setTimeout(() => {
-        router.push(data.redirectUrl || "/admin");
-        router.refresh();
-      }, 500);
+        window.location.href = data.redirectUrl || "/admin";
+      }, 300);
     } catch {
       setError("Network error. Please try again.");
       setIsLoading(false);
