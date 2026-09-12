@@ -12,9 +12,17 @@ export async function HeroSection() {
     });
   } catch {}
 
-  const title = heroContent?.title || "Empower Your Future with World-Class Online Learning.";
-  const subtitle = heroContent?.content || heroContent?.subtitle || "Access structured learning courses, interactive lessons, and recognized certificates designed by passionate educators to help you master new skills at your own pace.";
-  const chipTag = heroContent?.subtitle ? "Featured Announcement" : "Online Learning Academy";
+  let title = "Empower Your Future with World-Class Online Learning.";
+  let subtitle = "Access structured learning courses, interactive lessons, and recognized certificates designed by passionate educators to help you master new skills at your own pace.";
+
+  if (heroContent?.title && !heroContent.title.toLowerCase().includes("software engineering")) {
+    title = heroContent.title;
+  }
+  if (heroContent?.content && !heroContent.content.toLowerCase().includes("technical teams")) {
+    subtitle = heroContent.content;
+  }
+
+  const chipTag = "Online Learning Academy";
   const ctaText = heroContent?.linkText || "Start Learning Now";
   const ctaUrl = heroContent?.linkUrl || "/courses";
 
