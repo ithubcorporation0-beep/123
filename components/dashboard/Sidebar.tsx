@@ -36,6 +36,7 @@ import {
   LogOut,
   FileText,
   User,
+  PlusCircle,
 } from "lucide-react";
 import { Role } from "@prisma/client";
 
@@ -78,6 +79,7 @@ export function Sidebar({ userRole = Role.student, userName, onNavigate }: Sideb
   // 12. Settings, 13. Admin Profile
   const adminLinks = [
     { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
+    { label: "Add / Remove Items", href: "/admin/manage", icon: PlusCircle },
     { label: "Courses", href: "/admin/courses", icon: BookOpen },
     { label: "Categories", href: "/admin/categories", icon: FolderTree },
     { label: "Modules", href: "/admin/modules", icon: Layers },

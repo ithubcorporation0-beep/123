@@ -7,6 +7,13 @@ export const dynamic = "force-dynamic";
 
 const createCourseSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters").max(120, "Title is too long"),
+  description: z.string().optional(),
+  categoryId: z.string().optional(),
+  categoryName: z.string().optional(),
+  price: z.number().min(0).optional(),
+  level: z.enum(["BEGINNER", "INTERMEDIATE", "ADVANCED"]).optional(),
+  thumbnail: z.string().optional(),
+  isPublished: z.boolean().optional(),
 });
 
 function generateSlug(text: string): string {
@@ -44,7 +51,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { title } = parsed.data;
+    const { title, description, price, level, thumbnail, isPublished } = parsed.data;
     let slug = generateSlug(title);
 
     // Ensure slug uniqueness
@@ -53,11 +60,35 @@ export async function POST(req: NextRequest) {
       slug = `${slug}-${Math.random().toString(36).substring(2, 7)}`;
     }
 
+    let categoryId = parsed.data.categoryId;
+    if (!categoryId && parsed.data.categoryName) {
+      try {
+        const catSlug = generateSlug(parsed.data.categoryName);
+        let cat = await db.courseCategory.findFirst({
+          where: { OR: [{ slug: catSlug }, { name: parsed.data.categoryName }] },
+        });
+        if (!cat) {
+          cat = await db.courseCategory.create({
+            data: { name: parsed.data.categoryName, slug: catSlug },
+          });
+        }
+        categoryId = cat.id;
+      } catch {}
+    }
+
     const course = await db.course.create({
       data: {
         title,
         slug,
         instructorId: user.id,
+        description: description || null,
+        categoryId: categoryId || null,
+        price: price !== undefined ? price : 0,
+        level: level || "BEGINNER",
+        thumbnail:
+          thumbnail ||
+          "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop&q=80",
+        isPublished: isPublished !== undefined ? isPublished : true,
       },
     });
 

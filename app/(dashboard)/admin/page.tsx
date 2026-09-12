@@ -23,6 +23,8 @@ import {
   FileCheck2,
   Clock,
   CheckCircle2,
+  PlusCircle,
+  Sparkles,
 } from "lucide-react";
 
 export default async function AdminOverviewPage() {
@@ -140,8 +142,14 @@ export default async function AdminOverviewPage() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
+          <Link href="/admin/manage">
+            <Button variant="default" size="sm" className="rounded-2xl text-xs gap-1.5 font-bold shadow-xs bg-primary hover:bg-primary/90 text-primary-foreground">
+              <PlusCircle className="h-3.5 w-3.5" />
+              Add / Remove Items
+            </Button>
+          </Link>
           <Link href="/admin/courses/create">
-            <Button variant="default" size="sm" className="rounded-2xl text-xs gap-1.5 font-bold shadow-xs">
+            <Button variant="outline" size="sm" className="rounded-2xl text-xs gap-1.5 font-semibold bg-background">
               <Plus className="h-3.5 w-3.5" />
               Add Course
             </Button>
@@ -154,6 +162,38 @@ export default async function AdminOverviewPage() {
           <Link href="/admin/settings">
             <Button variant="outline" size="sm" className="rounded-2xl text-xs gap-1.5 font-medium">
               Settings
+            </Button>
+          </Link>
+        </div>
+      </div>
+
+      {/* Quick Add & Remove Action Banner */}
+      <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-accent/15 border border-primary/20 rounded-2xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xs">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <Badge className="bg-primary text-primary-foreground text-xs font-bold px-2 py-0.5">
+              Instant Action Center
+            </Badge>
+            <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
+              <Sparkles className="h-4 w-4 text-accent" />
+              Add & Remove Items Control Panel
+            </h2>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Directly add new courses, delete or remove items, and toggle live visibility on the website with 1 click.
+          </p>
+        </div>
+        <div className="flex items-center gap-2.5 shrink-0">
+          <Link href="/admin/manage">
+            <Button className="rounded-xl font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-xs gap-2">
+              <PlusCircle className="h-4 w-4" />
+              Open Add / Remove Panel
+            </Button>
+          </Link>
+          <Link href="/admin/courses/create">
+            <Button variant="outline" className="rounded-xl font-semibold gap-1.5 bg-background border-border">
+              <Plus className="h-3.5 w-3.5" />
+              Create Course
             </Button>
           </Link>
         </div>
@@ -357,6 +397,10 @@ export default async function AdminOverviewPage() {
               Direct CMS Links
             </h3>
             <div className="grid grid-cols-2 gap-2 text-xs">
+              <Link href="/admin/manage" className="p-2.5 rounded-xl border bg-primary/10 text-primary hover:bg-primary/20 transition-colors font-bold text-center col-span-2 flex items-center justify-center gap-1.5">
+                <PlusCircle className="h-3.5 w-3.5" />
+                Add / Remove Items Panel
+              </Link>
               <Link href="/admin/content" className="p-2.5 rounded-xl border bg-muted/30 hover:bg-muted/60 transition-colors font-medium text-center">
                 Website CMS
               </Link>
